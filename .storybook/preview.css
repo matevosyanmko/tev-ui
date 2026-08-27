@@ -1,0 +1,15 @@
+/*
+ * Storybook sets itself up exactly as a consuming project would: Tailwind,
+ * then the theme contract, then the default tokens. The specifiers are the
+ * published ones — vite.config.ts aliases them to src/ so edits hot-reload.
+ *
+ * There is deliberately no `@source` here. theme.css carries its own, and if
+ * that ever stops resolving these stories render unstyled, which is the point.
+ */
+@import "tailwindcss";
+@import "@tev/ui/theme.css";
+@import "@tev/ui/tokens.css";
+
+body {
+  @apply bg-background text-foreground font-sans;
+}

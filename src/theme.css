@@ -1,0 +1,94 @@
+/*
+ * @tev/ui — theme contract.
+ *
+ * This file declares the variable names every component in this package
+ * depends on, and wires them into Tailwind utilities. It does NOT declare
+ * brand values — those live in tokens.css, which a consumer may replace
+ * wholesale. Import this file and the components are styleable; import
+ * tokens.css too (or author your own) and they are branded.
+ *
+ *   @import "@tev/ui/theme.css";
+ *   @import "@tev/ui/tokens.css";   // or your own equivalent
+ *
+ * The `@source` below points Tailwind at this package's compiled components
+ * so their class strings are scanned. `@source` resolves relative to the file
+ * that declares it, so a consumer needs no path configuration of their own.
+ * If a package manager's layout defeats that resolution, the manual fallback
+ * is `@source "<path-to>/node_modules/@tev/ui/dist";` in your own CSS.
+ */
+
+@import "tw-animate-css";
+
+@source "./";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Every mapping below resolves through a var() so that redefining the
+     underlying token at runtime — in :root, in .dark, or on any subtree —
+     re-themes the utility without rebuilding the package. */
+  --font-sans: var(--font-sans-family, ui-sans-serif, system-ui, sans-serif);
+
+  --color-black: var(--black);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-foreground: var(--brand-purple-foreground);
+  --color-brand-purple-soft: var(--brand-purple-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  /* shadcn base: default every element's border and focus ring to the theme
+     rather than Tailwind's Preflight gray. */
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* Tailwind v4's Preflight dropped v3's `button, [role="button"] { cursor:
+     pointer }` rule, so every button-based control (including the `link`
+     Button variant, which renders a <button>, not an <a>) falls back to the
+     browser's default arrow cursor. Restore it here rather than per component. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}

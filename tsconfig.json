@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+
+    // vite.config.ts and .storybook/ run in Node.
+    "types": ["node"],
+
+    "paths": {
+      // Lets the stories import by the published specifier, matching the Vite
+      // alias in vite.config.ts. Only ever resolves for stories/ — src/ uses
+      // relative imports so tsup keeps one entry point per component.
+      "@tev/ui/*": ["./src/*"],
+      // Only so `npx shadcn add` can resolve its own generated imports.
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "stories", ".storybook", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", "storybook-static"]
+}
