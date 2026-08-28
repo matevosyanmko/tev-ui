@@ -1,10 +1,22 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  // One entry per component, so a consumer importing `@tev/ui/button`
-  // never pulls in `calendar`'s react-day-picker or `form`'s react-hook-form
-  // — both of which are optional peers.
-  entry: ["src/*.ts", "src/*.tsx"],
+  // One entry per component, so a consumer importing
+  // `@tev/ui/primitives/Button` never pulls in `Calendar`'s react-day-picker
+  // or `Form`'s react-hook-form — both of which are optional peers.
+  // `src/utils.ts` MUST stay in this list. tsup derives dist/'s base directory
+  // from the COMMON ANCESTOR of every matched entry — with entries only under
+  // src/ui, the `ui/primitives/<Name>` prefix is stripped and output collapses
+  // to dist/index.js. This one flat entry is what pins dist/ to mirror src/.
+  //
+  // Only `index.tsx` files are entries: a wider glob would publish every
+  // sibling (39-byte `*.types.js` stubs, `*.variants.js`) as an importable
+  // subpath, and would turn co-located stories into published entry points.
+  entry: [
+    "src/utils.ts",
+    "src/ui/**/index.tsx",
+    "!src/**/*.stories.*",
+  ],
   outDir: "dist",
   format: ["esm"],
   // Declarations come from `tsc`, not tsup: tsup bundles rollup-plugin-dts

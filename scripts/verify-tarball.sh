@@ -23,10 +23,41 @@ echo "    $(basename "$TARBALL") ($(wc -c <"$TARBALL" | tr -d ' ') bytes)"
 
 echo "==> what the tarball actually ships"
 tar -tzf "$TARBALL" | sed 's|^package/||' | grep -E '\.(js|d\.ts|css)$' | sort > "$WORK/shipped.txt"
-for required in theme.css tokens.css button.js button.d.ts utils.js calendar.js form.js; do
-  grep -qx "dist/$required" "$WORK/shipped.txt" || { echo "FAIL: dist/$required missing from tarball"; exit 1; }
+for required in \
+  dist/theme.css dist/tokens.css \
+  dist/utils.js dist/utils.d.ts \
+  dist/ui/primitives/Button/index.js dist/ui/primitives/Button/index.d.ts \
+  dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js; do
+  grep -qx "$required" "$WORK/shipped.txt" || { echo "FAIL: $required missing from tarball"; exit 1; }
 done
+
+# Every component must have its OWN entry point. tsup emits nothing for an
+# unmatched entry and still exits 0 — and worse, inlines the component into
+# whatever entry does import it. A green build proves nothing here.
+EXPECTED="$(find "$REPO/src/ui" -name 'index.tsx' | wc -l | tr -d ' ')"
+ENTRIES="$(grep -c '^dist/ui/[^/]*/[^/]*/index\.js$' "$WORK/shipped.txt" || true)"
+DTS="$(grep -c '^dist/ui/[^/]*/[^/]*/index\.d\.ts$' "$WORK/shipped.txt" || true)"
+if [ "$ENTRIES" -ne "$EXPECTED" ]; then
+  echo "FAIL: src has $EXPECTED component index.tsx files but the tarball ships $ENTRIES entry points"
+  grep '^dist/ui/' "$WORK/shipped.txt" | sed 's|^|      |'
+  exit 1
+fi
+# Declarations are emitted by a SEPARATE tool (tsc) from the JS (tsup), so the
+# two can silently diverge. Consumers on node16/nodenext then get no types.
+if [ "$DTS" -ne "$ENTRIES" ]; then
+  echo "FAIL: $ENTRIES entry points but only $DTS declaration files"
+  exit 1
+fi
+echo "    $ENTRIES entry points, $DTS declarations (matches $EXPECTED component folders in src)"
 echo "    $(wc -l <"$WORK/shipped.txt" | tr -d ' ') files, all required entries present"
+
+echo "==> asserting no story files ship"
+if tar -tzf "$TARBALL" | grep -qiE 'stor(y|ies)'; then
+  echo "FAIL: story files present in the tarball:"
+  tar -tzf "$TARBALL" | grep -iE 'stor(y|ies)' | sed 's|^|      |'
+  exit 1
+fi
+echo "    ok   no story files"
 
 echo "==> building a throwaway consumer outside the workspace"
 CONSUMER="$WORK/consumer"
@@ -50,13 +81,16 @@ CSS
 
 cat > "$CONSUMER/src/main.tsx" <<'TSX'
 import { createRoot } from "react-dom/client";
-import { Button } from "@tev/ui/button";
-import { Badge } from "@tev/ui/badge";
-import { Table, TableBody, TableCell, TableRow } from "@tev/ui/table";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@tev/ui/tooltip";
-import { Calendar } from "@tev/ui/calendar";
+import { Button } from "@tev/ui/primitives/Button";
+import { Badge } from "@tev/ui/primitives/Badge";
+import { Table, TableBody, TableCell, TableRow } from "@tev/ui/primitives/Table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@tev/ui/primitives/Tooltip";
+import { Calendar } from "@tev/ui/primitives/Calendar";
 import { cn } from "@tev/ui/utils";
+// Every remaining component, so the bundler resolves ALL of them (see all.ts).
+import { ALL } from "./all";
 import "./main.css";
+void ALL;
 
 createRoot(document.getElementById("root")!).render(
   <TooltipProvider>
@@ -90,6 +124,66 @@ TS
   "$TARBALL" react@^18 react-dom@^18 react-day-picker@^9 react-hook-form@^7 \
   vite@^5 @vitejs/plugin-react@^4 tailwindcss@^4 @tailwindcss/vite@^4 \
   typescript@^5 @types/react@^18 @types/react-dom@^18 >/dev/null)
+
+# Generate a module that named-imports EVERY shipped component. The primary
+# export is the folder name by convention, so a missing or renamed barrel
+# re-export is a compile error rather than a silent 24%-coverage pass.
+NAMES="$(grep -oE '^dist/ui/primitives/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
+{
+  for n in $NAMES; do echo "import { $n } from \"@tev/ui/primitives/$n\";"; done
+  # Symbols the folder-per-component refactor put at risk: they are reachable
+  # ONLY through a barrel re-export now, so nothing else would catch their loss.
+  echo 'import { alertVariants } from "@tev/ui/primitives/Alert";'
+  echo 'import { buttonVariants } from "@tev/ui/primitives/Button";'
+  echo 'import { badgeVariants } from "@tev/ui/primitives/Badge";'
+  echo 'import { toggleVariants } from "@tev/ui/primitives/Toggle";'
+  echo 'import { FormFieldContext, FormItemContext, useFormField } from "@tev/ui/primitives/Form";'
+  echo 'import { CalendarDayButton } from "@tev/ui/primitives/Calendar";'
+  echo 'import { ScrollBar } from "@tev/ui/primitives/ScrollArea";'
+  echo 'import type { ButtonProps } from "@tev/ui/primitives/Button";'
+  echo 'import type { BadgeProps } from "@tev/ui/primitives/Badge";'
+  echo 'import type { SearchFieldProps } from "@tev/ui/primitives/SearchField";'
+  echo 'import type { CalendarProps } from "@tev/ui/primitives/Calendar";'
+  echo 'import type { TableProps } from "@tev/ui/primitives/Table";'
+  echo 'export const ALL = ['
+  for n in $NAMES; do echo "  $n,"; done
+  echo '  alertVariants, buttonVariants, badgeVariants, toggleVariants,'
+  echo '  FormFieldContext, FormItemContext, useFormField, CalendarDayButton, ScrollBar,'
+  echo '];'
+  echo 'export type Probe = [ButtonProps, BadgeProps, SearchFieldProps, CalendarProps, TableProps];'
+} > "$CONSUMER/src/all.ts"
+echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') components + 9 at-risk symbols + 5 prop types"
+
+echo "==> typechecking the consumer against the shipped declarations"
+# vite build does NOT typecheck, so without this the `types` half of the exports
+# map is never exercised and 20 of 21 components could ship with no .d.ts.
+for RESOLUTION in bundler nodenext; do
+  cat > "$CONSUMER/tsconfig.json" <<JSON
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "$([ "$RESOLUTION" = "nodenext" ] && echo nodenext || echo ESNext)",
+    "moduleResolution": "$RESOLUTION",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": false
+  },
+  "include": ["src/all.ts"]
+}
+JSON
+  if (cd "$CONSUMER" && npx tsc --noEmit -p tsconfig.json 2>&1 | head -20 | sed 's|^|      |'; exit "${PIPESTATUS[0]}"); then
+    echo "    ok   types resolve under moduleResolution=$RESOLUTION"
+  else
+    echo "    FAIL types do NOT resolve under moduleResolution=$RESOLUTION"
+    FAIL_TYPES=1
+  fi
+done
+if [ "${FAIL_TYPES:-0}" -ne 0 ]; then
+  echo "TARBALL VERIFICATION FAILED (declaration resolution)"
+  exit 1
+fi
 
 (cd "$CONSUMER" && npx vite build >/dev/null)
 

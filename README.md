@@ -27,15 +27,15 @@ install them only if you import the component that needs them:
 
 | Component | Needs |
 | --- | --- |
-| `@tev/ui/calendar` | `react-day-picker` |
-| `@tev/ui/form` | `react-hook-form` |
+| `@tev/ui/primitives/Calendar` | `react-day-picker` |
+| `@tev/ui/primitives/Form` | `react-hook-form` |
 
 Tailwind CSS v4 is required. This package cannot be used with Tailwind v3 or
 with no Tailwind at all — the components are utility-class based.
 
 ## Setup
 
-Two lines in your stylesheet:
+Two imports from this package, after Tailwind:
 
 ```css
 @import "tailwindcss";
@@ -58,10 +58,16 @@ There is no root export. Import by subpath, so you never pay for a component
 you don't use:
 
 ```tsx
-import { Button } from "@tev/ui/button";
-import { Card, CardHeader, CardTitle } from "@tev/ui/card";
+import { Button } from "@tev/ui/primitives/Button";
+import { Card, CardHeader, CardTitle } from "@tev/ui/primitives/Card";
 import { cn } from "@tev/ui/utils";
 ```
+
+Primitives are `@tev/ui/primitives/<Name>`, brand components are
+`@tev/ui/brand/<Name>`, both PascalCase. (`brand/` is an empty scaffold today —
+the subpath pattern is wired up, but no brand component ships yet.) The specifier must be exactly that —
+Node's `exports` patterns are string substitution with no directory-index
+lookup, so `@tev/ui/primitives/Button/index` does **not** resolve.
 
 ## Theming
 
@@ -113,18 +119,31 @@ npm run typecheck
 npm run verify:package  # pack, install the tarball into a throwaway consumer, assert it works
 ```
 
-`npm run verify:package` is the check that matters before releasing. Storybook
-resolves `@tev/ui/*` to `src/` through a Vite alias, so it proves the
+`npm run verify:package` is the check that matters before releasing. It packs
+the tarball, installs it into a throwaway consumer outside the workspace, and
+asserts one entry point and one declaration file per component, that no story
+files ship, that all 21 subpaths name-import cleanly and typecheck under both
+`bundler` and `nodenext` module resolution, and that a consumer token override
+re-themes the output. Storybook builds from `src/`, so it proves the
 components work but not that the *published* artifact does — the exports map,
 the `files` allowlist, the tsup output and the `@source` inside theme.css are
 only exercised by that script.
 
+See [CLAUDE.md](CLAUDE.md) for the repository conventions, and for the four ways
+to break the published package while `npm run build` still succeeds.
+
 ### Adding a shadcn component
 
-`npx shadcn add <name>` works from this directory. It writes imports in the
-`@/…` form; convert them to relative (`./button`, `./utils`) before
-committing. tsup gives every file its own entry point, and an aliased import
-would be inlined into each importer instead of staying a shared module.
+`npx shadcn add <name>` works from this directory, but writes a single flat
+file at `src/` using `@/…` imports. Afterwards, by hand:
+
+1. Move it to `src/ui/primitives/<Name>/<Name>.tsx` (PascalCase folder).
+2. Convert the `@/…` imports to relative (`../../../utils`, `../Button`).
+3. Extract any `cva()` call into `<Name>.variants.ts` — component files must
+   export only components, or React Fast Refresh remounts the tree.
+4. Add `index.tsx` re-exporting the public surface; that file is the entry point.
+5. Add `<Name>.stories.tsx` with an explicit `Primitives/<Name>` title.
+6. Run `npm run verify:package`.
 
 ## Publishing
 
