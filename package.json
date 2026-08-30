@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
-    "dev": "tsup --watch",
+    "dev": "tsup --watch & node scripts/watch-css.mjs & wait",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
