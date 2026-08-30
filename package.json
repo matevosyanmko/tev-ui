@@ -40,6 +40,7 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
     "verify:package": "scripts/verify-tarball.sh",
+    "chromatic": "chromatic --build-script-name build:storybook",
     "prepack": "npm run build"
   },
   "dependencies": {
@@ -79,6 +80,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "chromatic": "^18.7.1",
     "dayjs": "^1.11.23",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
