@@ -36,7 +36,10 @@ function PageStructure({
       >
         <div className="flex h-full flex-col overflow-hidden p-4 pt-0">
           {hasHeader && (
-            <div data-slot="page-structure-header" className="flex h-14 flex-wrap items-center gap-3">
+            <div
+              data-slot="page-structure-header"
+              className="flex h-14 flex-wrap items-center gap-3"
+            >
               {title}
               {leftSlot}
               {centerSlot}

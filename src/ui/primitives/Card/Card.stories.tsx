@@ -30,7 +30,7 @@ export const Default: Story = {
           </Button>
         </CardAction>
       </CardHeader>
-      <CardContent className="text-muted-foreground text-sm">
+      <CardContent className="text-sm text-muted-foreground">
         Forwarding to the sales queue during business hours.
       </CardContent>
       <CardFooter>

@@ -24,7 +24,7 @@ function AppFilterRow({
         data-disabled={disabled || undefined}
         aria-disabled={disabled}
         className={cn(
-          "flex h-full flex-1 items-center gap-3 overflow-x-auto rounded-[16px] border-0 bg-brand-surface-1 pr-4 outline-none transition-opacity [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "flex h-full flex-1 [scrollbar-width:none] items-center gap-3 overflow-x-auto rounded-[16px] border-0 bg-brand-surface-1 pr-4 transition-opacity outline-none [&::-webkit-scrollbar]:hidden",
           disabled && "pointer-events-none opacity-50",
         )}
       >

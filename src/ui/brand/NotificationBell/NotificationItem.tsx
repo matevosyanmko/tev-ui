@@ -1,8 +1,5 @@
 import { cn } from "../../../utils.js";
-import type {
-  NotificationItemProps,
-  NotificationTone,
-} from "./NotificationBell.types.js";
+import type { NotificationItemProps, NotificationTone } from "./NotificationBell.types.js";
 
 // Written out in full rather than assembled from a `bg-brand-${tone}` template:
 // Tailwind scans source text, so a class built at runtime compiles to nothing.
@@ -48,9 +45,7 @@ function NotificationItem({
             {showDetailsLabel ?? "Show details"}
           </span>
         ) : notification.body ? (
-          <span className="mt-1 block truncate text-[10px] text-white/60">
-            {notification.body}
-          </span>
+          <span className="mt-1 block truncate text-[10px] text-white/60">{notification.body}</span>
         ) : null}
       </span>
       {!notification.read ? (

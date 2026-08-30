@@ -1,8 +1,6 @@
 import type * as React from "react";
 import type { Select as SelectPrimitive } from "radix-ui";
 
-export type SelectTriggerProps = React.ComponentProps<
-  typeof SelectPrimitive.Trigger
-> & {
+export type SelectTriggerProps = React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "default" | "sm";
 };

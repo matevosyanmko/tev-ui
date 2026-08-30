@@ -5,20 +5,13 @@ import dayjs from "dayjs";
 import { ChevronDown } from "lucide-react";
 
 import { Button } from "../../primitives/Button/Button.js";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../primitives/Popover/Popover.js";
+import { Popover, PopoverContent, PopoverTrigger } from "../../primitives/Popover/Popover.js";
 import { cn } from "../../../utils.js";
 import { CustomRangePanel } from "./CustomRangePanel.js";
 import { MonthGrid } from "./MonthGrid.js";
 import { YearGrid } from "./YearGrid.js";
 import { DEFAULT_MONTHS, MODES } from "./DateRangePicker.constants.js";
-import type {
-  DateMode,
-  DateRangePickerProps,
-} from "./DateRangePicker.types.js";
+import type { DateMode, DateRangePickerProps } from "./DateRangePicker.types.js";
 
 const MODE_FALLBACK: Record<DateMode, string> = {
   year: "Year",

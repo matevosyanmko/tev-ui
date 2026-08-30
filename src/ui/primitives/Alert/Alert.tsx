@@ -1,8 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 import type { VariantProps } from "class-variance-authority";
 
-import { cn } from "../../../utils.js"
-import { alertVariants } from "./Alert.variants.js"
+import { cn } from "../../../utils.js";
+import { alertVariants } from "./Alert.variants.js";
 
 function Alert({
   className,
@@ -14,35 +14,32 @@ function Alert({
       data-slot="alert"
       role="alert"
       className={cn(alertVariants({ variant }), className)}
-      {...props} />
+      {...props}
+    />
   );
 }
 
-function AlertTitle({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-title"
       className={cn("col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight", className)}
-      {...props} />
+      {...props}
+    />
   );
 }
 
-function AlertDescription({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-description"
       className={cn(
-        "text-muted-foreground col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed",
-        className
+        "col-start-2 grid justify-items-start gap-1 text-sm text-muted-foreground [&_p]:leading-relaxed",
+        className,
       )}
-      {...props} />
+      {...props}
+    />
   );
 }
 
-export { Alert, AlertTitle, AlertDescription }
+export { Alert, AlertTitle, AlertDescription };

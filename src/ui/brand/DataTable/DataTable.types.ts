@@ -76,8 +76,10 @@ export interface DataTableLabels {
 
 export type RowKey<Row> = string | ((row: Row) => React.Key);
 
-export interface DataTableProps<Row = unknown>
-  extends Omit<React.ComponentProps<"div">, "children"> {
+export interface DataTableProps<Row = unknown> extends Omit<
+  React.ComponentProps<"div">,
+  "children"
+> {
   columns?: DataTableColumn<Row>[];
   /** Rows to render. Omit and pass `children` to render your own row elements. */
   dataSource?: Row[];

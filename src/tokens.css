@@ -49,18 +49,8 @@
      CTA pill and the horizontal progress bar. Full `linear-gradient()` values
      rather than bare stops, so a consumer can swap the whole treatment (to a
      flat colour, a conic sweep, an image) without the components caring. */
-  --brand-gradient: linear-gradient(
-    127.35deg,
-    #6003f4 4.74%,
-    #502dc9 71.9%,
-    #07f002 106.99%
-  );
-  --brand-gradient-progress: linear-gradient(
-    90deg,
-    #6003f4 0%,
-    #502dc9 69%,
-    #07f002 100%
-  );
+  --brand-gradient: linear-gradient(127.35deg, #6003f4 4.74%, #502dc9 71.9%, #07f002 106.99%);
+  --brand-gradient-progress: linear-gradient(90deg, #6003f4 0%, #502dc9 69%, #07f002 100%);
 
   --radius: 0.625rem;
 

@@ -19,10 +19,7 @@ function DataTableError({ colSpan, message, onRetry, retryLabel }: DataTableErro
       <TableCell colSpan={Math.max(colSpan, 1)} className="py-10 text-center">
         {/* role="alert" so the failure is announced; it previously reached
             screen readers as an unlabeled icon and a bare string. */}
-        <div
-          role="alert"
-          className="flex flex-col items-center gap-2 text-sm text-destructive"
-        >
+        <div role="alert" className="flex flex-col items-center gap-2 text-sm text-destructive">
           <CircleAlert size={20} aria-hidden="true" />
           <span>{message}</span>
           {onRetry ? (

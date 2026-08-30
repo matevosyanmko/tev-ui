@@ -54,9 +54,7 @@ export function useDataTablePagination<Row>(
       : 0;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
-  const clampedPage = hasDataSource
-    ? Math.min(internalPage, totalPages)
-    : internalPage;
+  const clampedPage = hasDataSource ? Math.min(internalPage, totalPages) : internalPage;
   const page = isControlled ? (pagination?.page ?? 1) : clampedPage;
 
   const rows =
@@ -70,9 +68,7 @@ export function useDataTablePagination<Row>(
     total,
     totalPages,
     onPageChange:
-      isControlled && pagination?.onPageChange
-        ? pagination.onPageChange
-        : setInternalPage,
+      isControlled && pagination?.onPageChange ? pagination.onPageChange : setInternalPage,
     rows,
     // Driven by the data rather than the fetch state, so a refetch that keeps
     // stale rows around keeps the footer and the current page visible instead

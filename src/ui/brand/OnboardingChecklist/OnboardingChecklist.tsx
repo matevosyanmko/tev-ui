@@ -34,7 +34,7 @@ function OnboardingChecklist({
       )}
     >
       <div className="shrink-0 px-5 pt-5">
-        <h3 className="text-[22px] font-extrabold lowercase tracking-tight">
+        <h3 className="text-[22px] font-extrabold tracking-tight lowercase">
           {labels?.heading ?? "Let's get started"}
         </h3>
         <div className="mt-3 flex items-center gap-2">

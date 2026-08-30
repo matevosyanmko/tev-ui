@@ -35,10 +35,7 @@ function ActionDock({ children, className, style, ...props }: ActionDockProps) {
 
   if (!children) return null;
 
-  const dockWidth = Math.max(
-    contentWidth + PADDING_LEFT + PADDING_RIGHT,
-    ACTION_DOCK_MIN_WIDTH,
-  );
+  const dockWidth = Math.max(contentWidth + PADDING_LEFT + PADDING_RIGHT, ACTION_DOCK_MIN_WIDTH);
 
   return (
     <div

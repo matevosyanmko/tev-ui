@@ -8,10 +8,7 @@ function TourStepDots({ step, total }: TourStepDotsProps) {
       {Array.from({ length: total }).map((_, index) => (
         <span
           key={index}
-          className={cn(
-            "size-1.5 rounded-full",
-            index === step ? "bg-brand-green" : "bg-white/25",
-          )}
+          className={cn("size-1.5 rounded-full", index === step ? "bg-brand-green" : "bg-white/25")}
         />
       ))}
     </span>

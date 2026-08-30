@@ -12,11 +12,7 @@ export default defineConfig({
   // Only `index.tsx` files are entries: a wider glob would publish every
   // sibling (39-byte `*.types.js` stubs, `*.variants.js`) as an importable
   // subpath, and would turn co-located stories into published entry points.
-  entry: [
-    "src/utils.ts",
-    "src/ui/**/index.tsx",
-    "!src/**/*.stories.*",
-  ],
+  entry: ["src/utils.ts", "src/ui/**/index.tsx", "!src/**/*.stories.*"],
   outDir: "dist",
   format: ["esm"],
   // Declarations come from `tsc`, not tsup: tsup bundles rollup-plugin-dts

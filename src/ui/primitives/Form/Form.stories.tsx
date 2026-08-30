@@ -19,10 +19,7 @@ function AgentForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(() => undefined)}
-        className="w-80 space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(() => undefined)} className="w-80 space-y-6">
         <FormField
           control={form.control}
           name="displayName"
@@ -33,9 +30,7 @@ function AgentForm() {
               <FormControl>
                 <Input placeholder="Front desk agent" {...field} />
               </FormControl>
-              <FormDescription>
-                Shown to teammates in the call log.
-              </FormDescription>
+              <FormDescription>Shown to teammates in the call log.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

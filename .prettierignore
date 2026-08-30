@@ -1,0 +1,10 @@
+node_modules
+dist
+storybook-static
+*.tgz
+
+# Markdown is hand-formatted deliberately (prose wrapping, list indentation
+# around inline code spans). Prettier's remark parser also misreads a `|`
+# inside an inline code span as a table cell and mangles the surrounding
+# list indentation, so *.md is excluded rather than fought.
+*.md

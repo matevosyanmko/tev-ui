@@ -34,9 +34,7 @@ function FilterDropdown({
   const hasAllOption = Boolean(allLabel);
   const active = value || (hasAllOption ? ALL_VALUE : options[0]?.value);
   const entries: FilterOption[] =
-    hasAllOption && allLabel
-      ? [{ value: ALL_VALUE, label: allLabel }, ...options]
-      : options;
+    hasAllOption && allLabel ? [{ value: ALL_VALUE, label: allLabel }, ...options] : options;
   const current = entries.find((option) => option.value === active);
   const tone = current?.tone ?? "default";
 
@@ -48,7 +46,7 @@ function FilterDropdown({
         style={minWidth || maxWidth ? { minWidth, maxWidth } : undefined}
         className={cn(
           "group flex h-8 shrink-0 items-center gap-1.5 rounded-full px-4",
-          "text-[11px] font-bold outline-none transition-colors",
+          "text-[11px] font-bold transition-colors outline-none",
           "text-brand-green-foreground hover:bg-brand-purple-hover",
           tone === "danger" ? "bg-brand-coral" : "bg-brand-green",
           "data-[state=open]:bg-brand-purple data-[state=open]:text-brand-purple-hover data-[state=open]:hover:bg-brand-purple",
@@ -68,7 +66,7 @@ function FilterDropdown({
         sideOffset={6}
         data-brand="filter-dropdown-content"
         className={cn(
-          "flex min-w-[150px] max-w-[calc(50vw-16px)] flex-col gap-1",
+          "flex max-w-[calc(50vw-16px)] min-w-[150px] flex-col gap-1",
           "rounded-[14px] border-none bg-brand-surface-1 p-1.5 shadow-xl",
           contentClassName,
         )}
@@ -81,9 +79,7 @@ function FilterDropdown({
                 key={option.value}
                 data-brand="filter-dropdown-item"
                 onSelect={() =>
-                  onChange(
-                    hasAllOption && option.value === ALL_VALUE ? "" : option.value,
-                  )
+                  onChange(hasAllOption && option.value === ALL_VALUE ? "" : option.value)
                 }
                 className={cn(
                   "block w-full truncate rounded-full border px-4 py-[7px]",

@@ -1,10 +1,7 @@
 import * as React from "react";
 
 import { cn } from "../../../utils.js";
-import {
-  gradientButtonFrameVariants,
-  gradientButtonVariants,
-} from "./GradientButton.variants.js";
+import { gradientButtonFrameVariants, gradientButtonVariants } from "./GradientButton.variants.js";
 import type { GradientButtonProps } from "./GradientButton.types.js";
 
 /**

@@ -1,8 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 import { getDefaultClassNames, type DayButtonProps } from "react-day-picker";
 
-import { cn } from "../../../utils.js"
-import { Button } from "../Button/Button.js"
+import { cn } from "../../../utils.js";
+import { Button } from "../Button/Button.js";
 // Brand day states (see Figma "Date Picker"): selected — including a range's
 // start and end — is solid brand purple; hover and the in-range middle use the
 // soft purple tint.
@@ -33,20 +33,15 @@ const BRAND_DAY_STATES = [
   "data-[range-middle=true]:bg-brand-purple-soft data-[range-middle=true]:text-brand-purple",
   "data-[range-middle=true]:hover:bg-brand-purple-soft dark:data-[range-middle=true]:hover:bg-brand-purple-soft",
   "data-[range-middle=true]:hover:text-brand-purple dark:data-[range-middle=true]:hover:text-brand-purple",
-].join(" ")
+].join(" ");
 
-function CalendarDayButton({
-  className,
-  day,
-  modifiers,
-  ...props
-}: DayButtonProps) {
-  const defaultClassNames = getDefaultClassNames()
+function CalendarDayButton({ className, day, modifiers, ...props }: DayButtonProps) {
+  const defaultClassNames = getDefaultClassNames();
 
-  const ref = React.useRef<HTMLButtonElement>(null)
+  const ref = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
-  }, [modifiers.focused])
+    if (modifiers.focused) ref.current?.focus();
+  }, [modifiers.focused]);
 
   return (
     <Button
@@ -64,19 +59,20 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] rounded-lg data-[range-middle=true]:rounded-none [&>span]:text-xs [&>span]:opacity-70",
+        "flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 rounded-lg leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50 data-[range-middle=true]:rounded-none [&>span]:text-xs [&>span]:opacity-70",
         // Range ends sit flush against the in-between band: rounded on the outer
         // edge, square on the inner one. A one-day range is both ends at once, so
         // it keeps its full radius.
         "data-[range-start=true]:rounded-l-lg data-[range-start=true]:rounded-r-none",
-        "data-[range-end=true]:rounded-r-lg data-[range-end=true]:rounded-l-none",
+        "data-[range-end=true]:rounded-l-none data-[range-end=true]:rounded-r-lg",
         "data-[range-start=true]:data-[range-end=true]:rounded-lg",
         BRAND_DAY_STATES,
         defaultClassNames.day,
-        className
+        className,
       )}
-      {...props} />
+      {...props}
+    />
   );
 }
 
-export { CalendarDayButton }
+export { CalendarDayButton };

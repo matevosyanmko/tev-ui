@@ -21,7 +21,7 @@ export const Default: Story = {
   render: (args) => (
     <ScrollArea {...args}>
       <div className="p-4">
-        <h4 className="mb-3 text-sm font-medium leading-none">Tags</h4>
+        <h4 className="mb-3 text-sm leading-none font-medium">Tags</h4>
         {tags.map((tag) => (
           <div key={tag} className="border-b py-2 text-sm last:border-b-0">
             {tag}

@@ -2,10 +2,7 @@ import { Component } from "react";
 import type { ErrorInfo } from "react";
 import { TriangleAlert } from "lucide-react";
 
-import type {
-  ErrorBoundaryProps,
-  ErrorBoundaryState,
-} from "./ErrorBoundary.types.js";
+import type { ErrorBoundaryProps, ErrorBoundaryState } from "./ErrorBoundary.types.js";
 
 /**
  * Crash barrier. A render-time throw anywhere below this component would
@@ -46,11 +43,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         className="flex h-full min-h-60 items-center justify-center p-6"
       >
         <div className="max-w-md rounded-[20px] border border-black/5 bg-card px-6 py-7 text-center">
-          <TriangleAlert
-            size={28}
-            aria-hidden="true"
-            className="mx-auto mb-3 text-destructive"
-          />
+          <TriangleAlert size={28} aria-hidden="true" className="mx-auto mb-3 text-destructive" />
 
           <h2 className="text-[16px] font-semibold text-card-foreground">
             {labels?.title ?? "Something went wrong"}

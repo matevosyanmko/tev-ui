@@ -15,11 +15,46 @@ interface Interaction {
 }
 
 const ROWS: Interaction[] = [
-  { id: "IX-4821", agent: { name: "Anna Petrosyan" }, channel: "voice", sentiment: "positive", duration: "4m 12s", startedAt: "2026-08-28 09:14" },
-  { id: "IX-4822", agent: { name: "David Grigoryan" }, channel: "webchat", sentiment: "neutral", duration: "11m 03s", startedAt: "2026-08-28 09:20" },
-  { id: "IX-4823", agent: { name: "Mariam Sargsyan" }, channel: "email", sentiment: "negative", duration: "—", startedAt: "2026-08-28 09:31" },
-  { id: "IX-4824", agent: { name: "Tigran Hakobyan" }, channel: "voice", sentiment: "positive", duration: "2m 47s", startedAt: "2026-08-28 09:48" },
-  { id: "IX-4825", agent: { name: "Anna Petrosyan" }, channel: "voice", sentiment: "neutral", duration: "7m 30s", startedAt: "2026-08-28 10:02" },
+  {
+    id: "IX-4821",
+    agent: { name: "Anna Petrosyan" },
+    channel: "voice",
+    sentiment: "positive",
+    duration: "4m 12s",
+    startedAt: "2026-08-28 09:14",
+  },
+  {
+    id: "IX-4822",
+    agent: { name: "David Grigoryan" },
+    channel: "webchat",
+    sentiment: "neutral",
+    duration: "11m 03s",
+    startedAt: "2026-08-28 09:20",
+  },
+  {
+    id: "IX-4823",
+    agent: { name: "Mariam Sargsyan" },
+    channel: "email",
+    sentiment: "negative",
+    duration: "—",
+    startedAt: "2026-08-28 09:31",
+  },
+  {
+    id: "IX-4824",
+    agent: { name: "Tigran Hakobyan" },
+    channel: "voice",
+    sentiment: "positive",
+    duration: "2m 47s",
+    startedAt: "2026-08-28 09:48",
+  },
+  {
+    id: "IX-4825",
+    agent: { name: "Anna Petrosyan" },
+    channel: "voice",
+    sentiment: "neutral",
+    duration: "7m 30s",
+    startedAt: "2026-08-28 10:02",
+  },
 ];
 
 const SENTIMENT_VARIANT = {
@@ -38,9 +73,7 @@ const COLUMNS: DataTableColumn<Interaction>[] = [
     title: "Sentiment",
     width: 140,
     render: (value) => (
-      <Badge variant={SENTIMENT_VARIANT[value as Interaction["sentiment"]]}>
-        {String(value)}
-      </Badge>
+      <Badge variant={SENTIMENT_VARIANT[value as Interaction["sentiment"]]}>{String(value)}</Badge>
     ),
   },
   { key: "duration", dataIndex: "duration", title: "Duration", width: 120 },
@@ -108,10 +141,7 @@ export const ServerPagination: Story = {
   render: function ServerPaginationStory(args) {
     const [page, setPage] = React.useState(1);
     return (
-      <DataTable
-        {...args}
-        pagination={{ page, pageSize: 5, total: 137, onPageChange: setPage }}
-      />
+      <DataTable {...args} pagination={{ page, pageSize: 5, total: 137, onPageChange: setPage }} />
     );
   },
 };
@@ -143,7 +173,13 @@ export const HeaderVariants: Story = {
     columns: [
       { key: "id", dataIndex: "id", title: "ID", width: 120 },
       { key: "agent", dataIndex: ["agent", "name"], title: "Agent" },
-      { key: "channel", dataIndex: "channel", title: "Channel", headerVariant: "plain", width: 140 },
+      {
+        key: "channel",
+        dataIndex: "channel",
+        title: "Channel",
+        headerVariant: "plain",
+        width: 140,
+      },
       {
         key: "actions",
         title: "Actions",

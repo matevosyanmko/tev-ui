@@ -25,9 +25,7 @@ export const Stacked: Story = {
         4,182 interactions across voice, webchat and email.
       </p>
       <SectionBanner>Sentiment overview</SectionBanner>
-      <p className="text-sm text-muted-foreground">
-        61% positive, 24% neutral, 15% negative.
-      </p>
+      <p className="text-sm text-muted-foreground">61% positive, 24% neutral, 15% negative.</p>
       <SectionBanner>Agent performance</SectionBanner>
       <p className="text-sm text-muted-foreground">Top 10 agents by resolution rate.</p>
     </div>

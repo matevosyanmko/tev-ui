@@ -8,14 +8,6 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "storybook-static",
-    "**/*.stories.ts",
-    "**/*.stories.tsx"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "storybook-static", "**/*.stories.ts", "**/*.stories.tsx"]
 }

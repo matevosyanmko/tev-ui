@@ -46,9 +46,7 @@ export const SelectionColumn: Story = {
                   label={`Select ${name}`}
                   onCheckedChange={(next) =>
                     setSelected((current) =>
-                      next
-                        ? [...current, name]
-                        : current.filter((entry) => entry !== name),
+                      next ? [...current, name] : current.filter((entry) => entry !== name),
                     )
                   }
                 />

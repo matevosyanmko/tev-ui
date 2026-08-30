@@ -11,7 +11,9 @@ const meta = {
   component: ErrorBoundary,
   parameters: {
     // The stories below throw on purpose; the boundary catching them is the point.
-    docs: { description: { component: "Renders its fallback panel when a child throws during render." } },
+    docs: {
+      description: { component: "Renders its fallback panel when a child throws during render." },
+    },
   },
 } satisfies Meta<typeof ErrorBoundary>;
 

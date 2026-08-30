@@ -49,8 +49,6 @@ export function matchPreset(value: Dayjs[] | undefined): DatePreset | undefined 
   if (!value?.[0] || !value?.[1]) return undefined;
   return PRESETS.find((preset) => {
     const [start, end] = presetRange(preset);
-    return (
-      dayjs(value[0]).isSame(start, "day") && dayjs(value[1]).isSame(end, "day")
-    );
+    return dayjs(value[0]).isSame(start, "day") && dayjs(value[1]).isSame(end, "day");
   });
 }

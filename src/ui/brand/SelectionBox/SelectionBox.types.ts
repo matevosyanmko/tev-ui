@@ -1,7 +1,9 @@
 import type * as React from "react";
 
-export interface SelectionBoxProps
-  extends Omit<React.ComponentProps<"input">, "type" | "onChange" | "checked"> {
+export interface SelectionBoxProps extends Omit<
+  React.ComponentProps<"input">,
+  "type" | "onChange" | "checked"
+> {
   checked: boolean;
   /** Called with the next checked state. */
   onCheckedChange?: (checked: boolean) => void;

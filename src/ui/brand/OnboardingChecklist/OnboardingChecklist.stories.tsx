@@ -4,10 +4,19 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { OnboardingChecklist } from "./OnboardingChecklist";
 
 const TASKS = [
-  { title: "Connect a channel", description: "Link voice, webchat or email so interactions start flowing in." },
-  { title: "Invite your team", description: "Agents need accounts before their quality scores appear." },
+  {
+    title: "Connect a channel",
+    description: "Link voice, webchat or email so interactions start flowing in.",
+  },
+  {
+    title: "Invite your team",
+    description: "Agents need accounts before their quality scores appear.",
+  },
   { title: "Set an alert threshold", description: "Pick the numbers you want to hear about." },
-  { title: "Review your first digest", description: "It lands a week after your first interaction." },
+  {
+    title: "Review your first digest",
+    description: "It lands a week after your first interaction.",
+  },
 ];
 
 const meta = {

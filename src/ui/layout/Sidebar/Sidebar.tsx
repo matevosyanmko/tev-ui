@@ -22,7 +22,7 @@ function SidebarNav({ className, ...props }: React.ComponentProps<"nav">) {
     <nav
       data-slot="sidebar-nav"
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "flex min-h-0 flex-1 [scrollbar-width:none] flex-col gap-3 overflow-y-auto [&::-webkit-scrollbar]:hidden",
         className,
       )}
       {...props}
@@ -35,7 +35,10 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-group"
-      className={cn("flex shrink-0 flex-col gap-1 rounded-[18px] bg-brand-surface-1 p-2", className)}
+      className={cn(
+        "flex shrink-0 flex-col gap-1 rounded-[18px] bg-brand-surface-1 p-2",
+        className,
+      )}
       {...props}
     />
   );

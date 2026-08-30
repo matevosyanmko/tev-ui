@@ -28,10 +28,7 @@ export function getRowKey<Row>(
     : ((row as Record<string, unknown>)[rowKey] as React.Key);
 }
 
-export function getColumnKey(
-  column: DataTableColumn<never>,
-  fallbackKey: React.Key,
-): React.Key {
+export function getColumnKey(column: DataTableColumn<never>, fallbackKey: React.Key): React.Key {
   const key = column.key ?? column.dataIndex ?? fallbackKey;
   return Array.isArray(key) ? key.join(".") : key;
 }
@@ -44,9 +41,7 @@ export function toCssSize(value: CssSize | undefined): string | undefined {
  * Locks a column to a fixed width (under `fixedLayout`) so it cannot shrink or
  * grow once real data replaces the loading or empty state.
  */
-export function columnStyle(
-  column: DataTableColumn<never>,
-): React.CSSProperties | undefined {
+export function columnStyle(column: DataTableColumn<never>): React.CSSProperties | undefined {
   if (column.width == null) return undefined;
   return {
     width: toCssSize(column.width),

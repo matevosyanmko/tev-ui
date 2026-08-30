@@ -9,8 +9,7 @@ export interface DropZoneLabels {
   remove?: string;
 }
 
-export interface DropZoneProps
-  extends Omit<React.ComponentProps<"div">, "onChange" | "children"> {
+export interface DropZoneProps extends Omit<React.ComponentProps<"div">, "onChange" | "children"> {
   /** Same syntax as the <input accept> attribute, e.g. "audio/*". */
   accept?: string;
   multiple?: boolean;

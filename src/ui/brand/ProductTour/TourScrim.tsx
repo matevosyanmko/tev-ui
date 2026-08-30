@@ -38,7 +38,13 @@ function TourScrim({ rect }: TourScrimProps) {
   }
 
   return holePanels(rect).map((panel, index) => (
-    <div key={index} aria-hidden="true" data-slot="tour-scrim" className={PANEL_CLASS} style={panel} />
+    <div
+      key={index}
+      aria-hidden="true"
+      data-slot="tour-scrim"
+      className={PANEL_CLASS}
+      style={panel}
+    />
   ));
 }
 

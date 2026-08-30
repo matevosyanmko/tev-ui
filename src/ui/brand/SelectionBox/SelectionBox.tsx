@@ -11,13 +11,7 @@ import type { SelectionBoxProps } from "./SelectionBox.types.js";
  * div + role: that keeps the native label association, focus handling and
  * form participation, and the square is drawn on the <label> around it.
  */
-function SelectionBox({
-  checked,
-  onCheckedChange,
-  label,
-  className,
-  ...props
-}: SelectionBoxProps) {
+function SelectionBox({ checked, onCheckedChange, label, className, ...props }: SelectionBoxProps) {
   return (
     <label
       data-slot="selection-box"

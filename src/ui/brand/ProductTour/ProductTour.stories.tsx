@@ -64,14 +64,24 @@ export const Walkthrough: Story = {
 
     return (
       <div className="h-[420px] w-[640px] rounded-2xl border p-6">
-        <div ref={anchorRef} className="w-fit rounded-full bg-brand-green px-4 py-2 text-[11px] font-bold text-brand-green-foreground">
+        <div
+          ref={anchorRef}
+          className="w-fit rounded-full bg-brand-green px-4 py-2 text-[11px] font-bold text-brand-green-foreground"
+        >
           All channels
         </div>
         <p className="mt-4 text-sm text-muted-foreground">
           {done ? "Tour finished." : "The pill above is the highlighted anchor."}
         </p>
         {done ? (
-          <button type="button" className="mt-2 text-sm underline" onClick={() => { setStep(0); setDone(false); }}>
+          <button
+            type="button"
+            className="mt-2 text-sm underline"
+            onClick={() => {
+              setStep(0);
+              setDone(false);
+            }}
+          >
             Restart
           </button>
         ) : (
@@ -125,7 +135,13 @@ export const LastStep: Story = {
         onNext={() => {}}
         onBack={() => {}}
         onSkip={() => {}}
-        labels={{ stepLabel: "Шаг", skip: "пропустить", back: "назад", next: "далее", finish: "готово" }}
+        labels={{
+          stepLabel: "Шаг",
+          skip: "пропустить",
+          back: "назад",
+          next: "далее",
+          finish: "готово",
+        }}
       />
     </div>
   ),

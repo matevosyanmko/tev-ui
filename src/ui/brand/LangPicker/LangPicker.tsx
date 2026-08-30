@@ -2,11 +2,7 @@
 
 import { ChevronUp } from "lucide-react";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../primitives/Popover/Popover.js";
+import { Popover, PopoverContent, PopoverTrigger } from "../../primitives/Popover/Popover.js";
 import { cn } from "../../../utils.js";
 import type { LangPickerProps } from "./LangPicker.types.js";
 
@@ -44,7 +40,7 @@ function LangPicker({
         className={cn(
           "group flex w-18 items-center justify-center gap-1 rounded-[16px] py-2",
           "bg-brand-green text-[13px] font-bold text-brand-green-foreground",
-          "outline-none transition-colors hover:bg-brand-purple-hover",
+          "transition-colors outline-none hover:bg-brand-purple-hover",
           className,
         )}
       >

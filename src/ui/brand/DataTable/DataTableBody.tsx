@@ -24,10 +24,7 @@ import type {
 function DataTableEmptyRow({ colSpan, message }: DataTableEmptyRowProps) {
   return (
     <TableRow data-brand="data-table-empty-row" className={ROW_STATIC_CLASS}>
-      <TableCell
-        colSpan={Math.max(colSpan, 1)}
-        className="py-8 text-center text-muted-foreground"
-      >
+      <TableCell colSpan={Math.max(colSpan, 1)} className="py-8 text-center text-muted-foreground">
         {message}
       </TableCell>
     </TableRow>
@@ -39,14 +36,9 @@ function DataTableRow<Row>({ row, columns }: { row: Row; columns: DataTableColum
     <TableRow data-brand="data-table-row" className={cn(ROW_CLASS, ROW_HOVER_CLASS)}>
       {columns.map((column, columnIndex) => {
         const raw = getNestedValue(row, column.dataIndex);
-        const cell = column.render
-          ? column.render(raw, row)
-          : (raw as React.ReactNode);
+        const cell = column.render ? column.render(raw, row) : (raw as React.ReactNode);
         return (
-          <TableCell
-            key={getColumnKey(column, columnIndex)}
-            className={cn(column.cellClassName)}
-          >
+          <TableCell key={getColumnKey(column, columnIndex)} className={cn(column.cellClassName)}>
             {cell ?? "-"}
           </TableCell>
         );

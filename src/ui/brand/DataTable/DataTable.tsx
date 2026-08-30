@@ -93,9 +93,7 @@ function DataTable<Row = unknown>({
     body = (
       <DataTableError
         colSpan={columns.length}
-        message={
-          errorMessage ?? toErrorText(error) ?? labels?.loadError ?? "Failed to load data"
-        }
+        message={errorMessage ?? toErrorText(error) ?? labels?.loadError ?? "Failed to load data"}
         onRetry={onRetry}
         retryLabel={labels?.retry}
       />

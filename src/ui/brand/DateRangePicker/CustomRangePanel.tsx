@@ -5,15 +5,8 @@ import dayjs from "dayjs";
 
 import { Calendar } from "../../primitives/Calendar/Calendar.js";
 import { cn } from "../../../utils.js";
-import {
-  PRESETS,
-  matchPreset,
-  presetRange,
-} from "./DateRangePicker.constants.js";
-import type {
-  CustomRangePanelProps,
-  DatePreset,
-} from "./DateRangePicker.types.js";
+import { PRESETS, matchPreset, presetRange } from "./DateRangePicker.constants.js";
+import type { CustomRangePanelProps, DatePreset } from "./DateRangePicker.types.js";
 
 const PRESET_LABEL_KEY = {
   "7d": "last7Days",
@@ -80,10 +73,7 @@ function CustomRangePanel({ value, onChange, onClose, labels }: CustomRangePanel
         from: selected,
         // A new start after the existing end would make the range inverted,
         // so the end is dropped and the user picks it again.
-        to:
-          previous.to && dayjs(previous.to).isBefore(dayjs(selected), "day")
-            ? ""
-            : previous.to,
+        to: previous.to && dayjs(previous.to).isBefore(dayjs(selected), "day") ? "" : previous.to,
       }));
       setActiveField("to");
       setCalendarMonth(dayjs(selected).startOf("month").toDate());
@@ -107,7 +97,11 @@ function CustomRangePanel({ value, onChange, onClose, labels }: CustomRangePanel
   function focusField(field: "from" | "to") {
     setActiveField(field);
     const anchor = draft[field] || draft[field === "from" ? "to" : "from"];
-    setCalendarMonth(dayjs(anchor || undefined).startOf("month").toDate());
+    setCalendarMonth(
+      dayjs(anchor || undefined)
+        .startOf("month")
+        .toDate(),
+    );
   }
 
   function save() {
@@ -183,9 +177,7 @@ function CustomRangePanel({ value, onChange, onClose, labels }: CustomRangePanel
           }
           onSelect={(_range, clickedDate) => handleDayClick(clickedDate)}
           disabled={
-            activeField === "to" && draft.from
-              ? { before: dayjs(draft.from).toDate() }
-              : undefined
+            activeField === "to" && draft.from ? { before: dayjs(draft.from).toDate() } : undefined
           }
           numberOfMonths={compact ? 1 : 2}
         />

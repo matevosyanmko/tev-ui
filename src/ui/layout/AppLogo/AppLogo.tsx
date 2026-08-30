@@ -30,9 +30,7 @@ function AppLogo({ asChild = false, type = "button", className, ...props }: AppL
 
 /** The icon mark. Always visible, at whatever height the header gives it. */
 function AppLogoMark({ alt = "", className, ...props }: React.ComponentProps<"img">) {
-  return (
-    <img data-slot="app-logo-mark" alt={alt} className={cn("h-full", className)} {...props} />
-  );
+  return <img data-slot="app-logo-mark" alt={alt} className={cn("h-full", className)} {...props} />;
 }
 
 /**

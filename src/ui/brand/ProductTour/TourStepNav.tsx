@@ -10,11 +10,7 @@ const LINK_CLASS = "text-[12px] lowercase underline underline-offset-2";
 function TourStepNav({ onSkip, onBack, onNext, labels, nextLabel }: TourStepNavProps) {
   return (
     <>
-      <button
-        type="button"
-        onClick={onSkip}
-        className={`${LINK_CLASS} font-medium text-white/45`}
-      >
+      <button type="button" onClick={onSkip} className={`${LINK_CLASS} font-medium text-white/45`}>
         {labels?.skip ?? "Skip"}
       </button>
       <div className="flex items-center gap-3">
@@ -27,11 +23,7 @@ function TourStepNav({ onSkip, onBack, onNext, labels, nextLabel }: TourStepNavP
             {labels?.back ?? "Back"}
           </button>
         ) : null}
-        <button
-          type="button"
-          onClick={onNext}
-          className={`${LINK_CLASS} font-bold text-white`}
-        >
+        <button type="button" onClick={onNext} className={`${LINK_CLASS} font-bold text-white`}>
           {nextLabel ?? labels?.next ?? "Next"}
         </button>
       </div>

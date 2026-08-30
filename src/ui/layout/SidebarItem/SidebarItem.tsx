@@ -3,10 +3,7 @@ import type * as React from "react";
 import { Slot } from "radix-ui";
 
 import { cn } from "../../../utils.js";
-import type {
-  SidebarItemIconProps,
-  SidebarItemProps,
-} from "./SidebarItem.types.js";
+import type { SidebarItemIconProps, SidebarItemProps } from "./SidebarItem.types.js";
 
 /**
  * One flat pill in the sidebar nav.
@@ -27,12 +24,7 @@ import type {
  *     </Link>
  *   </SidebarItem>
  */
-function SidebarItem({
-  active = false,
-  asChild = false,
-  className,
-  ...props
-}: SidebarItemProps) {
+function SidebarItem({ active = false, asChild = false, className, ...props }: SidebarItemProps) {
   const Comp = asChild ? Slot.Root : "a";
   return (
     <Comp
@@ -52,9 +44,7 @@ function SidebarItem({
 }
 
 function SidebarItemIcon({ icon: Icon, className }: SidebarItemIconProps) {
-  return (
-    <Icon size={32} strokeWidth={1.5} className={cn("shrink-0", className)} />
-  );
+  return <Icon size={32} strokeWidth={1.5} className={cn("shrink-0", className)} />;
 }
 
 /**
@@ -62,17 +52,11 @@ function SidebarItemIcon({ icon: Icon, className }: SidebarItemIconProps) {
  * nav label ("վերլուծություն") does not fit on one, and an ellipsis there
  * would hide which section the item is.
  */
-function SidebarItemLabel({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+function SidebarItemLabel({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="sidebar-item-label"
-      className={cn(
-        "line-clamp-2 min-w-0 text-[10px] wrap-break-word",
-        className,
-      )}
+      className={cn("line-clamp-2 min-w-0 text-[10px] wrap-break-word", className)}
       {...props}
     />
   );

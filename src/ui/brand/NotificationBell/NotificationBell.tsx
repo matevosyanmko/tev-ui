@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../primitives/Popover/Popover.js";
+import { Popover, PopoverContent, PopoverTrigger } from "../../primitives/Popover/Popover.js";
 import { NotificationBellIcon } from "../Icons/Icons.js";
 import { cn } from "../../../utils.js";
 import { NotificationHeader } from "./NotificationHeader.js";
@@ -45,7 +41,7 @@ function NotificationBell({
         aria-label={labels?.title ?? "Notifications"}
         className={cn(
           "relative flex size-20 shrink-0 items-center justify-center rounded-[18px]",
-          "bg-brand-surface-2 text-white outline-none transition-[filter] hover:brightness-125",
+          "bg-brand-surface-2 text-white transition-[filter] outline-none hover:brightness-125",
           className,
         )}
       >

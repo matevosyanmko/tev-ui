@@ -122,9 +122,7 @@ function DataTableHeader<Row>({
                 sort={sort}
                 onSort={onSort}
                 disabled={disabled}
-                className={
-                  (disabled ? variant.disabledClassName : undefined) ?? variant.className
-                }
+                className={(disabled ? variant.disabledClassName : undefined) ?? variant.className}
               />
             </TableHead>
           );

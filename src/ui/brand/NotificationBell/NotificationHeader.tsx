@@ -7,7 +7,12 @@ import type { NotificationHeaderProps } from "./NotificationBell.types.js";
  * caller supplies `onMarkAllRead` — a header whose one control does nothing is
  * worse than no header.
  */
-function NotificationHeader({ title, hasUnread, onMarkAll, markAllLabel }: NotificationHeaderProps) {
+function NotificationHeader({
+  title,
+  hasUnread,
+  onMarkAll,
+  markAllLabel,
+}: NotificationHeaderProps) {
   return (
     <div
       data-slot="notification-header"

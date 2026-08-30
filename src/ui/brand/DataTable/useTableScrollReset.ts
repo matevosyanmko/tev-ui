@@ -64,8 +64,7 @@ export function useTableScrollReset(
     const container = findScrollParent(element);
     if (!element || !container) return;
 
-    const offset =
-      element.getBoundingClientRect().top - container.getBoundingClientRect().top;
+    const offset = element.getBoundingClientRect().top - container.getBoundingClientRect().top;
     const target = Math.max(0, container.scrollTop + offset);
     if (Math.abs(target - container.scrollTop) < 1) return;
 
