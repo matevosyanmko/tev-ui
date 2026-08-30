@@ -25,6 +25,10 @@
     "./brand/*": {
       "types": "./dist/ui/brand/*/index.d.ts",
       "default": "./dist/ui/brand/*/index.js"
+    },
+    "./layout/*": {
+      "types": "./dist/ui/layout/*/index.d.ts",
+      "default": "./dist/ui/layout/*/index.js"
     }
   },
   "scripts": {

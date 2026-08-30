@@ -29,7 +29,9 @@ for required in \
   dist/ui/primitives/Button/index.js dist/ui/primitives/Button/index.d.ts \
   dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js \
   dist/ui/brand/DataTable/index.js dist/ui/brand/DataTable/index.d.ts \
-  dist/ui/brand/GradientButton/index.js; do
+  dist/ui/brand/GradientButton/index.js \
+  dist/ui/layout/AppLayout/index.js dist/ui/layout/AppLayout/index.d.ts \
+  dist/ui/layout/PageStructure/index.js; do
   grep -qx "$required" "$WORK/shipped.txt" || { echo "FAIL: $required missing from tarball"; exit 1; }
 done
 
@@ -132,9 +134,11 @@ TS
 # re-export is a compile error rather than a silent 24%-coverage pass.
 NAMES="$(grep -oE '^dist/ui/primitives/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 BRAND_NAMES="$(grep -oE '^dist/ui/brand/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
+LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 {
   for n in $NAMES; do echo "import { $n } from \"@tev/ui/primitives/$n\";"; done
   for n in $BRAND_NAMES; do echo "import { $n } from \"@tev/ui/brand/$n\";"; done
+  for n in $LAYOUT_NAMES; do echo "import { $n } from \"@tev/ui/layout/$n\";"; done
   # Symbols the folder-per-component layout puts at risk: they are reachable
   # ONLY through a barrel re-export, so nothing else would catch their loss.
   echo 'import { alertVariants } from "@tev/ui/primitives/Alert";'
@@ -148,10 +152,12 @@ BRAND_NAMES="$(grep -oE '^dist/ui/brand/[^/]+' "$WORK/shipped.txt" | sed 's|.*/|
   echo 'import { DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT } from "@tev/ui/brand/ActionDock";'
   echo 'import { DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS, useDataTablePagination, useTableScrollReset } from "@tev/ui/brand/DataTable";'
   echo 'import { CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS } from "@tev/ui/brand/DateRangePicker";'
-  echo 'import { SidebarItemIcon, SidebarItemLabel } from "@tev/ui/brand/SidebarItem";'
   echo 'import { NotificationHeader, NotificationItem, NotificationList, relativeTime } from "@tev/ui/brand/NotificationBell";'
   echo 'import { TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard } from "@tev/ui/brand/ProductTour";'
   echo 'import { HomeIcon, NotificationBellIcon } from "@tev/ui/brand/Icons";'
+  echo 'import { SidebarItemIcon, SidebarItemLabel } from "@tev/ui/layout/SidebarItem";'
+  echo 'import { AppLogoMark, AppLogoWordmark } from "@tev/ui/layout/AppLogo";'
+  echo 'import { SidebarNav, SidebarGroup, SidebarFooter } from "@tev/ui/layout/Sidebar";'
   echo 'import type { ButtonProps } from "@tev/ui/primitives/Button";'
   echo 'import type { BadgeProps } from "@tev/ui/primitives/Badge";'
   echo 'import type { SearchFieldProps } from "@tev/ui/primitives/SearchField";'
@@ -162,27 +168,35 @@ BRAND_NAMES="$(grep -oE '^dist/ui/brand/[^/]+' "$WORK/shipped.txt" | sed 's|.*/|
   echo 'import type { NotificationItemData } from "@tev/ui/brand/NotificationBell";'
   echo 'import type { GradientButtonProps } from "@tev/ui/brand/GradientButton";'
   echo 'import type { ProductTourProps } from "@tev/ui/brand/ProductTour";'
+  echo 'import type { AppLayoutProps } from "@tev/ui/layout/AppLayout";'
+  echo 'import type { AppLogoProps } from "@tev/ui/layout/AppLogo";'
+  echo 'import type { AppFilterRowProps } from "@tev/ui/layout/AppFilterRow";'
+  echo 'import type { PageStructureProps } from "@tev/ui/layout/PageStructure";'
   echo 'export const ALL = ['
   for n in $NAMES; do echo "  $n,"; done
   for n in $BRAND_NAMES; do echo "  $n,"; done
+  for n in $LAYOUT_NAMES; do echo "  $n,"; done
   echo '  alertVariants, buttonVariants, badgeVariants, toggleVariants,'
   echo '  FormFieldContext, FormItemContext, useFormField, CalendarDayButton, ScrollBar,'
   echo '  gradientButtonVariants, DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT,'
   echo '  DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS,'
   echo '  useDataTablePagination, useTableScrollReset,'
   echo '  CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS,'
-  echo '  SidebarItemIcon, SidebarItemLabel,'
   echo '  NotificationHeader, NotificationItem, NotificationList, relativeTime,'
   echo '  TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard,'
   echo '  HomeIcon, NotificationBellIcon,'
+  echo '  SidebarItemIcon, SidebarItemLabel,'
+  echo '  AppLogoMark, AppLogoWordmark,'
+  echo '  SidebarNav, SidebarGroup, SidebarFooter,'
   echo '];'
   echo 'export type Probe = ['
   echo '  ButtonProps, BadgeProps, SearchFieldProps, CalendarProps, TableProps,'
   echo '  DataTableProps, DataTableColumn, DateRangePickerProps, NotificationItemData,'
   echo '  GradientButtonProps, ProductTourProps,'
+  echo '  AppLayoutProps, AppLogoProps, AppFilterRowProps, PageStructureProps,'
   echo '];'
 } > "$CONSUMER/src/all.ts"
-echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand components + 34 at-risk symbols + 11 prop types"
+echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand + $(echo "$LAYOUT_NAMES" | wc -w | tr -d ' ') layout components"
 
 echo "==> typechecking the consumer against the shipped declarations"
 # vite build does NOT typecheck, so without this the `types` half of the exports

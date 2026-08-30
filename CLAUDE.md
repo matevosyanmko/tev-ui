@@ -92,12 +92,14 @@ src/
       <Name>.stories.tsx              # co-located, relative import
     brand/<Name>/                     # brand components built on primitives
       (same shape; see src/ui/brand/README.md)
+    layout/<Name>/                    # app-shell chrome built on primitives + brand
+      (same shape; see src/ui/layout/README.md)
 ```
 
 - `index.tsx` at every component root; it re-exports the public surface and is
   what tsup treats as the entry point.
-- Published as `@tev/ui/primitives/<Name>` and `@tev/ui/brand/<Name>`.
-  `cn` stays at `@tev/ui/utils`.
+- Published as `@tev/ui/primitives/<Name>`, `@tev/ui/brand/<Name>` and
+  `@tev/ui/layout/<Name>`. `cn` stays at `@tev/ui/utils`.
 - **Never create empty `.types.ts` / `.variants.ts` files** to satisfy the
   pattern. They exist only when they hold something.
 - `.types.ts` and `.variants.ts` are the two common non-component siblings, but
@@ -164,33 +166,38 @@ src/
   `dark:` prefix assembled at runtime compiles to nothing.
 - Keep component APIs small. No props for hypothetical use cases.
 
-### Brand components additionally
+### Brand and layout components additionally
 
-Everything above applies; these three exist because a brand component is
-extracted from a real app and would otherwise drag the app in behind it.
+Everything above applies; these three exist because a brand or layout
+component is extracted from a real app and would otherwise drag the app in
+behind it. `layout/` components additionally own no state and no data —
+`AppLayout` and `PageStructure` are pure slots; the app assembles its header,
+sidebar and filter row itself and hands the results in as props.
 
-- **No app dependencies.** Nothing under `brand/` may import a router, a query
-  client, an i18n context, or an app domain type. That is what makes these
-  storyboardable and reusable across projects, and it is the single easiest
-  rule to break while "just moving a component over".
-- **Strings arrive as props**, through a `labels` object with inline English
-  fallbacks (`labels?.retry ?? "Retry"`) — never a `DEFAULT_LABELS` const,
-  which would be one more non-component export to relocate. Anything carrying
-  locale or plural rules is a *function* prop instead (`NotificationBell`'s
+- **No app dependencies.** Nothing under `brand/` or `layout/` may import a
+  router, a query client, an i18n context, or an app domain type. That is what
+  makes these storyboardable and reusable across projects, and it is the
+  single easiest rule to break while "just moving a component over".
+- **Strings arrive as props**, through a `labels` object (or a plain string
+  prop like `AppFilterRow`'s `label`) with inline English fallbacks
+  (`labels?.retry ?? "Retry"`) — never a `DEFAULT_LABELS` const, which would be
+  one more non-component export to relocate. Anything carrying locale or
+  plural rules is a *function* prop instead (`NotificationBell`'s
   `formatTime`, `DataTable`'s `labels.page(page, total)`): the caller formats,
   the package renders.
 - **Navigation arrives as an element**, through `asChild` + `Slot.Root`
-  (`SidebarItem`), and **domain vocabulary is translated at the boundary** —
-  `NotificationBell` takes `tone: default | success | warning | danger`, not the
-  app's `type`/`severity` pair, and `FilterDropdown` takes `tone: "danger"` on
-  an option rather than recognising a value spelled `"disabled"`.
+  (`SidebarItem`, `AppLogo`), and **domain vocabulary is translated at the
+  boundary** — `NotificationBell` takes `tone: default | success | warning |
+  danger`, not the app's `type`/`severity` pair, and `FilterDropdown` takes
+  `tone: "danger"` on an option rather than recognising a value spelled
+  `"disabled"`.
 
 ## 4. Stories
 
 - Co-located as `<Name>.stories.tsx`, importing the component **relatively**
   (`./Alert`, `../Button`).
-- **Always set an explicit `title:`** — `Primitives/<Name>` or
-  `Brand/<Name>`. Auto-titles are path-derived and ugly (`ui/primitives/Badge`),
+- **Always set an explicit `title:`** — `Primitives/<Name>`, `Brand/<Name>` or
+  `Layout/<Name>`. Auto-titles are path-derived and ugly (`ui/primitives/Badge`),
   and explicit titles are what keep story ids stable.
 - Prefer realistic content over `<div>foo</div>` showcases. Cover the primary
   usage, the variants, the states that matter, and the edge cases (long text,
@@ -262,7 +269,35 @@ so most of the work is severing what the app supplied:
 6. `<Name>.stories.tsx` with an explicit `Brand/<Name>` title.
 7. Run `npm run verify:package`.
 
-## 8. Known pre-existing issues — do not "fix" as part of unrelated work
+## 8. Adding a layout component
+
+Same process as §7, with two differences: layout components compose brand
+components too (not just primitives), and they own no state — decompose the
+extracted component into a dumb shell plus whatever the app must keep for
+itself.
+
+1. `src/ui/layout/<Name>/<Name>.tsx` (PascalCase folder), plus `index.tsx`
+   re-exporting the public surface.
+2. Convert `@/…` imports to relative. A primitive is
+   `../../primitives/<Name>/<Name>`, a brand component is
+   `../../brand/<Name>/<Name>` — the sibling **module**, not its barrel.
+3. Replace every hardcoded colour with a token (§3), same as brand.
+4. Sever the app, same as brand (§7 step 4) — **plus** anything the component
+   currently *does* (fetches data, reads global filter state, decides which
+   filters are visible) becomes a prop or a slot instead. If the extracted
+   component mixes generic chrome with app-specific content — `PageStructure`
+   mixing the scrollable card frame with the app's own filter bar — split it:
+   the chrome moves here, the content stays behind in the app's own
+   composition, which renders this component and passes the content in as a
+   slot (`filterRow`, `header`, `sidebar`, …). The app keeps a thin wrapper at
+   its old import path so existing call sites don't change.
+5. Extract anything that isn't a component into a `<Name>.<kind>.ts` sibling
+   (§2), and any new non-bundled dependency into `tsup.config.ts`'s `external`
+   plus `peerDependencies`.
+6. `<Name>.stories.tsx` with an explicit `Layout/<Name>` title.
+7. Run `npm run verify:package`.
+
+## 9. Known pre-existing issues — do not "fix" as part of unrelated work
 
 - `docs: { autodocs: "tag" }` in `.storybook/main.ts` is not a valid Storybook
   10.5 option and is already inert. `tags: ["autodocs"]` in `preview.ts` is what
@@ -283,7 +318,7 @@ so most of the work is severing what the app supplied:
   That is inherent to one-entry-per-component, not a defect — what matters is
   that each component also has its *own* entry point.
 
-## 9. Before you claim done
+## 10. Before you claim done
 
 ```bash
 npm run typecheck && npm run build && npm run verify:package
@@ -291,11 +326,11 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/` (41 today — 21 primitives, 20 brand); no story
-files ship; every component in **both** groups, plus the 34 at-risk barrel-only
-symbols and 11 prop types, name-imports cleanly; declarations resolve under
-both `bundler` and `nodenext`; Tailwind followed the package's own `@source`;
-and a consumer token override re-themes the output.
+per component folder in `src/` (47 today — 21 primitives, 19 brand, 7 layout);
+no story files ship; every component in **all three** groups, plus a set of
+at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
+resolve under both `bundler` and `nodenext`; Tailwind followed the package's
+own `@source`; and a consumer token override re-themes the output.
 
 The class assertions deliberately include three (`bg-brand-green`,
 `bg-brand-lavender`, `bg-brand-surface-2`) that appear **only** inside

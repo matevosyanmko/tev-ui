@@ -7,10 +7,10 @@ import {
   AuditIcon,
   HomeIcon,
   InteractionSearchIcon,
-} from "../Icons/Icons";
+} from "../../brand/Icons/Icons";
 
 const meta = {
-  title: "Brand/SidebarItem",
+  title: "Layout/SidebarItem",
   component: SidebarItem,
   argTypes: { active: { control: "boolean" } },
   args: { active: false, href: "#" },

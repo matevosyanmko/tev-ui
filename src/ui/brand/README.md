@@ -31,7 +31,6 @@ to satisfy.
 | `ProductTour` | Scrim, spotlight ring and step card for a guided walkthrough. |
 | `SectionBanner` | The lavender section divider used across dashboards. |
 | `SelectionBox` | The square row-selection checkbox. |
-| `SidebarItem` | One nav pill, plus its icon and label parts. |
 | `WelcomeDialog` | The full-screen onboarding welcome card. |
 
 ## Two rules these components exist under
@@ -45,8 +44,8 @@ reusable across projects. Concretely:
   text; the package carries no translator and no dictionary. Anything with
   locale or plural rules in it is a *function* prop instead — see
   `NotificationBell`'s `formatTime`.
-- **Navigation arrives as an element**, through `asChild` (`SidebarItem`). The
-  caller hands in its own `<Link>`.
+- **Navigation arrives as an element**, through `asChild` — see `../layout`'s
+  `SidebarItem` and `AppLogo`. The caller hands in its own `<Link>`.
 - **Domain vocabulary is translated at the boundary.** `NotificationBell` takes
   a `tone` of `default | success | warning | danger`, not the app's
   `type`/`severity` pair; `FilterDropdown` takes `tone: "danger"` on an option
