@@ -18,7 +18,7 @@ function PageStructure({
   centerSlot,
   rightSlot,
   children,
-  contentClassName = "mt-3 rounded-3xl",
+  contentClassName = "mt-3",
   contentProps,
   className,
   ...props
@@ -31,7 +31,10 @@ function PageStructure({
 
       <div
         data-slot="page-structure-content"
-        className={cn("h-full overflow-hidden bg-brand-purple-soft text-black", contentClassName)}
+        className={cn(
+          "h-full overflow-hidden rounded-3xl bg-brand-purple-soft text-black",
+          contentClassName,
+        )}
         {...contentProps}
       >
         <div className="flex h-full flex-col overflow-hidden p-4 pt-0">

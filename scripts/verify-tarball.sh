@@ -149,7 +149,7 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo 'import { CalendarDayButton } from "@tev/ui/primitives/Calendar";'
   echo 'import { ScrollBar } from "@tev/ui/primitives/ScrollArea";'
   echo 'import { gradientButtonVariants } from "@tev/ui/brand/GradientButton";'
-  echo 'import { DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT } from "@tev/ui/brand/ActionDock";'
+  echo 'import { DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT } from "@tev/ui/layout/ActionDock";'
   echo 'import { DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS, useDataTablePagination, useTableScrollReset } from "@tev/ui/brand/DataTable";'
   echo 'import { CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS } from "@tev/ui/brand/DateRangePicker";'
   echo 'import { NotificationHeader, NotificationItem, NotificationList, relativeTime } from "@tev/ui/brand/NotificationBell";'

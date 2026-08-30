@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PageTitle } from "./PageTitle";
 
 const meta = {
-  title: "Brand/PageTitle",
+  title: "Layout/PageTitle",
   component: PageTitle,
   args: { children: "Team quality" },
 } satisfies Meta<typeof PageTitle>;

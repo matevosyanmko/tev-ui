@@ -326,7 +326,7 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/` (47 today — 21 primitives, 19 brand, 7 layout);
+per component folder in `src/` (47 today — 21 primitives, 17 brand, 9 layout);
 no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's

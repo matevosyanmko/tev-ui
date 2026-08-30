@@ -4,6 +4,7 @@ import "./preview.css";
 
 const preview: Preview = {
   parameters: {
+    options: { storySort: { order: ["Layout", "Brand", "Primitives"] } },
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
     a11y: { test: "todo" },
     backgrounds: {

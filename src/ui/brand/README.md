@@ -13,7 +13,6 @@ to satisfy.
 
 | Component | What it is |
 | --- | --- |
-| `ActionDock` | SVG flag that notches into a card's top-right corner and carries its actions. The path is generated from the measured content width. |
 | `DataTable` | The generic table shell: status-driven body, sticky header/footer, client- or server-driven paging. |
 | `DateRangePicker` | The global date filter — year, month and custom modes behind one trigger. |
 | `DropZone` | Click-or-drag file picker with an inline list of what was chosen. |
@@ -27,7 +26,6 @@ to satisfy.
 | `LangPicker` | The green language pill that drops upwards. |
 | `NotificationBell` | The header bell and its notification panel. |
 | `OnboardingChecklist` | The "let's get started" progress panel. |
-| `PageTitle` | The default page heading. |
 | `ProductTour` | Scrim, spotlight ring and step card for a guided walkthrough. |
 | `SectionBanner` | The lavender section divider used across dashboards. |
 | `SelectionBox` | The square row-selection checkbox. |

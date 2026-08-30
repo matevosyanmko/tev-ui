@@ -18,8 +18,10 @@ Same folder shape as brand: `index.tsx` is the published entry point,
 | `AppLogo` | Clickable brand mark, plus its `Mark` and `Wordmark` image parts. |
 | `AppHeader` | The top chrome row — a styled flex container the app fills with its own logo and account cluster. |
 | `AppFilterRow` | The dark horizontally-scrolling filter-strip shell: a sticky caption plus whatever filter controls the app drops in. |
+| `ActionDock` | SVG flag that notches into the bottom-right corner of `AppFilterRow` (or any relatively-positioned box) and carries its actions. The path is generated from the measured content width. |
 | `Sidebar` | The nav-rail shell — `SidebarNav`, `SidebarGroup` and `SidebarFooter` parts around the app's own `SidebarItem`s. |
 | `SidebarItem` | One nav pill, plus its icon and label parts. |
+| `PageTitle` | The default page heading — drops into `PageStructure`'s `title` slot. |
 | `PageStructure` | The per-page frame: an optional filter-row slot, a title/leftSlot/centerSlot/rightSlot header row, then a scrollable content card. |
 
 ## The rules these components exist under
