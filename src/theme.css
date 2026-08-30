@@ -50,6 +50,15 @@
   --color-brand-purple: var(--brand-purple);
   --color-brand-purple-foreground: var(--brand-purple-foreground);
   --color-brand-purple-soft: var(--brand-purple-soft);
+  --color-brand-purple-hover: var(--brand-purple-hover);
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-foreground: var(--brand-green-foreground);
+  --color-brand-lavender: var(--brand-lavender);
+  --color-brand-lavender-soft: var(--brand-lavender-soft);
+  --color-brand-coral: var(--brand-coral);
+  --color-brand-amber: var(--brand-amber);
+  --color-brand-surface-1: var(--brand-surface-1);
+  --color-brand-surface-2: var(--brand-surface-2);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -91,4 +100,8 @@
   [role="button"]:not([aria-disabled="true"]) {
     cursor: pointer;
   }
+}
+
+.brd {
+  border: 1px solid red;
 }

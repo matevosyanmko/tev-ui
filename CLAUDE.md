@@ -91,6 +91,7 @@ src/
       <Name>.variants.ts              # optional — the cva() call
       <Name>.stories.tsx              # co-located, relative import
     brand/<Name>/                     # brand components built on primitives
+      (same shape; see src/ui/brand/README.md)
 ```
 
 - `index.tsx` at every component root; it re-exports the public surface and is
@@ -99,6 +100,18 @@ src/
   `cn` stays at `@tev/ui/utils`.
 - **Never create empty `.types.ts` / `.variants.ts` files** to satisfy the
   pattern. They exist only when they hold something.
+- `.types.ts` and `.variants.ts` are the two common non-component siblings, but
+  they are not a closed set — the rule is the *reason*, not the suffix: a module
+  that exports anything other than components is not a Fast Refresh boundary, so
+  it has to live outside `<Name>.tsx`. Where a component needs something else,
+  it gets a `<Name>.<kind>.ts` of its own, and the file says why at the top.
+  Currently: `DataTable.utils.ts` (pure helpers plus the shared row classes),
+  `DataTable.variants.ts` (a plain header-role map, not a cva call),
+  `DateRangePicker.constants.ts` (month names, presets, `presetRange`),
+  `ProductTour.geometry.ts` (`placeStepCard` and the spotlight padding the
+  scrim and the ring must agree on), `Icons.registry.ts` (the by-name record),
+  and the standalone hooks `useTableScrollReset` / `useDataTablePagination` /
+  `useContentWidth`.
 - A sub-export gets its own **file** when it owns its own styling or state
   contract, or has a body well over ~40 lines. Only `CalendarDayButton`
   qualifies (it owns the `BRAND_DAY_STATES` block). Everything else — the 14
@@ -118,6 +131,16 @@ src/
   needs to target — sibling selectors key off them (e.g.
   `*:data-[slot=alert-description]:…`). Purely structural wrappers may omit it
   (`SearchField`'s positioning `<div>` does).
+- **Never re-slot a primitive you are only composing.** `data-slot` belongs to
+  whoever renders the element, and every primitive spreads `{...props}` last —
+  so passing your own `data-slot` to `<PopoverContent>` *replaces* the
+  primitive's. That silently breaks the primitive's own descendant selectors:
+  `Calendar` goes transparent inside a popover via
+  `[[data-slot=popover-content]_&]:bg-transparent`, and a `DateRangePicker`
+  that renamed its `PopoverContent` slot rendered a dark calendar on a white
+  panel. When a brand component wants its own hook on a primitive part, use
+  **`data-brand="<kebab-name>"`** alongside; `data-slot` stays for the elements
+  it renders itself.
 - **CVA variants go in `<Name>.variants.ts`, never inline in the component
   file.** This is not cosmetic: React Fast Refresh only hot-swaps a component
   when its module exports nothing but components. Same reason `Form.context.ts`
@@ -140,6 +163,27 @@ src/
 - Every class must be written out in full. Tailwind scans source text, so a
   `dark:` prefix assembled at runtime compiles to nothing.
 - Keep component APIs small. No props for hypothetical use cases.
+
+### Brand components additionally
+
+Everything above applies; these three exist because a brand component is
+extracted from a real app and would otherwise drag the app in behind it.
+
+- **No app dependencies.** Nothing under `brand/` may import a router, a query
+  client, an i18n context, or an app domain type. That is what makes these
+  storyboardable and reusable across projects, and it is the single easiest
+  rule to break while "just moving a component over".
+- **Strings arrive as props**, through a `labels` object with inline English
+  fallbacks (`labels?.retry ?? "Retry"`) — never a `DEFAULT_LABELS` const,
+  which would be one more non-component export to relocate. Anything carrying
+  locale or plural rules is a *function* prop instead (`NotificationBell`'s
+  `formatTime`, `DataTable`'s `labels.page(page, total)`): the caller formats,
+  the package renders.
+- **Navigation arrives as an element**, through `asChild` + `Slot.Root`
+  (`SidebarItem`), and **domain vocabulary is translated at the boundary** —
+  `NotificationBell` takes `tone: default | success | warning | danger`, not the
+  app's `type`/`severity` pair, and `FilterDropdown` takes `tone: "danger"` on
+  an option rather than recognising a value spelled `"disabled"`.
 
 ## 4. Stories
 
@@ -166,7 +210,13 @@ class-name wrappers, largest 25 lines, and near-verbatim shadcn output. Splittin
 it trades one file for four plus a barrel, buys only a line count, and makes
 every future `npx shadcn add dropdown-menu` a manual re-shred. Leave it whole.
 
-## 6. Adding a shadcn component
+**Recorded exception: `CustomRangePanel.tsx` (214 lines).** One draft-state
+machine — presets, the two date fields, the calendar and the footer all read and
+write the same `{ from, to }` draft plus `activeField`. The seams look real
+(four visual blocks) but every one of them would have to be handed the draft and
+a setter, so splitting turns local state into prop-drilling for 14 lines.
+
+## 6. Adding a shadcn primitive
 
 `npx shadcn add <name>` works from this directory, but writes **one flat file at
 `src/`** using `@/…` imports — `components.json`'s aliases deliberately still
@@ -190,7 +240,29 @@ structurally recognisable, so a re-add produces a conflicting flat file:
 `Toggle`. Not shadcn at all: `SearchField`. `utils.ts` is shadcn's canonical
 `cn` helper, hand-annotated.
 
-## 7. Known pre-existing issues — do not "fix" as part of unrelated work
+## 7. Adding a brand component
+
+Brand components are usually *extracted* from an app rather than written fresh,
+so most of the work is severing what the app supplied:
+
+1. `src/ui/brand/<Name>/<Name>.tsx` (PascalCase folder), plus `index.tsx`
+   re-exporting the public surface.
+2. Convert `@/…` imports to relative. A primitive is reached as
+   `../../primitives/<Name>/<Name>` — the sibling **module**, not its barrel.
+3. Replace every hardcoded colour with a token (§3). If the design needs a
+   value the contract doesn't have, add it to `theme.css` *and* `tokens.css`
+   rather than inlining the hex.
+4. Sever the app: `useI18n()` → a `labels` prop, a router `<Link>` → `asChild`,
+   an app domain type → a structural type in `<Name>.types.ts`, a react-query
+   hook → props for the data and callbacks for the actions.
+5. Extract anything that isn't a component into a `<Name>.<kind>.ts` sibling
+   (§2), and any new non-bundled dependency into `tsup.config.ts`'s `external`
+   plus `peerDependencies` (`peerDependenciesMeta.optional` when not every
+   consumer needs it — `dayjs`, for `DateRangePicker`, is optional).
+6. `<Name>.stories.tsx` with an explicit `Brand/<Name>` title.
+7. Run `npm run verify:package`.
+
+## 8. Known pre-existing issues — do not "fix" as part of unrelated work
 
 - `docs: { autodocs: "tag" }` in `.storybook/main.ts` is not a valid Storybook
   10.5 option and is already inert. `tags: ["autodocs"]` in `preview.ts` is what
@@ -211,7 +283,7 @@ structurally recognisable, so a re-add produces a conflicting flat file:
   That is inherent to one-entry-per-component, not a defect — what matters is
   that each component also has its *own* entry point.
 
-## 8. Before you claim done
+## 9. Before you claim done
 
 ```bash
 npm run typecheck && npm run build && npm run verify:package
@@ -219,8 +291,14 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/`; no story files ship; every component plus the
-nine at-risk barrel-only symbols and five prop types name-import cleanly;
-declarations resolve under **both** `bundler` and `nodenext`; Tailwind followed
-the package's own `@source`; and a consumer token override re-themes the output.
+per component folder in `src/` (41 today — 21 primitives, 20 brand); no story
+files ship; every component in **both** groups, plus the 34 at-risk barrel-only
+symbols and 11 prop types, name-imports cleanly; declarations resolve under
+both `bundler` and `nodenext`; Tailwind followed the package's own `@source`;
+and a consumer token override re-themes the output.
+
+The class assertions deliberately include three (`bg-brand-green`,
+`bg-brand-lavender`, `bg-brand-surface-2`) that appear **only** inside
+`dist/ui/brand` — every other class in that list would still pass if the brand
+group were never scanned at all.
 It is the only check that exercises the published artifact.

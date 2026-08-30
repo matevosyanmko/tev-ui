@@ -27,7 +27,9 @@ for required in \
   dist/theme.css dist/tokens.css \
   dist/utils.js dist/utils.d.ts \
   dist/ui/primitives/Button/index.js dist/ui/primitives/Button/index.d.ts \
-  dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js; do
+  dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js \
+  dist/ui/brand/DataTable/index.js dist/ui/brand/DataTable/index.d.ts \
+  dist/ui/brand/GradientButton/index.js; do
   grep -qx "$required" "$WORK/shipped.txt" || { echo "FAIL: $required missing from tarball"; exit 1; }
 done
 
@@ -121,7 +123,7 @@ export default defineConfig({ plugins: [tailwindcss(), react()], logLevel: "warn
 TS
 
 (cd "$CONSUMER" && npm install --silent --no-audit --no-fund \
-  "$TARBALL" react@^18 react-dom@^18 react-day-picker@^9 react-hook-form@^7 \
+  "$TARBALL" react@^18 react-dom@^18 react-day-picker@^9 react-hook-form@^7 dayjs@^1 \
   vite@^5 @vitejs/plugin-react@^4 tailwindcss@^4 @tailwindcss/vite@^4 \
   typescript@^5 @types/react@^18 @types/react-dom@^18 >/dev/null)
 
@@ -129,10 +131,12 @@ TS
 # export is the folder name by convention, so a missing or renamed barrel
 # re-export is a compile error rather than a silent 24%-coverage pass.
 NAMES="$(grep -oE '^dist/ui/primitives/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
+BRAND_NAMES="$(grep -oE '^dist/ui/brand/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 {
   for n in $NAMES; do echo "import { $n } from \"@tev/ui/primitives/$n\";"; done
-  # Symbols the folder-per-component refactor put at risk: they are reachable
-  # ONLY through a barrel re-export now, so nothing else would catch their loss.
+  for n in $BRAND_NAMES; do echo "import { $n } from \"@tev/ui/brand/$n\";"; done
+  # Symbols the folder-per-component layout puts at risk: they are reachable
+  # ONLY through a barrel re-export, so nothing else would catch their loss.
   echo 'import { alertVariants } from "@tev/ui/primitives/Alert";'
   echo 'import { buttonVariants } from "@tev/ui/primitives/Button";'
   echo 'import { badgeVariants } from "@tev/ui/primitives/Badge";'
@@ -140,19 +144,45 @@ NAMES="$(grep -oE '^dist/ui/primitives/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||
   echo 'import { FormFieldContext, FormItemContext, useFormField } from "@tev/ui/primitives/Form";'
   echo 'import { CalendarDayButton } from "@tev/ui/primitives/Calendar";'
   echo 'import { ScrollBar } from "@tev/ui/primitives/ScrollArea";'
+  echo 'import { gradientButtonVariants } from "@tev/ui/brand/GradientButton";'
+  echo 'import { DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT } from "@tev/ui/brand/ActionDock";'
+  echo 'import { DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS, useDataTablePagination, useTableScrollReset } from "@tev/ui/brand/DataTable";'
+  echo 'import { CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS } from "@tev/ui/brand/DateRangePicker";'
+  echo 'import { SidebarItemIcon, SidebarItemLabel } from "@tev/ui/brand/SidebarItem";'
+  echo 'import { NotificationHeader, NotificationItem, NotificationList, relativeTime } from "@tev/ui/brand/NotificationBell";'
+  echo 'import { TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard } from "@tev/ui/brand/ProductTour";'
+  echo 'import { HomeIcon, NotificationBellIcon } from "@tev/ui/brand/Icons";'
   echo 'import type { ButtonProps } from "@tev/ui/primitives/Button";'
   echo 'import type { BadgeProps } from "@tev/ui/primitives/Badge";'
   echo 'import type { SearchFieldProps } from "@tev/ui/primitives/SearchField";'
   echo 'import type { CalendarProps } from "@tev/ui/primitives/Calendar";'
   echo 'import type { TableProps } from "@tev/ui/primitives/Table";'
+  echo 'import type { DataTableProps, DataTableColumn } from "@tev/ui/brand/DataTable";'
+  echo 'import type { DateRangePickerProps } from "@tev/ui/brand/DateRangePicker";'
+  echo 'import type { NotificationItemData } from "@tev/ui/brand/NotificationBell";'
+  echo 'import type { GradientButtonProps } from "@tev/ui/brand/GradientButton";'
+  echo 'import type { ProductTourProps } from "@tev/ui/brand/ProductTour";'
   echo 'export const ALL = ['
   for n in $NAMES; do echo "  $n,"; done
+  for n in $BRAND_NAMES; do echo "  $n,"; done
   echo '  alertVariants, buttonVariants, badgeVariants, toggleVariants,'
   echo '  FormFieldContext, FormItemContext, useFormField, CalendarDayButton, ScrollBar,'
+  echo '  gradientButtonVariants, DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT,'
+  echo '  DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS,'
+  echo '  useDataTablePagination, useTableScrollReset,'
+  echo '  CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS,'
+  echo '  SidebarItemIcon, SidebarItemLabel,'
+  echo '  NotificationHeader, NotificationItem, NotificationList, relativeTime,'
+  echo '  TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard,'
+  echo '  HomeIcon, NotificationBellIcon,'
   echo '];'
-  echo 'export type Probe = [ButtonProps, BadgeProps, SearchFieldProps, CalendarProps, TableProps];'
+  echo 'export type Probe = ['
+  echo '  ButtonProps, BadgeProps, SearchFieldProps, CalendarProps, TableProps,'
+  echo '  DataTableProps, DataTableColumn, DateRangePickerProps, NotificationItemData,'
+  echo '  GradientButtonProps, ProductTourProps,'
+  echo '];'
 } > "$CONSUMER/src/all.ts"
-echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') components + 9 at-risk symbols + 5 prop types"
+echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand components + 34 at-risk symbols + 11 prop types"
 
 echo "==> typechecking the consumer against the shipped declarations"
 # vite build does NOT typecheck, so without this the `types` half of the exports
@@ -201,8 +231,11 @@ echo "==> asserting Tailwind followed the package's own @source"
 UNESCAPED="$WORK/unescaped.css"
 tr -d '\\' < "$CSS_OUT" > "$UNESCAPED"
 FAIL=0
+# The last three appear ONLY inside dist/ui/brand, so they also prove the brand
+# group is reached — dist/ui/primitives alone would satisfy every other class.
 for cls in 'bg-foreground' 'fill-foreground' 'bg-muted-foreground' \
-           'text-destructive-foreground' 'focus:border-input' 'border-border'; do
+           'text-destructive-foreground' 'focus:border-input' 'border-border' \
+           'bg-brand-green' 'bg-brand-lavender' 'bg-brand-surface-2'; do
   if grep -qF -- "$cls" "$UNESCAPED"; then
     echo "    ok   $cls"
   else
@@ -212,7 +245,8 @@ for cls in 'bg-foreground' 'fill-foreground' 'bg-muted-foreground' \
 done
 
 echo "==> asserting the theme contract resolved"
-for tok in '--brand-purple' '--destructive-foreground' '--black'; do
+for tok in '--brand-purple' '--destructive-foreground' '--black' \
+           '--brand-green' '--brand-gradient'; do
   if grep -qF -- "$tok" "$CSS_OUT"; then
     echo "    ok   $tok"
   else

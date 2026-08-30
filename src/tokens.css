@@ -20,7 +20,47 @@
   --brand-purple: #5f02f4;
   --brand-purple-foreground: #ffffff;
   --brand-purple-soft: #f8f4ff;
+  /* Figma "Hover Purple": the lift every brand control uses on hover. */
+  --brand-purple-hover: #b282ff;
+
+  /* Figma "Active Green" — the affirmative accent (language pill, selection
+     dot, export button, unread marker). `foreground` is the ink that stays
+     legible on it, which is the brand black rather than a theme token. */
+  --brand-green: #8aff87;
+  --brand-green-foreground: #151515;
+
+  /* Two lavender tints. `lavender` is the table-header / hairline weight,
+     `lavender-soft` the section-banner fill. Row dividers and row hover reuse
+     these rather than carrying near-identical hexes of their own. */
+  --brand-lavender: #eae3f6;
+  --brand-lavender-soft: #efe9fa;
+
+  /* Status accents for notification dots and the "disabled" filter pill. */
+  --brand-coral: #ff7b6a;
+  --brand-amber: #fff099;
+
+  /* The dark chrome: --black is the page ink, the two surfaces are the
+     sidebar card and the header tile / notification pane. */
   --black: #151515;
+  --brand-surface-1: #1d1d1d;
+  --brand-surface-2: #272727;
+
+  /* The purple → violet → green sweep, in the two angles the brand uses: the
+     CTA pill and the horizontal progress bar. Full `linear-gradient()` values
+     rather than bare stops, so a consumer can swap the whole treatment (to a
+     flat colour, a conic sweep, an image) without the components caring. */
+  --brand-gradient: linear-gradient(
+    127.35deg,
+    #6003f4 4.74%,
+    #502dc9 71.9%,
+    #07f002 106.99%
+  );
+  --brand-gradient-progress: linear-gradient(
+    90deg,
+    #6003f4 0%,
+    #502dc9 69%,
+    #07f002 100%
+  );
 
   --radius: 0.625rem;
 

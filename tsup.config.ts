@@ -44,6 +44,7 @@ export default defineConfig({
     "tailwind-merge",
     "react-day-picker",
     "react-hook-form",
+    "dayjs",
   ],
   // The theme contract and default tokens ship verbatim; Tailwind compiles
   // them at the consumer's end, and `@source "./"` in theme.css resolves
