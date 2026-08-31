@@ -1,7 +1,7 @@
-import { Skeleton } from "../../primitives/Skeleton/Skeleton.js";
 import { TableCell, TableRow } from "../../primitives/Table/Table.js";
 import { ROW_STATIC_CLASS, columnStyle, getColumnKey } from "./DataTable.utils.js";
 import type { DataTableColumn, DataTableSkeletonProps } from "./DataTable.types.js";
+import { cn } from "../../../utils.js";
 
 /**
  * A cell per column rather than one bar spanning them all.
@@ -24,10 +24,10 @@ function DataTableSkeleton<Row>({ columns, rows = 5 }: DataTableSkeletonProps<Ro
       {cells.map((column, columnIndex) => (
         <TableCell
           key={getColumnKey(column, columnIndex)}
-          className={column.cellClassName}
+          className={cn(column.cellClassName, "min-h-[44.5px]")}
           style={columnStyle(column)}
         >
-          <Skeleton className="h-4 w-full" />
+          <div className="w-full opacity-0" children="loading" />
         </TableCell>
       ))}
     </TableRow>
