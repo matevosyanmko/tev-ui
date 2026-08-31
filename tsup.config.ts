@@ -2,7 +2,7 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   // One entry per component, so a consumer importing
-  // `@tev/ui/primitives/Button` never pulls in `Calendar`'s react-day-picker
+  // `tev-ui/primitives/Button` never pulls in `Calendar`'s react-day-picker
   // or `Form`'s react-hook-form — both of which are optional peers.
   // `src/utils.ts` MUST stay in this list. tsup derives dist/'s base directory
   // from the COMMON ANCESTOR of every matched entry — with entries only under

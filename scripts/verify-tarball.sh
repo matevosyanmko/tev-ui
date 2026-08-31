@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Proves the PUBLISHED artifact works, not just the workspace source.
 #
-# A workspace link resolves @tev/ui straight to packages/ui, bypassing the
+# A workspace link resolves tev-ui straight to packages/ui, bypassing the
 # exports map, the tsup output and the `files` allowlist entirely. This builds a
 # throwaway consumer OUTSIDE the workspace, installs the packed tarball into it,
 # and asserts that Tailwind generated classes it could only have found by
@@ -14,7 +14,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
-echo "==> packing @tev/ui"
+echo "==> packing tev-ui"
 # `npm pack` runs prepack, which builds dist/.
 TARBALL="$(cd "$REPO" && npm pack --pack-destination "$WORK" --silent | tail -1)"
 TARBALL="$WORK/$(basename "$TARBALL")"
@@ -79,18 +79,18 @@ JSON
 # Deliberately NO @source of our own: theme.css must supply it.
 cat > "$CONSUMER/src/main.css" <<'CSS'
 @import "tailwindcss";
-@import "@tev/ui/theme.css";
-@import "@tev/ui/tokens.css";
+@import "tev-ui/theme.css";
+@import "tev-ui/tokens.css";
 CSS
 
 cat > "$CONSUMER/src/main.tsx" <<'TSX'
 import { createRoot } from "react-dom/client";
-import { Button } from "@tev/ui/primitives/Button";
-import { Badge } from "@tev/ui/primitives/Badge";
-import { Table, TableBody, TableCell, TableRow } from "@tev/ui/primitives/Table";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@tev/ui/primitives/Tooltip";
-import { Calendar } from "@tev/ui/primitives/Calendar";
-import { cn } from "@tev/ui/utils";
+import { Button } from "tev-ui/primitives/Button";
+import { Badge } from "tev-ui/primitives/Badge";
+import { Table, TableBody, TableCell, TableRow } from "tev-ui/primitives/Table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "tev-ui/primitives/Tooltip";
+import { Calendar } from "tev-ui/primitives/Calendar";
+import { cn } from "tev-ui/utils";
 // Every remaining component, so the bundler resolves ALL of them (see all.ts).
 import { ALL } from "./all";
 import "./main.css";
@@ -136,42 +136,42 @@ NAMES="$(grep -oE '^dist/ui/primitives/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||
 BRAND_NAMES="$(grep -oE '^dist/ui/brand/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 {
-  for n in $NAMES; do echo "import { $n } from \"@tev/ui/primitives/$n\";"; done
-  for n in $BRAND_NAMES; do echo "import { $n } from \"@tev/ui/brand/$n\";"; done
-  for n in $LAYOUT_NAMES; do echo "import { $n } from \"@tev/ui/layout/$n\";"; done
+  for n in $NAMES; do echo "import { $n } from \"tev-ui/primitives/$n\";"; done
+  for n in $BRAND_NAMES; do echo "import { $n } from \"tev-ui/brand/$n\";"; done
+  for n in $LAYOUT_NAMES; do echo "import { $n } from \"tev-ui/layout/$n\";"; done
   # Symbols the folder-per-component layout puts at risk: they are reachable
   # ONLY through a barrel re-export, so nothing else would catch their loss.
-  echo 'import { alertVariants } from "@tev/ui/primitives/Alert";'
-  echo 'import { buttonVariants } from "@tev/ui/primitives/Button";'
-  echo 'import { badgeVariants } from "@tev/ui/primitives/Badge";'
-  echo 'import { toggleVariants } from "@tev/ui/primitives/Toggle";'
-  echo 'import { FormFieldContext, FormItemContext, useFormField } from "@tev/ui/primitives/Form";'
-  echo 'import { CalendarDayButton } from "@tev/ui/primitives/Calendar";'
-  echo 'import { ScrollBar } from "@tev/ui/primitives/ScrollArea";'
-  echo 'import { gradientButtonVariants } from "@tev/ui/brand/GradientButton";'
-  echo 'import { DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT } from "@tev/ui/layout/ActionDock";'
-  echo 'import { DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS, useDataTablePagination, useTableScrollReset } from "@tev/ui/brand/DataTable";'
-  echo 'import { CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS } from "@tev/ui/brand/DateRangePicker";'
-  echo 'import { NotificationHeader, NotificationItem, NotificationList, relativeTime } from "@tev/ui/brand/NotificationBell";'
-  echo 'import { TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard } from "@tev/ui/brand/ProductTour";'
-  echo 'import { HomeIcon, NotificationBellIcon } from "@tev/ui/brand/Icons";'
-  echo 'import { SidebarItemIcon, SidebarItemLabel } from "@tev/ui/layout/SidebarItem";'
-  echo 'import { AppLogoMark, AppLogoWordmark } from "@tev/ui/layout/AppLogo";'
-  echo 'import { SidebarNav, SidebarGroup, SidebarFooter } from "@tev/ui/layout/Sidebar";'
-  echo 'import type { ButtonProps } from "@tev/ui/primitives/Button";'
-  echo 'import type { BadgeProps } from "@tev/ui/primitives/Badge";'
-  echo 'import type { SearchFieldProps } from "@tev/ui/primitives/SearchField";'
-  echo 'import type { CalendarProps } from "@tev/ui/primitives/Calendar";'
-  echo 'import type { TableProps } from "@tev/ui/primitives/Table";'
-  echo 'import type { DataTableProps, DataTableColumn } from "@tev/ui/brand/DataTable";'
-  echo 'import type { DateRangePickerProps } from "@tev/ui/brand/DateRangePicker";'
-  echo 'import type { NotificationItemData } from "@tev/ui/brand/NotificationBell";'
-  echo 'import type { GradientButtonProps } from "@tev/ui/brand/GradientButton";'
-  echo 'import type { ProductTourProps } from "@tev/ui/brand/ProductTour";'
-  echo 'import type { AppLayoutProps } from "@tev/ui/layout/AppLayout";'
-  echo 'import type { AppLogoProps } from "@tev/ui/layout/AppLogo";'
-  echo 'import type { AppFilterRowProps } from "@tev/ui/layout/AppFilterRow";'
-  echo 'import type { PageStructureProps } from "@tev/ui/layout/PageStructure";'
+  echo 'import { alertVariants } from "tev-ui/primitives/Alert";'
+  echo 'import { buttonVariants } from "tev-ui/primitives/Button";'
+  echo 'import { badgeVariants } from "tev-ui/primitives/Badge";'
+  echo 'import { toggleVariants } from "tev-ui/primitives/Toggle";'
+  echo 'import { FormFieldContext, FormItemContext, useFormField } from "tev-ui/primitives/Form";'
+  echo 'import { CalendarDayButton } from "tev-ui/primitives/Calendar";'
+  echo 'import { ScrollBar } from "tev-ui/primitives/ScrollArea";'
+  echo 'import { gradientButtonVariants } from "tev-ui/brand/GradientButton";'
+  echo 'import { DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT } from "tev-ui/layout/ActionDock";'
+  echo 'import { DataTableEmptyRow, DataTablePagination, DATA_TABLE_HEADER_VARIANTS, ROW_CLASS, useDataTablePagination, useTableScrollReset } from "tev-ui/brand/DataTable";'
+  echo 'import { CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS } from "tev-ui/brand/DateRangePicker";'
+  echo 'import { NotificationHeader, NotificationItem, NotificationList, relativeTime } from "tev-ui/brand/NotificationBell";'
+  echo 'import { TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard } from "tev-ui/brand/ProductTour";'
+  echo 'import { HomeIcon, NotificationBellIcon } from "tev-ui/brand/Icons";'
+  echo 'import { SidebarItemIcon, SidebarItemLabel } from "tev-ui/layout/SidebarItem";'
+  echo 'import { AppLogoMark, AppLogoWordmark } from "tev-ui/layout/AppLogo";'
+  echo 'import { SidebarNav, SidebarGroup, SidebarFooter } from "tev-ui/layout/Sidebar";'
+  echo 'import type { ButtonProps } from "tev-ui/primitives/Button";'
+  echo 'import type { BadgeProps } from "tev-ui/primitives/Badge";'
+  echo 'import type { SearchFieldProps } from "tev-ui/primitives/SearchField";'
+  echo 'import type { CalendarProps } from "tev-ui/primitives/Calendar";'
+  echo 'import type { TableProps } from "tev-ui/primitives/Table";'
+  echo 'import type { DataTableProps, DataTableColumn } from "tev-ui/brand/DataTable";'
+  echo 'import type { DateRangePickerProps } from "tev-ui/brand/DateRangePicker";'
+  echo 'import type { NotificationItemData } from "tev-ui/brand/NotificationBell";'
+  echo 'import type { GradientButtonProps } from "tev-ui/brand/GradientButton";'
+  echo 'import type { ProductTourProps } from "tev-ui/brand/ProductTour";'
+  echo 'import type { AppLayoutProps } from "tev-ui/layout/AppLayout";'
+  echo 'import type { AppLogoProps } from "tev-ui/layout/AppLogo";'
+  echo 'import type { AppFilterRowProps } from "tev-ui/layout/AppFilterRow";'
+  echo 'import type { PageStructureProps } from "tev-ui/layout/PageStructure";'
   echo 'export const ALL = ['
   for n in $NAMES; do echo "  $n,"; done
   for n in $BRAND_NAMES; do echo "  $n,"; done

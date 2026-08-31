@@ -3,7 +3,7 @@
 App-shell scaffolding: the chrome every authenticated page sits inside —
 header, sidebar, filter bar, and the page-content frame. Composed from
 primitives and brand components in `../primitives` and `../brand`.
-Published as `@tev/ui/layout/<Name>`; story titles go under `Layout/*`.
+Published as `tev-ui/layout/<Name>`; story titles go under `Layout/*`.
 
 Same folder shape as brand: `index.tsx` is the published entry point,
 `<Name>.tsx` holds the implementation, and non-component siblings

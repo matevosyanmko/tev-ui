@@ -1,4 +1,4 @@
-# @tev/ui
+# tev-ui
 
 Shared UI library: shadcn primitives plus brand components, themeable via CSS
 variables. Published as a package, consumed by subpath import. There is no root
@@ -34,16 +34,16 @@ into whatever entry imports it. The component then has no importable subpath at
 all. `verify:package` asserts the entry-point count for this reason.
 
 **3. Node's `exports` wildcards do no directory-index resolution and do not
-fall back.** `"./*"` is pure string substitution. `@tev/ui/primitives/Alert`
+fall back.** `"./*"` is pure string substitution. `tev-ui/primitives/Alert`
 only resolves because `"./primitives/*"` maps explicitly to
-`.../*/index.js`. Once that pattern exists, `@tev/ui/primitives/Alert/index`
+`.../*/index.js`. Once that pattern exists, `tev-ui/primitives/Alert/index`
 **fails** — Node commits to the most specific pattern and never retries a
 broader one. Exactly one spelling works per component, and README examples must
 match it character for character. Pattern precedence is by literal-prefix
 length, not JSON key order.
 
 There is deliberately **no `"./*"` catch-all**: it silently provided a second
-working spelling (`@tev/ui/ui/primitives/Alert/index`) and turned every typo
+working spelling (`tev-ui/ui/primitives/Alert/index`) and turned every typo
 into a confusing `ERR_MODULE_NOT_FOUND` against a `dist/` path instead of a
 clear `ERR_PACKAGE_PATH_NOT_EXPORTED`. `./utils` is listed explicitly instead.
 
@@ -98,8 +98,8 @@ src/
 
 - `index.tsx` at every component root; it re-exports the public surface and is
   what tsup treats as the entry point.
-- Published as `@tev/ui/primitives/<Name>`, `@tev/ui/brand/<Name>` and
-  `@tev/ui/layout/<Name>`. `cn` stays at `@tev/ui/utils`.
+- Published as `tev-ui/primitives/<Name>`, `tev-ui/brand/<Name>` and
+  `tev-ui/layout/<Name>`. `cn` stays at `tev-ui/utils`.
 - **Never create empty `.types.ts` / `.variants.ts` files** to satisfy the
   pattern. They exist only when they hold something.
 - `.types.ts` and `.variants.ts` are the two common non-component siblings, but
@@ -123,7 +123,7 @@ src/
   shared `<Name>.types.ts` (see `Dialog.types.ts`, which holds both
   `DialogContentProps` and `DialogFooterProps`).
 - Inside `src/`, imports are **always relative**. There is deliberately no
-  `@tev/ui/*` path mapping or Vite alias: an alias resolves to source and would
+  `tev-ui/*` path mapping or Vite alias: an alias resolves to source and would
   mask a broken exports map. `@/*` exists only so `npx shadcn add` can resolve
   its own generated imports.
 

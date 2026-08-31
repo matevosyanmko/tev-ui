@@ -1,24 +1,27 @@
-# @tev/ui
+# tev-ui
 
 Shared UI primitives — Radix behaviour, Tailwind v4 styling, themed entirely
 through CSS custom properties.
 
 ## Install
 
-Not published yet. The scope is `@tev`, which does not match any GitHub
-organisation, so GitHub Packages will reject it as-is — publishing needs
-either a `tev` org, a rename to the `tevvoice` scope, or a different registry.
+```bash
+npm install tev-ui
+```
 
-Until then, consume it from a checkout beside your project:
+`prepack` builds `dist/` before npm packs the directory, so what you get from
+the registry is always compiled output, never raw source. If you need an
+unreleased change, you can still consume it from a checkout beside your
+project:
 
 ```bash
 npm install file:../tev-ui
 ```
 
-`prepack` builds `dist/` when npm packs the directory, so a `file:` install
-gets real compiled output rather than raw source. Note that a `file:`
-dependency only resolves on machines with both repos checked out side by side
-— it will not work inside a Docker build or a single-repo CI checkout.
+That gets real compiled output too, since `file:` installs also trigger
+`prepack` — but it only resolves on machines with both repos checked out side
+by side, so it will not work inside a Docker build or a single-repo CI
+checkout.
 
 ### Peer dependencies
 
@@ -27,8 +30,8 @@ install them only if you import the component that needs them:
 
 | Component | Needs |
 | --- | --- |
-| `@tev/ui/primitives/Calendar` | `react-day-picker` |
-| `@tev/ui/primitives/Form` | `react-hook-form` |
+| `tev-ui/primitives/Calendar` | `react-day-picker` |
+| `tev-ui/primitives/Form` | `react-hook-form` |
 
 Tailwind CSS v4 is required. This package cannot be used with Tailwind v3 or
 with no Tailwind at all — the components are utility-class based.
@@ -39,8 +42,8 @@ Two imports from this package, after Tailwind:
 
 ```css
 @import "tailwindcss";
-@import "@tev/ui/theme.css";   /* required — the contract */
-@import "@tev/ui/tokens.css";  /* optional — the Tevvoice brand */
+@import "tev-ui/theme.css";   /* required — the contract */
+@import "tev-ui/tokens.css";  /* optional — the Tevvoice brand */
 ```
 
 You do **not** need to configure `@source`. `theme.css` declares its own, so
@@ -49,7 +52,7 @@ layout defeats that resolution the symptom is unstyled components, and the
 fallback is to add the path yourself:
 
 ```css
-@source "../node_modules/@tev/ui/dist";
+@source "../node_modules/tev-ui/dist";
 ```
 
 ## Importing components
@@ -58,16 +61,16 @@ There is no root export. Import by subpath, so you never pay for a component
 you don't use:
 
 ```tsx
-import { Button } from "@tev/ui/primitives/Button";
-import { Card, CardHeader, CardTitle } from "@tev/ui/primitives/Card";
-import { cn } from "@tev/ui/utils";
+import { Button } from "tev-ui/primitives/Button";
+import { Card, CardHeader, CardTitle } from "tev-ui/primitives/Card";
+import { cn } from "tev-ui/utils";
 ```
 
-Primitives are `@tev/ui/primitives/<Name>`, brand components are
-`@tev/ui/brand/<Name>`, both PascalCase. (`brand/` is an empty scaffold today —
+Primitives are `tev-ui/primitives/<Name>`, brand components are
+`tev-ui/brand/<Name>`, both PascalCase. (`brand/` is an empty scaffold today —
 the subpath pattern is wired up, but no brand component ships yet.) The specifier must be exactly that —
 Node's `exports` patterns are string substitution with no directory-index
-lookup, so `@tev/ui/primitives/Button/index` does **not** resolve.
+lookup, so `tev-ui/primitives/Button/index` does **not** resolve.
 
 ## Theming
 
@@ -76,8 +79,8 @@ Tailwind utilities. `tokens.css` supplies one set of values. To rebrand, either
 override individual variables after the import:
 
 ```css
-@import "@tev/ui/theme.css";
-@import "@tev/ui/tokens.css";
+@import "tev-ui/theme.css";
+@import "tev-ui/tokens.css";
 
 :root {
   --brand-purple: #0066ff;
@@ -147,11 +150,14 @@ file at `src/` using `@/…` imports. Afterwards, by hand:
 
 ## Publishing
 
+Releases are cut by tag, not by hand. A GitHub Actions workflow
+(`.github/workflows/release.yml`) publishes to npm whenever a `v*` tag is
+pushed, after re-running `typecheck`, `build` and `verify:package`:
+
 ```bash
-npm version patch
-npm publish
+npm version patch   # bumps package.json, commits, tags v<version>
+git push --follow-tags
 ```
 
-Resolve the registry question above first.
-
-`prepack` builds `dist/` automatically. The package is `0.x`: the API will move.
+`prepack` builds `dist/` automatically as part of that pipeline. The package
+is `0.x`: the API will move.
