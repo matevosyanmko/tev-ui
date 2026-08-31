@@ -3,8 +3,24 @@
 [![npm version](https://img.shields.io/npm/v/@tev-ui/ui.svg)](https://www.npmjs.com/package/@tev-ui/ui)
 [![license](https://img.shields.io/npm/l/@tev-ui/ui.svg)](LICENSE)
 
-Shared UI primitives — Radix behaviour, Tailwind v4 styling, themed entirely
-through CSS custom properties.
+A React component library for building dashboard-style products: shadcn/Radix
+primitives, higher-level product components (data tables, date pickers,
+notifications, onboarding flows), and app-shell layout pieces (header,
+sidebar, filter row) — all themed entirely through CSS custom properties, so
+one variable swap re-skins every component at once.
+
+## What's included
+
+47 components across three groups, each importable by its own subpath so you
+only bundle what you use.
+
+| Group | Subpath | What it is | Examples |
+| --- | --- | --- | --- |
+| Primitives | `@tev-ui/ui/primitives/<Name>` | shadcn/Radix building blocks | `Button`, `Dialog`, `Select`, `Table`, `Calendar`, `Form`, `Tooltip` (21 total) |
+| Brand | `@tev-ui/ui/brand/<Name>` | Product components built on the primitives | `DataTable`, `DateRangePicker`, `NotificationBell`, `ProductTour`, `OnboardingChecklist`, `FilterDropdown` (17 total) |
+| Layout | `@tev-ui/ui/layout/<Name>` | App-shell chrome | `AppLayout`, `AppHeader`, `Sidebar`, `AppFilterRow`, `PageStructure` (9 total) |
+
+Browse every component, themed, with `npm run storybook`.
 
 ## Install
 
@@ -28,13 +44,14 @@ checkout.
 
 ### Peer dependencies
 
-`react` and `react-dom` (18 or 19) are required. Two more are **optional** —
+`react` and `react-dom` (18 or 19) are required. Three more are **optional** —
 install them only if you import the component that needs them:
 
 | Component | Needs |
 | --- | --- |
 | `@tev-ui/ui/primitives/Calendar` | `react-day-picker` |
 | `@tev-ui/ui/primitives/Form` | `react-hook-form` |
+| `@tev-ui/ui/brand/DateRangePicker` | `dayjs`, `react-day-picker` |
 
 Tailwind CSS v4 is required. This package cannot be used with Tailwind v3 or
 with no Tailwind at all — the components are utility-class based.
@@ -46,7 +63,7 @@ Two imports from this package, after Tailwind:
 ```css
 @import "tailwindcss";
 @import "@tev-ui/ui/theme.css";   /* required — the contract */
-@import "@tev-ui/ui/tokens.css";  /* optional — the Tevvoice brand */
+@import "@tev-ui/ui/tokens.css";  /* optional — a default set of token values */
 ```
 
 You do **not** need to configure `@source`. `theme.css` declares its own, so
@@ -66,14 +83,16 @@ you don't use:
 ```tsx
 import { Button } from "@tev-ui/ui/primitives/Button";
 import { Card, CardHeader, CardTitle } from "@tev-ui/ui/primitives/Card";
+import { DataTable } from "@tev-ui/ui/brand/DataTable";
+import { AppLayout } from "@tev-ui/ui/layout/AppLayout";
 import { cn } from "@tev-ui/ui/utils";
 ```
 
-Primitives are `@tev-ui/ui/primitives/<Name>`, brand components are
-`@tev-ui/ui/brand/<Name>`, both PascalCase. (`brand/` is an empty scaffold today —
-the subpath pattern is wired up, but no brand component ships yet.) The specifier must be exactly that —
-Node's `exports` patterns are string substitution with no directory-index
-lookup, so `@tev-ui/ui/primitives/Button/index` does **not** resolve.
+Every component is `@tev-ui/ui/<group>/<Name>`, PascalCase, where `<group>` is
+`primitives`, `brand` or `layout` (see [What's included](#whats-included)).
+The specifier must be exactly that — Node's `exports` patterns are string
+substitution with no directory-index lookup, so
+`@tev-ui/ui/primitives/Button/index` does **not** resolve.
 
 ## Theming
 
@@ -128,7 +147,7 @@ npm run verify:package  # pack, install the tarball into a throwaway consumer, a
 `npm run verify:package` is the check that matters before releasing. It packs
 the tarball, installs it into a throwaway consumer outside the workspace, and
 asserts one entry point and one declaration file per component, that no story
-files ship, that all 21 subpaths name-import cleanly and typecheck under both
+files ship, that all 47 subpaths name-import cleanly and typecheck under both
 `bundler` and `nodenext` module resolution, and that a consumer token override
 re-themes the output. Storybook builds from `src/`, so it proves the
 components work but not that the *published* artifact does — the exports map,

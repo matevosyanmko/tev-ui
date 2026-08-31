@@ -12,7 +12,7 @@ import type { AppLogoProps } from "./AppLogo.types.js";
  *   <AppLogo asChild>
  *     <Link to="/">
  *       <AppLogoMark src={logo} alt="" />
- *       <AppLogoWordmark src={wordmark} alt="Tevvoice" />
+ *       <AppLogoWordmark src={wordmark} alt="Acme" />
  *     </Link>
  *   </AppLogo>
  */

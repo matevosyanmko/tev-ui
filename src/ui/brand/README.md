@@ -1,6 +1,6 @@
 # Brand components
 
-Tevvoice-branded components composed from the primitives in `../primitives`.
+Product components composed from the primitives in `../primitives`.
 Published as `@tev-ui/ui/brand/<Name>`; story titles go under `Brand/*`.
 
 Same folder shape as a primitive: `index.tsx` is the published entry point,
