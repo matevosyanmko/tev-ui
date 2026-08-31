@@ -1,5 +1,8 @@
 # @tev-ui/ui
 
+[![npm version](https://img.shields.io/npm/v/@tev-ui/ui.svg)](https://www.npmjs.com/package/@tev-ui/ui)
+[![license](https://img.shields.io/npm/l/@tev-ui/ui.svg)](LICENSE)
+
 Shared UI primitives — Radix behaviour, Tailwind v4 styling, themed entirely
 through CSS custom properties.
 
