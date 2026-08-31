@@ -1,6 +1,6 @@
 {
   "name": "@tev-ui/ui",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Tevvoice shared UI — shadcn primitives and brand components, themeable via CSS variables.",
   "license": "MIT",
   "repository": {
