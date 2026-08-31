@@ -1,5 +1,5 @@
 {
-  "name": "tev-ui",
+  "name": "@tev-ui/ui",
   "version": "0.2.1",
   "description": "Tevvoice shared UI — shadcn primitives and brand components, themeable via CSS variables.",
   "license": "MIT",
@@ -12,6 +12,9 @@
     "url": "https://github.com/matevosyanmko/tev-ui/issues"
   },
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "*.css"
   ],
