@@ -1,6 +1,6 @@
 {
   "name": "@tev-ui/ui",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A React component library for dashboard-style products: shadcn/Radix primitives, product components and app-shell layout, themeable via CSS variables.",
   "license": "MIT",
   "repository": {
