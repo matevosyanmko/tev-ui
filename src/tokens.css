@@ -57,12 +57,19 @@
   --brand-surface-1: #1d1d1d;
   --brand-surface-2: #272727;
 
-  /* The purple → violet → green sweep, in the two angles the brand uses: the
-     CTA pill and the horizontal progress bar. Full `linear-gradient()` values
-     rather than bare stops, so a consumer can swap the whole treatment (to a
-     flat colour, a conic sweep, an image) without the components caring. */
+  /* The purple → violet → green sweep, in the three angles the brand uses: the
+     CTA pill, the horizontal progress bar and the header chrome. Full
+     `linear-gradient()` values rather than bare stops, so a consumer can swap
+     the whole treatment (to a flat colour, a conic sweep, an image) without
+     the components caring.
+
+     `-chrome` is the flat, wide-surface angle, for something like AccountPill:
+     224x80 is short enough that the CTA angle drags the green stop up into the
+     middle of the element, and its final stop sits past 100% so only the tail
+     of the green reaches the trailing edge. */
   --brand-gradient: linear-gradient(127.35deg, #6003f4 4.74%, #502dc9 71.9%, #07f002 106.99%);
   --brand-gradient-progress: linear-gradient(90deg, #6003f4 0%, #502dc9 69%, #07f002 100%);
+  --brand-gradient-chrome: linear-gradient(110deg, #6003f4 0%, #502dc9 58%, #07f002 128%);
 
   --radius: 0.625rem;
 
