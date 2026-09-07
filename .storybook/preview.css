@@ -11,5 +11,8 @@
 @import "../src/tokens.css";
 
 body {
-  @apply bg-background font-sans text-foreground;
+  /* No font class: the brand face arrives through theme.css's
+     --default-font-family, and leaving it off means Storybook exercises the
+     same inheritance a consumer gets. */
+  @apply bg-background text-foreground;
 }

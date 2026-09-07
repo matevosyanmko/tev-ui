@@ -27,7 +27,23 @@
   /* Every mapping below resolves through a var() so that redefining the
      underlying token at runtime — in :root, in .dark, or on any subtree —
      re-themes the utility without rebuilding the package. */
-  --font-sans: var(--font-sans-family, ui-sans-serif, system-ui, sans-serif);
+  /* The brand typeface, as `font-display`, plus the document default so that
+     every component inherits it and none of them carry a font class.
+
+     Two variables, deliberately: `--default-font-family` is what preflight's
+     `html` rule reads, so setting it brands the whole document, while
+     `--font-sans` stays Tailwind's own system stack. Overriding `--font-sans`
+     instead — which this package used to do — silently redefined every
+     `font-sans` in a consuming app, including text with nothing to do with the
+     brand, and left no way to opt out. This way round the polarity is right:
+     branded by default, and `font-sans` on any subtree escapes it.
+
+     Both resolve through `var(--font-display-family, <system stack>)` rather
+     than through each other: `@theme inline` would substitute a bare
+     `var(--font-display)` at build time, and the fallback is what keeps a
+     consumer who skips tokens.css on a readable system stack. */
+  --font-display: var(--font-display-family, ui-sans-serif, system-ui, sans-serif);
+  --default-font-family: var(--font-display-family, ui-sans-serif, system-ui, sans-serif);
 
   --color-black: var(--black);
 

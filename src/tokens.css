@@ -6,13 +6,25 @@
  * redefine individual variables after importing this file, or skip it and
  * author your own :root/.dark blocks covering the same names.
  *
- * `--font-sans-family` names Delight, which this package does NOT ship. A
- * consumer either serves the font themselves (@font-face) or overrides this
- * variable; the fallback stack keeps text readable either way.
+ * The brand typeface is the one token value that needs a file rather than a
+ * string, so it ships with this file: the @font-face below points at
+ * `fonts/Delight-VF.woff2` inside the package. The path is relative to *this*
+ * stylesheet, and Tailwind rewrites it when it inlines the @import, so a
+ * consumer needs no font of their own and no path configuration. Replace
+ * `--font-display-family` (or skip this file) and the face simply goes unused.
  */
 
+/* Delight — variable, one file for the whole 100-900 range. */
+@font-face {
+  font-family: "Delight";
+  src: url("./fonts/Delight-VF.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --font-sans-family: "Delight", ui-sans-serif, system-ui, sans-serif;
+  --font-display-family: "Delight", ui-sans-serif, system-ui, sans-serif;
 
   /* Brand. `soft` is the Figma "Background Purple" tint used for hover and
      in-range surfaces. Declared here rather than per-theme so light and dark
@@ -45,12 +57,19 @@
   --brand-surface-1: #1d1d1d;
   --brand-surface-2: #272727;
 
-  /* The purple → violet → green sweep, in the two angles the brand uses: the
-     CTA pill and the horizontal progress bar. Full `linear-gradient()` values
-     rather than bare stops, so a consumer can swap the whole treatment (to a
-     flat colour, a conic sweep, an image) without the components caring. */
+  /* The purple → violet → green sweep, in the three angles the brand uses: the
+     CTA pill, the horizontal progress bar and the header chrome. Full
+     `linear-gradient()` values rather than bare stops, so a consumer can swap
+     the whole treatment (to a flat colour, a conic sweep, an image) without
+     the components caring.
+
+     `-chrome` is the flat, wide-surface angle, for something like AccountPill:
+     224x80 is short enough that the CTA angle drags the green stop up into the
+     middle of the element, and its final stop sits past 100% so only the tail
+     of the green reaches the trailing edge. */
   --brand-gradient: linear-gradient(127.35deg, #6003f4 4.74%, #502dc9 71.9%, #07f002 106.99%);
   --brand-gradient-progress: linear-gradient(90deg, #6003f4 0%, #502dc9 69%, #07f002 100%);
+  --brand-gradient-chrome: linear-gradient(110deg, #6003f4 0%, #502dc9 58%, #07f002 128%);
 
   --radius: 0.625rem;
 

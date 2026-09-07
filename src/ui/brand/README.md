@@ -13,6 +13,7 @@ to satisfy.
 
 | Component | What it is |
 | --- | --- |
+| `AccountPill` | The signed-in account in the header: initials avatar over two lines of text, on the brand gradient. |
 | `DataTable` | The generic table shell: status-driven body, sticky header/footer, client- or server-driven paging. |
 | `DateRangePicker` | The global date filter — year, month and custom modes behind one trigger. |
 | `DropZone` | Click-or-drag file picker with an inline list of what was chosen. |
@@ -61,5 +62,5 @@ part; keep `data-slot` for the elements it renders itself.
 `../../theme.css`. The brand set these components lean on is
 `--brand-purple{,-foreground,-soft,-hover}`, `--brand-green{,-foreground}`,
 `--brand-lavender{,-soft}`, `--brand-coral`, `--brand-amber`, `--black`,
-`--brand-surface-1`, `--brand-surface-2`, and the two `--brand-gradient*`
+`--brand-surface-1`, `--brand-surface-2`, and the three `--brand-gradient*`
 values. Replace `tokens.css` and every component here re-themes.

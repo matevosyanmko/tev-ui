@@ -1,8 +1,9 @@
 name: "Release"
 
 on:
-  push:
-    tags: ["v*"]
+  # Manual only: Actions -> Release -> "Run workflow", picking the ref (branch
+  # or tag) to release. Nothing publishes on a push or a tag any more.
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -20,6 +21,38 @@ jobs:
           registry-url: https://registry.npmjs.org
       - name: Update npm
         run: npm install -g npm@latest # OIDC trusted publishing needs npm >=11.5.1
+
+      # Decides whether this run has anything to publish, by asking the
+      # registry rather than trusting the tag: the version in this ref's
+      # package.json either exists on npm already or it doesn't. Reported up
+      # front so the checks below still run and still tell you the ref is
+      # healthy even when there is nothing to release.
+      - name: Check whether this version is new
+        id: version
+        run: |
+          name=$(node -p "require('./package.json').name")
+          version=$(node -p "require('./package.json').version")
+          if ! versions=$(npm view "$name" versions --json 2>/dev/null); then
+            versions='[]' # package not published yet, or no such version
+          fi
+          exists=$(node -e '
+            let list = [];
+            try {
+              const parsed = JSON.parse(process.argv[1]);
+              // --json returns a bare string when only one version exists.
+              list = Array.isArray(parsed) ? parsed : [parsed];
+            } catch {} // unparseable: fall through, npm publish is the backstop
+            process.stdout.write(list.includes(process.argv[2]) ? "true" : "false");
+          ' "$versions" "$version")
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "exists=$exists" >> "$GITHUB_OUTPUT"
+          if [ "$exists" = "true" ]; then
+            echo "$name@$version is already on npm — checks will run, publish will be skipped."
+          else
+            echo "$name@$version is not on npm — it will be published if the checks pass."
+          fi
+
       - name: Install dependencies
         run: npm ci
       - name: Typecheck
@@ -28,5 +61,17 @@ jobs:
         run: npm run build
       - name: Verify published artifact
         run: npm run verify:package
+
       - name: Publish
+        if: steps.version.outputs.exists == 'false'
         run: npm publish --provenance --access public
+
+      - name: Summary
+        if: always()
+        run: |
+          version="${{ steps.version.outputs.name }}@${{ steps.version.outputs.version }}"
+          if [ "${{ steps.version.outputs.exists }}" = "false" ]; then
+            echo "Published \`$version\`." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Skipped publish: \`$version\` is already on npm. Bump the version to release." >> "$GITHUB_STEP_SUMMARY"
+          fi

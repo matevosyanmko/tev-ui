@@ -71,6 +71,13 @@ changes. `verify:package` typechecks a consumer under both `bundler` and
 
 Two more mechanical constraints:
 
+- **`dist/fonts/` is copied by `onSuccess`, and nothing type-checks it.**
+  `tokens.css`'s `@font-face` points at `./fonts/Delight-VF.woff2` — a path
+  relative to `tokens.css` itself, so the two must land as siblings in `dist/`.
+  Drop the `cp -R src/fonts dist/fonts` and the build is green, the CSS is
+  valid, and Vite only *warns* about the unresolved `url()`: the consumer
+  silently renders in the system stack. `verify:package` asserts both that the
+  `.woff2` ships and that a real consumer build emits it as an asset.
 - **Build order is `tsup && tsc`.** tsup has `clean: true`; reversing the order
   makes it delete every declaration file.
 - **`rootDir: "src"` in `tsconfig.build.json` is load-bearing.** TypeScript 7
@@ -83,6 +90,7 @@ Two more mechanical constraints:
 ```
 src/
   utils.ts, theme.css, tokens.css     # flat: published subpaths, not components
+  fonts/Delight-VF.woff2              # the brand typeface tokens.css declares
   ui/
     primitives/<Name>/                # shadcn primitives
       index.tsx                       # the published entry point (barrel)
@@ -158,6 +166,13 @@ src/
   private: `Toggle.variants.ts` is used by `Toggle` and `ToggleGroup`;
   `Button.variants.ts` by `Button` and `Calendar`. Import across the sibling
   folder (`../Toggle/Toggle.variants`) rather than duplicating.
+- **No font classes on components.** The brand face is the document default —
+  `theme.css` sets `--default-font-family`, which Tailwind's Preflight `html`
+  rule reads — so every component inherits it and none should name a font.
+  `font-mono` in `ErrorBoundary`'s stack trace is the one deliberate
+  exception. Do not reach for `--font-sans`: that is Tailwind's own system
+  stack and stays that way, which is what makes `font-sans` a working escape
+  hatch for a consumer. `verify:package` asserts both halves.
 - **Semantic tokens, never hardcoded values.** `theme.css` declares the
   variable *contract* and wires it to Tailwind utilities; `tokens.css` supplies
   one set of *values* and a consumer may replace it wholesale. A hardcoded
@@ -326,11 +341,13 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/` (47 today — 21 primitives, 17 brand, 9 layout);
+per component folder in `src/` (48 today — 21 primitives, 18 brand, 9 layout);
 no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's
-own `@source`; and a consumer token override re-themes the output.
+own `@source`; the shipped `@font-face` resolves to an emitted `.woff2` asset;
+the Preflight `html` rule carries the brand token while `font-sans` does not;
+and a consumer token override re-themes the output.
 
 The class assertions deliberately include three (`bg-brand-green`,
 `bg-brand-lavender`, `bg-brand-surface-2`) that appear **only** inside

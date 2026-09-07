@@ -126,13 +126,39 @@ defined, in `:root` and (if you support dark mode) in `.dark`:
 | Brand | `--brand-purple` `--brand-purple-foreground` `--brand-purple-soft` `--black` |
 | Charts | `--chart-1` … `--chart-5` |
 | Sidebar | `--sidebar` `--sidebar-foreground` `--sidebar-primary` `--sidebar-primary-foreground` `--sidebar-accent` `--sidebar-accent-foreground` `--sidebar-border` `--sidebar-ring` |
-| Shape / type | `--radius` `--font-sans-family` |
+| Shape / type | `--radius` `--font-display-family` |
 
 Dark mode is opt-in via a `dark` class on an ancestor (`@custom-variant dark
 (&:is(.dark *))`). Nothing in the package toggles it for you.
 
-`--font-sans-family` names Delight, which this package does **not** ship. Serve
-the font yourself with an `@font-face`, or override the variable.
+`--font-display-family` names Delight, and `tokens.css` ships the typeface
+too — one variable-weight `.woff2` inside the package, declared by an
+`@font-face` there. Nothing to serve and no path to configure: the `url()` is
+relative to `tokens.css`, and Tailwind rewrites it when it inlines the import.
+
+**It applies document-wide with no work on your part**, and no component in
+this package carries a font class — `theme.css` sets Tailwind's
+`--default-font-family`, which is what Preflight's `html` rule reads, so the
+face is simply inherited. Importing the two stylesheets is the whole setup.
+
+`font-sans` is untouched and still means Tailwind's own system stack, so it is
+the escape hatch on any subtree:
+
+```jsx
+<article className="font-sans">Not branded.</article>
+```
+
+There is a `font-display` utility too, for re-applying the brand face inside
+such a subtree. Two ways out of the default: redefine
+`--font-display-family` (in `:root`, in `.dark`, or on any element) to brand
+with a different face, or set `--default-font-family: var(--font-sans)` to keep
+the document on the system stack and opt in per element with `font-display`.
+Skipping `tokens.css` leaves the shipped face unused and everything on the
+system stack.
+
+> One caveat: this rides on Tailwind's Preflight. If you import only
+> `tailwindcss/utilities`, there is no `html` rule to carry the default — apply
+> `font-display` to `<body>` yourself.
 
 ## Local development
 
@@ -148,8 +174,9 @@ npm run verify:package  # pack, install the tarball into a throwaway consumer, a
 the tarball, installs it into a throwaway consumer outside the workspace, and
 asserts one entry point and one declaration file per component, that no story
 files ship, that all 47 subpaths name-import cleanly and typecheck under both
-`bundler` and `nodenext` module resolution, and that a consumer token override
-re-themes the output. Storybook builds from `src/`, so it proves the
+`bundler` and `nodenext` module resolution, that the bundled typeface resolves
+to a real built asset, and that a consumer token override re-themes the
+output. Storybook builds from `src/`, so it proves the
 components work but not that the *published* artifact does — the exports map,
 the `files` allowlist, the tsup output and the `@source` inside theme.css are
 only exercised by that script.
@@ -172,14 +199,23 @@ file at `src/` using `@/…` imports. Afterwards, by hand:
 
 ## Publishing
 
-Releases are cut by tag, not by hand. A GitHub Actions workflow
-(`.github/workflows/release.yml`) publishes to npm whenever a `v*` tag is
-pushed, after re-running `typecheck`, `build` and `verify:package`:
+Releasing is **one manual trigger**: **Actions -> Release -> Run workflow**,
+picking the ref to release. Nothing publishes on a push or a tag.
+
+The workflow (`.github/workflows/release.yml`) does the rest itself — it asks
+npm whether this ref's `package.json` version is already published, then runs
+`typecheck`, `build` and `verify:package`, and publishes only if the version is
+new. So bump the version first:
 
 ```bash
 npm version patch   # bumps package.json, commits, tags v<version>
 git push --follow-tags
 ```
+
+The tag is for humans and for `git`; the workflow ignores it and reads
+`package.json`. Running it on a ref whose version is already on npm is a safe
+no-op: the checks still run, the publish step is skipped, and the run summary
+says so. That makes it usable as a plain "is this ref releasable?" check.
 
 `prepack` builds `dist/` automatically as part of that pipeline. The package
 is `0.x`: the API will move.
