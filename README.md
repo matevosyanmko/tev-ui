@@ -136,20 +136,29 @@ too — one variable-weight `.woff2` inside the package, declared by an
 `@font-face` there. Nothing to serve and no path to configure: the `url()` is
 relative to `tokens.css`, and Tailwind rewrites it when it inlines the import.
 
-It is wired to the **`font-display`** utility, not `font-sans` — `font-sans`
-stays Tailwind's own system stack. So the brand face applies where you ask for
-it; put it on `<body>` to brand everything:
+**It applies document-wide with no work on your part**, and no component in
+this package carries a font class — `theme.css` sets Tailwind's
+`--default-font-family`, which is what Preflight's `html` rule reads, so the
+face is simply inherited. Importing the two stylesheets is the whole setup.
 
-```css
-@layer base {
-  body {
-    @apply font-display;
-  }
-}
+`font-sans` is untouched and still means Tailwind's own system stack, so it is
+the escape hatch on any subtree:
+
+```jsx
+<article className="font-sans">Not branded.</article>
 ```
 
-Skip `tokens.css` (or redefine `--font-display-family`) and the shipped face
-simply goes unused.
+There is a `font-display` utility too, for re-applying the brand face inside
+such a subtree. Two ways out of the default: redefine
+`--font-display-family` (in `:root`, in `.dark`, or on any element) to brand
+with a different face, or set `--default-font-family: var(--font-sans)` to keep
+the document on the system stack and opt in per element with `font-display`.
+Skipping `tokens.css` leaves the shipped face unused and everything on the
+system stack.
+
+> One caveat: this rides on Tailwind's Preflight. If you import only
+> `tailwindcss/utilities`, there is no `html` rule to carry the default — apply
+> `font-display` to `<body>` yourself.
 
 ## Local development
 

@@ -166,6 +166,13 @@ src/
   private: `Toggle.variants.ts` is used by `Toggle` and `ToggleGroup`;
   `Button.variants.ts` by `Button` and `Calendar`. Import across the sibling
   folder (`../Toggle/Toggle.variants`) rather than duplicating.
+- **No font classes on components.** The brand face is the document default —
+  `theme.css` sets `--default-font-family`, which Tailwind's Preflight `html`
+  rule reads — so every component inherits it and none should name a font.
+  `font-mono` in `ErrorBoundary`'s stack trace is the one deliberate
+  exception. Do not reach for `--font-sans`: that is Tailwind's own system
+  stack and stays that way, which is what makes `font-sans` a working escape
+  hatch for a consumer. `verify:package` asserts both halves.
 - **Semantic tokens, never hardcoded values.** `theme.css` declares the
   variable *contract* and wires it to Tailwind utilities; `tokens.css` supplies
   one set of *values* and a consumer may replace it wholesale. A hardcoded
@@ -339,6 +346,7 @@ no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's
 own `@source`; the shipped `@font-face` resolves to an emitted `.woff2` asset;
+the Preflight `html` rule carries the brand token while `font-sans` does not;
 and a consumer token override re-themes the output.
 
 The class assertions deliberately include three (`bg-brand-green`,

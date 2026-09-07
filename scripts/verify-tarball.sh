@@ -107,6 +107,9 @@ createRoot(document.getElementById("root")!).render(
       </Tooltip>
       <Table><TableBody><TableRow><TableCell>cell</TableCell></TableRow></TableBody></Table>
       <Calendar mode="single" />
+      {/* Present so Tailwind emits `.font-sans` at all — the assertion that
+          the package did NOT hijack it has nothing to inspect otherwise. */}
+      <p className="font-sans">system stack</p>
     </div>
   </TooltipProvider>,
 );
@@ -293,6 +296,24 @@ if [ -n "$FONT_URL" ] && printf '%s' "$FONT_URL" | grep -qF '/assets/'; then
   echo "    ok   font url() rewritten to $FONT_URL"
 else
   echo "    FAIL font url() not rewritten to a built asset: ${FONT_URL:-<none>}"
+  FAIL=1
+fi
+
+# The document default is what saves every component from carrying a font
+# class, and it is invisible when it breaks: preflight just falls back to its
+# own system stack and the app looks nearly right. Assert the `html` rule
+# resolves to the brand token, and that `font-sans` was NOT hijacked to it.
+HTML_RULE="$(grep -o 'html,:host{[^}]*}' "$CSS_OUT" | head -1)"
+if printf '%s' "$HTML_RULE" | grep -qF -- 'var(--font-display-family'; then
+  echo "    ok   preflight html font-family resolves to --font-display-family"
+else
+  echo "    FAIL preflight html font-family is not the brand token"
+  FAIL=1
+fi
+if grep -qF -- '.font-sans{font-family:var(--font-sans)}' "$CSS_OUT"; then
+  echo "    ok   font-sans left as Tailwind's own stack"
+else
+  echo "    FAIL font-sans no longer resolves to Tailwind's --font-sans"
   FAIL=1
 fi
 
