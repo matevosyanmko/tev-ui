@@ -172,14 +172,23 @@ file at `src/` using `@/…` imports. Afterwards, by hand:
 
 ## Publishing
 
-Releases are cut by tag, not by hand. A GitHub Actions workflow
-(`.github/workflows/release.yml`) publishes to npm whenever a `v*` tag is
-pushed, after re-running `typecheck`, `build` and `verify:package`:
+Releasing is **one manual trigger**: **Actions -> Release -> Run workflow**,
+picking the ref to release. Nothing publishes on a push or a tag.
+
+The workflow (`.github/workflows/release.yml`) does the rest itself — it asks
+npm whether this ref's `package.json` version is already published, then runs
+`typecheck`, `build` and `verify:package`, and publishes only if the version is
+new. So bump the version first:
 
 ```bash
 npm version patch   # bumps package.json, commits, tags v<version>
 git push --follow-tags
 ```
+
+The tag is for humans and for `git`; the workflow ignores it and reads
+`package.json`. Running it on a ref whose version is already on npm is a safe
+no-op: the checks still run, the publish step is skipped, and the run summary
+says so. That makes it usable as a plain "is this ref releasable?" check.
 
 `prepack` builds `dist/` automatically as part of that pipeline. The package
 is `0.x`: the API will move.
