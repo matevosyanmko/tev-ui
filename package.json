@@ -45,6 +45,7 @@
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
     "dev": "tsup --watch & node scripts/watch-css.mjs & wait",
+    "dev:all": "npm run dev & npm run storybook & wait",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
