@@ -22,9 +22,9 @@ test -f "$TARBALL" || { echo "FAIL: no tarball produced"; exit 1; }
 echo "    $(basename "$TARBALL") ($(wc -c <"$TARBALL" | tr -d ' ') bytes)"
 
 echo "==> what the tarball actually ships"
-tar -tzf "$TARBALL" | sed 's|^package/||' | grep -E '\.(js|d\.ts|css)$' | sort > "$WORK/shipped.txt"
+tar -tzf "$TARBALL" | sed 's|^package/||' | grep -E '\.(js|d\.ts|css|woff2)$' | sort > "$WORK/shipped.txt"
 for required in \
-  dist/theme.css dist/tokens.css \
+  dist/theme.css dist/tokens.css dist/fonts/Delight-VF.woff2 \
   dist/utils.js dist/utils.d.ts \
   dist/ui/primitives/Button/index.js dist/ui/primitives/Button/index.d.ts \
   dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js \
@@ -268,6 +268,33 @@ for tok in '--brand-purple' '--destructive-foreground' '--black' \
     FAIL=1
   fi
 done
+
+echo "==> asserting the shipped typeface reaches the consumer's build"
+# tokens.css's @font-face uses a path relative to itself, inside node_modules.
+# It only resolves because Tailwind rewrites url()s when it inlines an @import
+# — if that ever stops, the CSS still builds and Vite only *warns*, so the app
+# silently falls back to the system stack. These three checks are the alarm.
+if grep -qF -- '@font-face' "$CSS_OUT" && grep -qF -- 'Delight' "$CSS_OUT"; then
+  echo "    ok   @font-face for Delight present"
+else
+  echo "    FAIL @font-face for Delight missing from the consumer CSS"
+  FAIL=1
+fi
+if ls "$CONSUMER"/dist/assets/*.woff2 >/dev/null 2>&1; then
+  echo "    ok   $(basename "$(ls "$CONSUMER"/dist/assets/*.woff2 | head -1)") emitted as an asset"
+else
+  echo "    FAIL no .woff2 emitted — Vite never resolved the font url()"
+  FAIL=1
+fi
+# The url() must point at that emitted asset, not at a relative path that
+# happens to 404 at runtime.
+FONT_URL="$(grep -oE 'url\([^)]*woff2[^)]*\)' "$CSS_OUT" | head -1)"
+if [ -n "$FONT_URL" ] && printf '%s' "$FONT_URL" | grep -qF '/assets/'; then
+  echo "    ok   font url() rewritten to $FONT_URL"
+else
+  echo "    FAIL font url() not rewritten to a built asset: ${FONT_URL:-<none>}"
+  FAIL=1
+fi
 
 echo "==> asserting a theme override actually re-themes"
 # Redefine one token and confirm the built CSS picks up the new value: this is

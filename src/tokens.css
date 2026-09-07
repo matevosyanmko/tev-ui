@@ -6,13 +6,25 @@
  * redefine individual variables after importing this file, or skip it and
  * author your own :root/.dark blocks covering the same names.
  *
- * `--font-sans-family` names Delight, which this package does NOT ship. A
- * consumer either serves the font themselves (@font-face) or overrides this
- * variable; the fallback stack keeps text readable either way.
+ * The brand typeface is the one token value that needs a file rather than a
+ * string, so it ships with this file: the @font-face below points at
+ * `fonts/Delight-VF.woff2` inside the package. The path is relative to *this*
+ * stylesheet, and Tailwind rewrites it when it inlines the @import, so a
+ * consumer needs no font of their own and no path configuration. Replace
+ * `--font-display-family` (or skip this file) and the face simply goes unused.
  */
 
+/* Delight — variable, one file for the whole 100-900 range. */
+@font-face {
+  font-family: "Delight";
+  src: url("./fonts/Delight-VF.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --font-sans-family: "Delight", ui-sans-serif, system-ui, sans-serif;
+  --font-display-family: "Delight", ui-sans-serif, system-ui, sans-serif;
 
   /* Brand. `soft` is the Figma "Background Purple" tint used for hover and
      in-range surfaces. Declared here rather than per-theme so light and dark

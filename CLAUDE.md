@@ -71,6 +71,13 @@ changes. `verify:package` typechecks a consumer under both `bundler` and
 
 Two more mechanical constraints:
 
+- **`dist/fonts/` is copied by `onSuccess`, and nothing type-checks it.**
+  `tokens.css`'s `@font-face` points at `./fonts/Delight-VF.woff2` — a path
+  relative to `tokens.css` itself, so the two must land as siblings in `dist/`.
+  Drop the `cp -R src/fonts dist/fonts` and the build is green, the CSS is
+  valid, and Vite only *warns* about the unresolved `url()`: the consumer
+  silently renders in the system stack. `verify:package` asserts both that the
+  `.woff2` ships and that a real consumer build emits it as an asset.
 - **Build order is `tsup && tsc`.** tsup has `clean: true`; reversing the order
   makes it delete every declaration file.
 - **`rootDir: "src"` in `tsconfig.build.json` is load-bearing.** TypeScript 7
@@ -83,6 +90,7 @@ Two more mechanical constraints:
 ```
 src/
   utils.ts, theme.css, tokens.css     # flat: published subpaths, not components
+  fonts/Delight-VF.woff2              # the brand typeface tokens.css declares
   ui/
     primitives/<Name>/                # shadcn primitives
       index.tsx                       # the published entry point (barrel)
@@ -330,7 +338,8 @@ per component folder in `src/` (47 today — 21 primitives, 17 brand, 9 layout);
 no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's
-own `@source`; and a consumer token override re-themes the output.
+own `@source`; the shipped `@font-face` resolves to an emitted `.woff2` asset;
+and a consumer token override re-themes the output.
 
 The class assertions deliberately include three (`bg-brand-green`,
 `bg-brand-lavender`, `bg-brand-surface-2`) that appear **only** inside

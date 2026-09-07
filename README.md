@@ -126,13 +126,30 @@ defined, in `:root` and (if you support dark mode) in `.dark`:
 | Brand | `--brand-purple` `--brand-purple-foreground` `--brand-purple-soft` `--black` |
 | Charts | `--chart-1` … `--chart-5` |
 | Sidebar | `--sidebar` `--sidebar-foreground` `--sidebar-primary` `--sidebar-primary-foreground` `--sidebar-accent` `--sidebar-accent-foreground` `--sidebar-border` `--sidebar-ring` |
-| Shape / type | `--radius` `--font-sans-family` |
+| Shape / type | `--radius` `--font-display-family` |
 
 Dark mode is opt-in via a `dark` class on an ancestor (`@custom-variant dark
 (&:is(.dark *))`). Nothing in the package toggles it for you.
 
-`--font-sans-family` names Delight, which this package does **not** ship. Serve
-the font yourself with an `@font-face`, or override the variable.
+`--font-display-family` names Delight, and `tokens.css` ships the typeface
+too — one variable-weight `.woff2` inside the package, declared by an
+`@font-face` there. Nothing to serve and no path to configure: the `url()` is
+relative to `tokens.css`, and Tailwind rewrites it when it inlines the import.
+
+It is wired to the **`font-display`** utility, not `font-sans` — `font-sans`
+stays Tailwind's own system stack. So the brand face applies where you ask for
+it; put it on `<body>` to brand everything:
+
+```css
+@layer base {
+  body {
+    @apply font-display;
+  }
+}
+```
+
+Skip `tokens.css` (or redefine `--font-display-family`) and the shipped face
+simply goes unused.
 
 ## Local development
 
@@ -148,8 +165,9 @@ npm run verify:package  # pack, install the tarball into a throwaway consumer, a
 the tarball, installs it into a throwaway consumer outside the workspace, and
 asserts one entry point and one declaration file per component, that no story
 files ship, that all 47 subpaths name-import cleanly and typecheck under both
-`bundler` and `nodenext` module resolution, and that a consumer token override
-re-themes the output. Storybook builds from `src/`, so it proves the
+`bundler` and `nodenext` module resolution, that the bundled typeface resolves
+to a real built asset, and that a consumer token override re-themes the
+output. Storybook builds from `src/`, so it proves the
 components work but not that the *published* artifact does — the exports map,
 the `files` allowlist, the tsup output and the `@source` inside theme.css are
 only exercised by that script.

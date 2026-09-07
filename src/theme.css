@@ -27,7 +27,11 @@
   /* Every mapping below resolves through a var() so that redefining the
      underlying token at runtime — in :root, in .dark, or on any subtree —
      re-themes the utility without rebuilding the package. */
-  --font-sans: var(--font-sans-family, ui-sans-serif, system-ui, sans-serif);
+  /* The brand typeface, as `font-display`. Deliberately NOT `--font-sans`:
+     that name is Tailwind's own system stack, and overriding it made every
+     `font-sans` in a consuming app silently brand-dependent. The brand face is
+     opt-in per element — apply `font-display` on <body> to brand everything. */
+  --font-display: var(--font-display-family, ui-sans-serif, system-ui, sans-serif);
 
   --color-black: var(--black);
 
