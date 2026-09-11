@@ -60,9 +60,31 @@ export const Steppable: Story = {
   },
 };
 
+/**
+ * Russian throughout, task titles included — the titles are what the green
+ * pills have to hold, and they wrap onto two lines at this width.
+ */
 export const Translated: Story = {
   args: {
     onSkip: () => {},
+    tasks: [
+      {
+        title: "Начать обучающий тур",
+        description: "Изучите основные функции TevVoice.",
+      },
+      {
+        title: "Выполните поиск взаимодействий",
+        description: "Найдите разговоры с помощью ключевых слов и фильтров.",
+      },
+      {
+        title: "Проверьте отдельные звонки",
+        description: "Откройте одно взаимодействие, чтобы просмотреть детали звонка.",
+      },
+      {
+        title: "Узнайте больше о Tev Technologies",
+        description: "Прочитайте больше о Tev Technologies.",
+      },
+    ],
     labels: { heading: "начнём", next: "далее", finish: "готово", skip: "пропустить" },
   },
 };

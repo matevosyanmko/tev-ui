@@ -33,9 +33,22 @@ export const Disabled: Story = {
 };
 
 /**
- * The label never wraps — it is `whitespace-nowrap` by design, so a long one
- * overflows the pill rather than growing it to two lines.
+ * A label longer than the pill wraps onto balanced lines and grows the pill,
+ * rather than overflowing it — the heights are minimums. Worth checking at
+ * `lg`, where the type is 48px and even a short translated phrase runs past
+ * the width a dialog can give it.
  */
 export const LongLabel: Story = {
   args: { size: "sm", children: "Export the full interaction history as PDF" },
+};
+
+/** The real thing: the app's onboarding CTA in each of its three languages. */
+export const Translated: Story = {
+  render: () => (
+    <div className="flex w-[568px] flex-col gap-4">
+      <GradientButton>Start guided tour</GradientButton>
+      <GradientButton>Начать обучающий тур</GradientButton>
+      <GradientButton>Սկսել ուղեկցվող շրջայց</GradientButton>
+    </div>
+  ),
 };

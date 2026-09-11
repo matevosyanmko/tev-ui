@@ -147,6 +147,118 @@ export const LastStep: Story = {
   ),
 };
 
+/**
+ * The card with the copy the app actually ships in Armenian — the longest of
+ * the three locales, and the case the fixed card geometry has to survive: a
+ * title that no longer fits one line and a description roughly twice the
+ * English length.
+ */
+export const TranslatedArmenian: Story = {
+  render: function TranslatedArmenianStory() {
+    const anchorRef = React.useRef<HTMLDivElement>(null);
+    const rect = useAnchorRect(anchorRef);
+    return (
+      <div className="h-[420px] w-[640px] rounded-2xl border p-6">
+        <div
+          ref={anchorRef}
+          className="w-fit rounded-full bg-brand-green px-4 py-2 text-[11px] font-bold text-brand-green-foreground"
+        >
+          Բոլոր ալիքները
+        </div>
+        <ProductTour
+          step={1}
+          total={5}
+          rect={rect}
+          title="Բացեք փոխազդեցության մանրամասները"
+          description="Սեղմեք ցանկացած փոխազդեցության վրա՝ տեսնելու զանգի ամբողջական մանրամասները, ամփոփումը, տեքստագրումը, ձայնագրությունը, տրամադրությունը և հարակից պատկերացումները։"
+          onNext={() => {}}
+          onBack={() => {}}
+          onSkip={() => {}}
+          labels={{
+            stepLabel: "Քայլ",
+            skip: "բաց թողնել ուսուցումը",
+            back: "Հետ",
+            next: "Հաջորդը",
+          }}
+        />
+      </div>
+    );
+  },
+};
+
+/** The same step in Russian, where the skip link is the widest of the three. */
+export const TranslatedRussian: Story = {
+  render: function TranslatedRussianStory() {
+    const anchorRef = React.useRef<HTMLDivElement>(null);
+    const rect = useAnchorRect(anchorRef);
+    return (
+      <div className="h-[420px] w-[640px] rounded-2xl border p-6">
+        <div
+          ref={anchorRef}
+          className="w-fit rounded-full bg-brand-green px-4 py-2 text-[11px] font-bold text-brand-green-foreground"
+        >
+          Все каналы
+        </div>
+        <ProductTour
+          step={1}
+          total={5}
+          rect={rect}
+          title="Отслеживайте эффективность звонков одним взглядом"
+          description="Эти виджеты показывают ключевые показатели активности звонков, качества, тональности и результатов процессов."
+          onNext={() => {}}
+          onBack={() => {}}
+          onSkip={() => {}}
+          labels={{
+            stepLabel: "Шаг",
+            skip: "пропустить обучение",
+            back: "Назад",
+            next: "Далее",
+          }}
+        />
+      </div>
+    );
+  },
+};
+
+/**
+ * An anchor low on the page, carrying the long Armenian copy — the case the
+ * card's placement has to measure rather than assume. A card sized for English
+ * is ~210px and fits below an anchor this low; the Armenian one is ~325px and
+ * has to be placed above it instead, with its footer still on screen.
+ */
+export const NearTheFold: Story = {
+  render: function NearTheFoldStory() {
+    const anchorRef = React.useRef<HTMLDivElement>(null);
+    const rect = useAnchorRect(anchorRef);
+    return (
+      <div className="flex h-[100dvh] w-full flex-col justify-end p-6">
+        <div
+          ref={anchorRef}
+          className="w-fit rounded-full bg-brand-green px-4 py-2 text-[11px] font-bold text-brand-green-foreground"
+        >
+          Վերջին փոխազդեցությունը
+        </div>
+        <ProductTour
+          step={4}
+          total={5}
+          rect={rect}
+          title="Բացեք փոխազդեցության մանրամասները"
+          description="Սեղմեք ցանկացած փոխազդեցության վրա՝ տեսնելու զանգի ամբողջական մանրամասները, ամփոփումը, տեքստագրումը, ձայնագրությունը, տրամադրությունը և հարակից պատկերացումները։"
+          onNext={() => {}}
+          onBack={() => {}}
+          onSkip={() => {}}
+          labels={{
+            stepLabel: "Քայլ",
+            skip: "բաց թողնել ուսուցումը",
+            back: "Հետ",
+            finish: "Ավարտել շրջայցը",
+          }}
+        />
+      </div>
+    );
+  },
+};
+
 /** The card on its own, with no scrim behind it — the parts are exported separately. */
 export const StepCardOnly: Story = {
   render: () => (

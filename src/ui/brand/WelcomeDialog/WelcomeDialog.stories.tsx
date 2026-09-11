@@ -43,11 +43,28 @@ export const WithLogo: Story = {
 /** No skip: onboarding the user is not allowed to dismiss. */
 export const WithoutSkip: Story = {};
 
+/**
+ * Armenian, with the copy the app actually ships — not a shortened sample.
+ * Armenian runs ~35% longer than the English it was designed around, which is
+ * what the title and the CTA have to survive.
+ */
 export const Translated: Story = {
   args: {
-    title: "բարի գալուստ",
-    description: "Եկեք միասին ծանոթանանք վահանակին։",
+    title: "Բարի գալուստ",
+    description:
+      "Եկեք արագ ծանոթանանք, թե ինչպես է TevVoice-ն օգնում վերանայել փոխազդեցությունները, որոնել զանգեր և հասկանալ հաճախորդների հետ հաղորդակցումը։",
     onSkip: () => {},
-    labels: { start: "սկսել", skip: "բաց թողնել" },
+    labels: { start: "Սկսել ուղեկցվող շրջայց", skip: "բաց թողնել ուսուցումը" },
+  },
+};
+
+/** Russian, same production copy. The two-word title is the one that wraps. */
+export const TranslatedRussian: Story = {
+  args: {
+    title: "Добро пожаловать",
+    description:
+      "Давайте быстро узнаем, как TevVoice помогает анализировать взаимодействия, искать звонки и понимать общение с клиентами.",
+    onSkip: () => {},
+    labels: { start: "Начать обучающий тур", skip: "пропустить обучение" },
   },
 };
