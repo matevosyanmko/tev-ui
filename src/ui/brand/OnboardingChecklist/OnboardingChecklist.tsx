@@ -85,7 +85,10 @@ function OnboardingChecklist({
                   {isDone ? <Check size={15} strokeWidth={3} aria-hidden="true" /> : index + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <span className="inline-block rounded-full bg-brand-green px-3 py-1 text-[12px] font-bold text-brand-green-foreground">
+                  {/* Same radius `rounded-full` resolves to for a single line
+                      title, but one that holds its shape when a translated
+                      title wraps instead of bowing the ends into the text. */}
+                  <span className="inline-block rounded-[14px] bg-brand-green px-3 py-1 text-[12px] font-bold text-brand-green-foreground">
                     {task.title}
                   </span>
                   {task.description ? (

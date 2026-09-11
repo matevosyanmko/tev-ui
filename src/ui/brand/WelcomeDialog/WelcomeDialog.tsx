@@ -31,18 +31,26 @@ function WelcomeDialog({
     >
       <div
         className={cn(
-          "w-[696px] max-w-full shrink-0 rounded-[24px] bg-card px-16 py-14 text-center",
+          "w-[696px] max-w-full shrink-0 rounded-[24px] bg-card px-8 py-10 text-center",
+          "sm:px-16 sm:py-14",
           className,
         )}
       >
-        {logo ? <div className="mx-auto mb-7 w-[196px]">{logo}</div> : null}
+        {logo ? <div className="mx-auto mb-7 w-full max-w-[196px]">{logo}</div> : null}
 
-        <h2 className="text-[80px] leading-[84px] font-extrabold tracking-tight text-card-foreground">
+        {/* 80px is the Figma size and the cap, not a constant: it is only ever
+            reachable by a one-word English title. "Добро пожаловать" and
+            "Բարի գալուստ" wrap at that size, as does any title on a phone, so
+            the size tracks the viewport up to the designed maximum and the
+            leading is a ratio that survives the second line. */}
+        <h2 className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.05] font-extrabold tracking-tight text-balance text-card-foreground">
           {title}
         </h2>
 
         {description ? (
-          <p className="mx-auto mt-1 mb-8 text-[20px] text-muted-foreground">{description}</p>
+          <p className="mx-auto mt-4 mb-8 text-[20px] text-balance text-muted-foreground">
+            {description}
+          </p>
         ) : null}
 
         <GradientButton onClick={onStart}>{labels?.start ?? "Start"}</GradientButton>
