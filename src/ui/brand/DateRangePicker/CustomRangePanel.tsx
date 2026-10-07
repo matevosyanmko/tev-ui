@@ -47,10 +47,11 @@ function CustomRangePanel({ value, onChange, onClose, labels }: CustomRangePanel
   );
   const [compact, setCompact] = React.useState(false);
 
-  // One month instead of two below the tablet breakpoint: two side-by-side
-  // months overflow the popover there.
+  // One month instead of two on mobile (below `lg`): two side-by-side months
+  // overflow the popover there. Same edge as `max-lg:` — `max-width: 1024px`
+  // would also count 1024 itself as mobile.
   React.useEffect(() => {
-    const media = window.matchMedia("(max-width: 1024px)");
+    const media = window.matchMedia("(width < 64rem)");
     const sync = () => setCompact(media.matches);
     sync();
     media.addEventListener("change", sync);

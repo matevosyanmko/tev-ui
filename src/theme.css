@@ -23,6 +23,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Anything inside <Sidebar> while it shows icons only: always below `lg`
+ * (64rem, Tailwind's default — mobile gets the icon rail and nothing wider),
+ * and from `lg` up while a `collapsed` sidebar is not opened by a pointer over
+ * it or keyboard focus in it. `:focus-visible` rather than `:focus-within`, so
+ * the link a mouse user just clicked does not hold the rail open.
+ *
+ * Public: an app styles its own footer controls with it too, e.g.
+ * `sidebar-collapsed:sr-only` on a text label that only fits the wide rail.
+ * `:where()` adds no specificity, so the variant overrides its base class the
+ * way any other variant does.
+ */
+@custom-variant sidebar-collapsed {
+  @media (width < 64rem) {
+    &:where([data-slot="sidebar"] *) {
+      @slot;
+    }
+  }
+  @media (width >= 64rem) {
+    &:where([data-slot="sidebar"][data-collapsed]:not(:hover, :has(:focus-visible)) *) {
+      @slot;
+    }
+  }
+}
+
 @theme inline {
   /* Every mapping below resolves through a var() so that redefining the
      underlying token at runtime — in :root, in .dark, or on any subtree —
