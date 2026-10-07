@@ -1,4 +1,5 @@
 export * from "./DateRangePicker.js";
+export * from "./DateRangePanel.js";
 export * from "./DateRangePicker.types.js";
 export * from "./DateRangePicker.constants.js";
 export * from "./CustomRangePanel.js";

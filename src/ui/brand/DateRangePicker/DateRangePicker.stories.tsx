@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { DateRangePicker } from "./DateRangePicker";
+import { DateRangePanel } from "./DateRangePanel";
 import type { DateMode, DateRangeValue } from "./DateRangePicker.types";
 
 const meta = {
@@ -116,4 +117,45 @@ export const Translated: Story = {
       }}
     />
   ),
+};
+
+function ControlledPanel() {
+  const [mode, setMode] = React.useState<DateMode>("custom");
+  const [value, setValue] = React.useState<DateRangeValue>([
+    dayjs().subtract(29, "day").startOf("day"),
+    dayjs().endOf("day"),
+  ]);
+  const [open, setOpen] = React.useState(true);
+  return open ? (
+    <div className="w-[343px] rounded-[20px] bg-popover p-3 text-popover-foreground">
+      <DateRangePanel
+        mode={mode}
+        onModeChange={setMode}
+        value={value}
+        onChange={setValue}
+        onClose={() => setOpen(false)}
+      />
+    </div>
+  ) : (
+    <button type="button" className="text-sm underline" onClick={() => setOpen(true)}>
+      Reopen
+    </button>
+  );
+}
+
+/**
+ * The popover's body on its own, in-flow — how a mobile filter sheet shows
+ * it, expanded under its row rather than as a popover over the sheet.
+ */
+export const PanelInFlow: Story = {
+  globals: { viewport: { value: "mobile1", isRotated: false } },
+  decorators: [
+    (Story) => (
+      // `self-start`: the meta's decorator is a 44px flex row for the trigger.
+      <div className="self-start bg-brand-surface-1 p-4">
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => <ControlledPanel />,
 };

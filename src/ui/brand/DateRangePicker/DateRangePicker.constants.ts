@@ -11,6 +11,13 @@ import type { DateMode, DatePreset } from "./DateRangePicker.types.js";
 
 export const MODES: DateMode[] = ["year", "month", "custom"];
 
+/** Mode names when `labels` doesn't supply them. */
+export const MODE_FALLBACK: Record<DateMode, string> = {
+  year: "Year",
+  month: "Month",
+  custom: "Custom",
+};
+
 export const PRESETS: DatePreset[] = ["7d", "30d", "90d", "month"];
 
 /** Fallback month names. Supply `labels.months` for anything but English. */
