@@ -19,6 +19,11 @@ const SLOT = "flex w-full min-w-0 items-center gap-2 lg:contents";
  * line), then the right slot as one line that scrolls sideways when its
  * actions do not fit. From `lg` up the slot wrappers are `display: contents`,
  * so every slot is a direct item of the one 56px header row, as it always was.
+ *
+ * With `fill`, the content stops scrolling below `lg`: the children become a
+ * flex column pinned to the scroll area's box, so a child can take the
+ * remaining height and scroll itself. The column is `display: contents` from
+ * `lg` up, which leaves the desktop page scrolling exactly as before.
  */
 function PageStructure({
   filterRow,
@@ -27,6 +32,7 @@ function PageStructure({
   centerSlot,
   rightSlot,
   children,
+  fill = false,
   contentClassName = "mt-3",
   contentProps,
   className,
@@ -78,7 +84,22 @@ function PageStructure({
           )}
 
           <div className="flex-1 overflow-hidden">
-            <ScrollArea className="h-full">{children}</ScrollArea>
+            <ScrollArea className="h-full">
+              {fill ? (
+                // Absolute against the ScrollArea root (which is `relative`),
+                // not the viewport inside it: out of the viewport's flow, the
+                // column gives it nothing to scroll, and it can't be scrolled
+                // away itself.
+                <div
+                  data-slot="page-structure-fill"
+                  className="absolute inset-0 flex flex-col lg:contents"
+                >
+                  {children}
+                </div>
+              ) : (
+                children
+              )}
+            </ScrollArea>
           </div>
         </div>
       </div>

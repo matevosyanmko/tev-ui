@@ -118,6 +118,12 @@ export interface DataTableProps<Row = unknown> extends Omit<
   className?: string;
   /** Classes for the bordered box around it. */
   containerClassName?: string;
+  /**
+   * Classes for the outermost element: the box, plus the pager strip under it
+   * when there is one. The hook for laying the whole table out as one piece —
+   * a flex column that fills its parent, say, with the box scrolling inside.
+   */
+  wrapperClassName?: string;
   headerRowClassName?: string;
   sort?: SortState;
   onSort?: (key: string) => void;

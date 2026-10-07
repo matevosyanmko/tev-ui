@@ -14,6 +14,15 @@ export interface PageStructureProps extends Omit<React.ComponentProps<"div">, "t
   centerSlot?: React.ReactNode;
   rightSlot?: React.ReactNode;
   children: React.ReactNode;
+  /**
+   * Below `lg`, lay the children out as a flex column exactly as tall as the
+   * card's remaining space instead of scrolling them inside it — for a page
+   * whose content scrolls itself, like a table that has to scroll sideways
+   * under a pinned header (a page-wide scroller would drag everything else
+   * sideways with it). A child takes the height with `min-h-0` and does its
+   * own scrolling. From `lg` up nothing changes.
+   */
+  fill?: boolean;
   /** Classes for the content card (the filter row and header row sit outside it). */
   contentClassName?: string;
   /** Extra props spread onto the content card, e.g. a `data-tour` hook. */

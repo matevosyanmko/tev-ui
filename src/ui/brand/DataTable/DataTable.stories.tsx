@@ -211,3 +211,30 @@ export const Translated: Story = {
     },
   },
 };
+
+/**
+ * The box as its own scroller: it fills a fixed-height parent through
+ * `wrapperClassName`, scrolls both ways with `overflow-auto` in
+ * `containerClassName`, and the header sticks inside it while the pager stays
+ * under it. The table's `min-w-*` is what keeps the columns from shrinking.
+ */
+export const ScrollingBox: Story = {
+  decorators: [
+    (Story) => (
+      <div className="flex h-[360px] w-[340px] flex-col">
+        <Story />
+      </div>
+    ),
+  ],
+  args: {
+    dataSource: Array.from({ length: 24 }, (_, index) => ({
+      ...ROWS[index % ROWS.length],
+      id: `IX-${4821 + index}`,
+    })),
+    pagination: { pageSize: 12 },
+    stickyHeader: true,
+    className: "min-w-[760px]",
+    containerClassName: "min-h-0 overflow-auto",
+    wrapperClassName: "flex min-h-0 flex-col",
+  },
+};
