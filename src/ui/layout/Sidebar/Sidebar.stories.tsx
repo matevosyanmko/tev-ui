@@ -103,6 +103,6 @@ export const Default: Story = {
 /**
  * The icon rail on desktop too. Point at it, or Tab into it, and it opens over
  * the page with its labels; it closes again when the pointer leaves or focus
- * moves out. Below `lg` every sidebar looks like this, without the opening.
+ * moves out. Desktop only: below `lg` a sidebar opens in a `SidebarSheet`.
  */
 export const Collapsed: Story = { ...Default, args: { collapsed: true } };
