@@ -179,6 +179,14 @@ src/
   colour breaks light, dark and every future brand theme at once.
 - Every class must be written out in full. Tailwind scans source text, so a
   `dark:` prefix assembled at runtime compiles to nothing.
+- **One responsive breakpoint: `lg` (64rem, 1024px).** Below it is mobile, at
+  and above it is desktop — the same rule the consuming app follows, so
+  library chrome and app switch layouts at the same width. Write mobile-first
+  and put the desktop layout on with `lg:` (`max-lg:` for mobile-only); never
+  switch layouts at `md:`. `sm:`/`md:` stay fine for fitting content within
+  the mobile layout. In JS, `matchMedia("(width < 64rem)")` is mobile — not
+  `(max-width: 1024px)`, which also counts 1024 itself. The `sidebar-collapsed`
+  variant in `theme.css` hardcodes the same 64rem.
 - Keep component APIs small. No props for hypothetical use cases.
 
 ### Brand and layout components additionally
