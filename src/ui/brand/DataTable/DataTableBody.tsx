@@ -3,6 +3,7 @@ import type * as React from "react";
 import { TableCell, TableRow } from "../../primitives/Table/Table.js";
 import { cn } from "../../../utils.js";
 import {
+  MESSAGE_PIN_CLASS,
   ROW_CLASS,
   ROW_HOVER_CLASS,
   ROW_STATIC_CLASS,
@@ -25,7 +26,7 @@ function DataTableEmptyRow({ colSpan, message }: DataTableEmptyRowProps) {
   return (
     <TableRow data-brand="data-table-empty-row" className={ROW_STATIC_CLASS}>
       <TableCell colSpan={Math.max(colSpan, 1)} className="py-8 text-center text-muted-foreground">
-        {message}
+        <div className={MESSAGE_PIN_CLASS}>{message}</div>
       </TableCell>
     </TableRow>
   );

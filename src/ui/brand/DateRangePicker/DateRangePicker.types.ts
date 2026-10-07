@@ -38,6 +38,18 @@ export interface DateRangePickerProps {
   contentClassName?: string;
 }
 
+export interface DateRangePanelProps {
+  value?: DateRangeValue;
+  onChange: (value: DateRangeValue) => void;
+  mode?: DateMode;
+  onModeChange?: (mode: DateMode) => void;
+  /** How many years back the year list reaches. */
+  yearSpan?: number;
+  labels?: DateRangePickerLabels;
+  /** The panel is done: a year or a custom range was committed, or discarded. */
+  onClose: () => void;
+}
+
 export interface YearGridProps {
   years: string[];
   selected: string;

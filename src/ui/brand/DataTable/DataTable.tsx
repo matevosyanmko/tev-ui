@@ -26,7 +26,10 @@ import type { DataTableProps } from "./DataTable.types.js";
  *
  * It has no scroll box of its own: `stickyHeader`/`stickyFooter` stick relative
  * to whichever ancestor actually scrolls, so render it inside a scrollable
- * container to get sticky behaviour.
+ * container to get sticky behaviour. A caller can make the box itself that
+ * container instead — `overflow-auto` in `containerClassName`, with
+ * `wrapperClassName` sizing the whole table — and the header then sticks
+ * inside the box while it scrolls both ways, the pager staying put under it.
  *
  * Every string it can draw comes from `labels`, defaulting to English. The
  * package deliberately carries no i18n dependency — a caller hands over already
@@ -54,6 +57,7 @@ function DataTable<Row = unknown>({
   labels,
   className,
   containerClassName,
+  wrapperClassName,
   headerRowClassName,
   sort,
   onSort,
@@ -165,10 +169,10 @@ function DataTable<Row = unknown>({
     </div>
   );
 
-  if (!pager.visible) return <div className="mb-4 min-w-0">{tableBox}</div>;
+  if (!pager.visible) return <div className={cn("mb-4 min-w-0", wrapperClassName)}>{tableBox}</div>;
 
   return (
-    <div className="min-w-0 rounded-b-3xl">
+    <div className={cn("min-w-0 rounded-b-3xl", wrapperClassName)}>
       {tableBox}
       <div className={cn(stickyFooter && "sticky bottom-0", "bg-brand-purple-soft")}>
         <div className="min-h-11 rounded-b-2xl bg-card px-2">

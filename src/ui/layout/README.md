@@ -24,7 +24,7 @@ Same folder shape as brand: `index.tsx` is the published entry point,
 | `SidebarSheet` | The mobile way into the nav: a menu tile for `AppLayout`'s `toolbar` that opens the app's `<Sidebar>` from the left, over the page, and closes when a link in it is followed. Controlled. |
 | `SidebarItem` | One nav pill, plus its icon and label parts. |
 | `PageTitle` | The default page heading — drops into `PageStructure`'s `title` slot. |
-| `PageStructure` | The per-page frame: an optional filter-row slot, a title/leftSlot/centerSlot/rightSlot header row, then a scrollable content card. Below `lg` the header row stacks one slot per line, the right slot scrolling sideways. |
+| `PageStructure` | The per-page frame: an optional filter-row slot, a title/leftSlot/centerSlot/rightSlot header row, then a scrollable content card. Below `lg` the header row stacks one slot per line, the right slot scrolling sideways; with `fill`, the content stops scrolling there and its children get the card's remaining height, for a table that scrolls itself. |
 
 ## The rules these components exist under
 

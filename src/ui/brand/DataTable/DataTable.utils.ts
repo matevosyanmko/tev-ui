@@ -72,3 +72,11 @@ export const ROW_HOVER_CLASS = "transition-colors hover:bg-brand-purple-soft";
 // TableRow always ships its own `hover:bg-muted/50`, so a row with nothing to
 // click has to cancel it explicitly — otherwise it still lights up on hover.
 export const ROW_STATIC_CLASS = `${ROW_CLASS} hover:bg-card`;
+
+// Wraps a full-width message row's content (empty, error). Inside a box that
+// scrolls sideways and is a size container (`@container`), it is as wide as
+// the box's visible part and stays pinned to it, so a message centred in a
+// table wider than the screen is still on screen. Anywhere else it simply
+// fills the cell: `max-w-full` caps the container width at the cell's, and
+// `sticky left-0` never moves an element whose scroller is not scrolled.
+export const MESSAGE_PIN_CLASS = "sticky left-0 w-[100cqw] max-w-full";

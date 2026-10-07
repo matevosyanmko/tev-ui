@@ -1,14 +1,16 @@
 import * as React from "react";
 
 /**
- * Nearest ancestor that actually scrolls vertically.
+ * Nearest element that actually scrolls vertically, starting with the table's
+ * own box — which is the scroller when the caller has made it one — and then
+ * its ancestors.
  *
  * Found by walking up and testing computed overflow rather than by looking for
  * a ScrollArea's `data-slot`, so this keeps working if a page scrolls in some
  * other container — or if the ScrollArea implementation changes underneath it.
  */
-function findScrollParent(element: HTMLElement | null): HTMLElement | null {
-  let node = element?.parentElement ?? null;
+function findScrollContainer(element: HTMLElement | null): HTMLElement | null {
+  let node = element;
   while (node) {
     const { overflowY } = window.getComputedStyle(node);
     const scrolls = overflowY === "auto" || overflowY === "scroll";
@@ -61,10 +63,14 @@ export function useTableScrollReset(
     if (!pageChanged && !startedLoadingNewData) return;
 
     const element = targetRef.current;
-    const container = findScrollParent(element);
+    const container = findScrollContainer(element);
     if (!element || !container) return;
 
-    const offset = element.getBoundingClientRect().top - container.getBoundingClientRect().top;
+    // A box that scrolls itself just goes back to its own top.
+    const offset =
+      container === element
+        ? -container.scrollTop
+        : element.getBoundingClientRect().top - container.getBoundingClientRect().top;
     const target = Math.max(0, container.scrollTop + offset);
     if (Math.abs(target - container.scrollTop) < 1) return;
 

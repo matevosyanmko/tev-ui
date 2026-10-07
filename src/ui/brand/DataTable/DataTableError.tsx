@@ -2,7 +2,8 @@ import { CircleAlert, RotateCw } from "lucide-react";
 
 import { Button } from "../../primitives/Button/Button.js";
 import { TableCell, TableRow } from "../../primitives/Table/Table.js";
-import { ROW_STATIC_CLASS } from "./DataTable.utils.js";
+import { cn } from "../../../utils.js";
+import { MESSAGE_PIN_CLASS, ROW_STATIC_CLASS } from "./DataTable.utils.js";
 import type { DataTableErrorProps } from "./DataTable.types.js";
 
 /**
@@ -19,7 +20,13 @@ function DataTableError({ colSpan, message, onRetry, retryLabel }: DataTableErro
       <TableCell colSpan={Math.max(colSpan, 1)} className="py-10 text-center">
         {/* role="alert" so the failure is announced; it previously reached
             screen readers as an unlabeled icon and a bare string. */}
-        <div role="alert" className="flex flex-col items-center gap-2 text-sm text-destructive">
+        <div
+          role="alert"
+          className={cn(
+            "flex flex-col items-center gap-2 text-sm text-destructive",
+            MESSAGE_PIN_CLASS,
+          )}
+        >
           <CircleAlert size={20} aria-hidden="true" />
           <span>{message}</span>
           {onRetry ? (
