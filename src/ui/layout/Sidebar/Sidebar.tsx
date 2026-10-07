@@ -4,9 +4,13 @@ import { cn } from "../../../utils.js";
 import type { SidebarProps } from "./Sidebar.types.js";
 
 /**
- * The nav-rail shell. Below `lg` it is always the icon-only rail; from `lg` up
- * it is the full rail with labels, or with `collapsed` the icon rail again,
- * opening over the page while a pointer is over it or keyboard focus is in it.
+ * The nav-rail shell: the full rail with labels, or on desktop with
+ * `collapsed` an icon rail, opening over the page while a pointer is over it
+ * or keyboard focus is in it.
+ *
+ * Below `lg` it is not part of the page at all: `AppLayout` does not show its
+ * sidebar slot there, and the app hands the same `<Sidebar>` to a
+ * `<SidebarSheet>`, which opens it from the left edge over the page.
  *
  * Which state shows is pure CSS — the `sidebar-collapsed:` variant from
  * theme.css — so the component owns no state, and an app styles its own
@@ -23,7 +27,7 @@ function Sidebar({ collapsed = false, className, children, ...props }: SidebarPr
       data-slot="sidebar"
       data-collapsed={collapsed || undefined}
       className={cn(
-        "group/sidebar flex w-20 shrink-0 flex-col lg:w-42 lg:data-collapsed:relative lg:data-collapsed:w-20",
+        "group/sidebar flex w-42 shrink-0 flex-col lg:data-collapsed:relative lg:data-collapsed:w-20",
         className,
       )}
       {...props}

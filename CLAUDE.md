@@ -266,8 +266,8 @@ deliberate: `DropdownMenu`, `Card`, `Skeleton`, `Label`, `Separator`,
 `Textarea`, `Alert`. Already substantially rewritten, re-add is not realistic:
 `Button`, `Badge`, `Input`, `ToggleGroup`, `Calendar`. Diverged but still
 structurally recognisable, so a re-add produces a conflicting flat file:
-`Select`, `Dialog`, `Table`, `Popover`, `ScrollArea`, `Tooltip`, `Form`,
-`Toggle`. Not shadcn at all: `SearchField`. `utils.ts` is shadcn's canonical
+`Select`, `Dialog`, `Sheet`, `Table`, `Popover`, `ScrollArea`, `Tooltip`,
+`Form`, `Toggle`. Not shadcn at all: `SearchField`. `utils.ts` is shadcn's canonical
 `cn` helper, hand-annotated.
 
 ## 7. Adding a brand component
@@ -349,7 +349,7 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/` (48 today — 21 primitives, 18 brand, 9 layout);
+per component folder in `src/` (51 today — 22 primitives, 18 brand, 11 layout);
 no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's

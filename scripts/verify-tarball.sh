@@ -161,6 +161,7 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo 'import { SidebarItemIcon, SidebarItemLabel } from "@tev-ui/ui/layout/SidebarItem";'
   echo 'import { AppLogoMark, AppLogoWordmark } from "@tev-ui/ui/layout/AppLogo";'
   echo 'import { SidebarNav, SidebarGroup, SidebarFooter } from "@tev-ui/ui/layout/Sidebar";'
+  echo 'import { SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@tev-ui/ui/primitives/Sheet";'
   echo 'import type { ButtonProps } from "@tev-ui/ui/primitives/Button";'
   echo 'import type { BadgeProps } from "@tev-ui/ui/primitives/Badge";'
   echo 'import type { SearchFieldProps } from "@tev-ui/ui/primitives/SearchField";'
@@ -175,6 +176,9 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo 'import type { AppLogoProps } from "@tev-ui/ui/layout/AppLogo";'
   echo 'import type { AppFilterRowProps } from "@tev-ui/ui/layout/AppFilterRow";'
   echo 'import type { PageStructureProps } from "@tev-ui/ui/layout/PageStructure";'
+  echo 'import type { SheetContentProps } from "@tev-ui/ui/primitives/Sheet";'
+  echo 'import type { SidebarSheetProps } from "@tev-ui/ui/layout/SidebarSheet";'
+  echo 'import type { FilterSheetProps } from "@tev-ui/ui/layout/FilterSheet";'
   echo 'export const ALL = ['
   for n in $NAMES; do echo "  $n,"; done
   for n in $BRAND_NAMES; do echo "  $n,"; done
@@ -191,12 +195,14 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo '  SidebarItemIcon, SidebarItemLabel,'
   echo '  AppLogoMark, AppLogoWordmark,'
   echo '  SidebarNav, SidebarGroup, SidebarFooter,'
+  echo '  SheetContent, SheetTrigger, SheetClose, SheetTitle,'
   echo '];'
   echo 'export type Probe = ['
   echo '  ButtonProps, BadgeProps, SearchFieldProps, CalendarProps, TableProps,'
   echo '  DataTableProps, DataTableColumn, DateRangePickerProps, NotificationItemData,'
   echo '  GradientButtonProps, ProductTourProps,'
   echo '  AppLayoutProps, AppLogoProps, AppFilterRowProps, PageStructureProps,'
+  echo '  SheetContentProps, SidebarSheetProps, FilterSheetProps,'
   echo '];'
 } > "$CONSUMER/src/all.ts"
 echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand + $(echo "$LAYOUT_NAMES" | wc -w | tr -d ' ') layout components"

@@ -24,11 +24,12 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Anything inside <Sidebar> while it shows icons only: always below `lg`
- * (64rem, Tailwind's default — mobile gets the icon rail and nothing wider),
- * and from `lg` up while a `collapsed` sidebar is not opened by a pointer over
- * it or keyboard focus in it. `:focus-visible` rather than `:focus-within`, so
- * the link a mouse user just clicked does not hold the rail open.
+ * Anything inside <Sidebar> while it shows icons only: from `lg` (64rem,
+ * Tailwind's default) up, while a `collapsed` sidebar is not opened by a
+ * pointer over it or keyboard focus in it. `:focus-visible` rather than
+ * `:focus-within`, so the link a mouse user just clicked does not hold the
+ * rail open. Never below `lg`: there the sidebar opens in a <SidebarSheet>,
+ * labels and all.
  *
  * Public: an app styles its own footer controls with it too, e.g.
  * `sidebar-collapsed:sr-only` on a text label that only fits the wide rail.
@@ -36,11 +37,6 @@
  * way any other variant does.
  */
 @custom-variant sidebar-collapsed {
-  @media (width < 64rem) {
-    &:where([data-slot="sidebar"] *) {
-      @slot;
-    }
-  }
   @media (width >= 64rem) {
     &:where([data-slot="sidebar"][data-collapsed]:not(:hover, :has(:focus-visible)) *) {
       @slot;

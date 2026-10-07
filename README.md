@@ -11,14 +11,14 @@ one variable swap re-skins every component at once.
 
 ## What's included
 
-47 components across three groups, each importable by its own subpath so you
+51 components across three groups, each importable by its own subpath so you
 only bundle what you use.
 
 | Group | Subpath | What it is | Examples |
 | --- | --- | --- | --- |
-| Primitives | `@tev-ui/ui/primitives/<Name>` | shadcn/Radix building blocks | `Button`, `Dialog`, `Select`, `Table`, `Calendar`, `Form`, `Tooltip` (21 total) |
-| Brand | `@tev-ui/ui/brand/<Name>` | Product components built on the primitives | `DataTable`, `DateRangePicker`, `NotificationBell`, `ProductTour`, `OnboardingChecklist`, `FilterDropdown` (17 total) |
-| Layout | `@tev-ui/ui/layout/<Name>` | App-shell chrome | `AppLayout`, `AppHeader`, `Sidebar`, `AppFilterRow`, `PageStructure` (9 total) |
+| Primitives | `@tev-ui/ui/primitives/<Name>` | shadcn/Radix building blocks | `Button`, `Dialog`, `Sheet`, `Select`, `Table`, `Calendar`, `Form`, `Tooltip` (22 total) |
+| Brand | `@tev-ui/ui/brand/<Name>` | Product components built on the primitives | `DataTable`, `DateRangePicker`, `NotificationBell`, `ProductTour`, `OnboardingChecklist`, `FilterDropdown` (18 total) |
+| Layout | `@tev-ui/ui/layout/<Name>` | App-shell chrome | `AppLayout`, `AppHeader`, `Sidebar`, `SidebarSheet`, `AppFilterRow`, `FilterSheet`, `PageStructure` (11 total) |
 
 Browse every component, themed, with `npm run storybook`.
 

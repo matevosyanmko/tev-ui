@@ -117,6 +117,9 @@ function DateRangePicker({
         className={cn(
           "space-y-3 rounded-2xl border border-black/5 bg-popover p-4",
           mode === "custom" ? "w-fit max-w-[92vw]" : "w-90",
+          // On a phone the custom panel can be taller than the room on either
+          // side of its trigger (in a bottom sheet, say): scroll, not clip.
+          "max-lg:max-h-(--radix-popover-content-available-height) max-lg:overflow-y-auto",
           contentClassName,
         )}
       >

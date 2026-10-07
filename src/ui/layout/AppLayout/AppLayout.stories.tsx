@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 function DemoHeader() {
   return (
-    <header className="flex h-20 shrink-0 items-center justify-between rounded-2xl bg-brand-surface-1 px-4 text-white">
+    <header className="flex h-12 shrink-0 items-center justify-between rounded-2xl bg-brand-surface-1 px-4 text-white lg:h-20">
       <span className="font-bold">Tevvoice</span>
       <span className="text-sm text-white/70">Account</span>
     </header>
@@ -22,7 +22,7 @@ function DemoHeader() {
 
 function DemoSidebar() {
   return (
-    <aside className="hidden w-42 shrink-0 flex-col rounded-2xl bg-brand-surface-1 p-3 text-white/70 md:flex">
+    <aside className="flex w-42 shrink-0 flex-col rounded-2xl bg-brand-surface-1 p-3 text-white/70">
       <span className="text-xs">Home</span>
       <span className="text-xs">Analytics</span>
       <span className="text-xs">Alerts</span>
@@ -44,6 +44,34 @@ export const Default: Story = {
 export const HeaderOnly: Story = {
   render: () => (
     <AppLayout header={<DemoHeader />}>
+      <div className="flex h-full items-center justify-center rounded-2xl bg-brand-purple-soft text-black">
+        Page content
+      </div>
+    </AppLayout>
+  ),
+};
+
+/**
+ * Narrow the window under 1024px: the sidebar slot goes away, the page takes
+ * the full width, and the `toolbar` row appears under the header — where an
+ * app puts a `SidebarSheet` (the nav) and the page's compact controls.
+ */
+export const WithToolbar: Story = {
+  render: () => (
+    <AppLayout
+      header={<DemoHeader />}
+      sidebar={<DemoSidebar />}
+      toolbar={
+        <>
+          <span className="flex size-12 items-center justify-center rounded-[16px] bg-brand-surface-1 text-xs text-white">
+            Menu
+          </span>
+          <span className="flex h-12 flex-1 items-center rounded-[16px] bg-brand-surface-1 px-4 text-xs text-white">
+            Filters
+          </span>
+        </>
+      }
+    >
       <div className="flex h-full items-center justify-center rounded-2xl bg-brand-purple-soft text-black">
         Page content
       </div>
