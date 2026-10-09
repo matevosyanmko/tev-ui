@@ -41,6 +41,7 @@ export default defineConfig({
     "react-day-picker",
     "react-hook-form",
     "dayjs",
+    "recharts",
   ],
   // The theme contract and default tokens ship verbatim; Tailwind compiles
   // them at the consumer's end, and `@source "./"` in theme.css resolves

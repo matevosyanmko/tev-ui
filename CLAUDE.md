@@ -102,12 +102,14 @@ src/
       (same shape; see src/ui/brand/README.md)
     layout/<Name>/                    # app-shell chrome built on primitives + brand
       (same shape; see src/ui/layout/README.md)
+    analytics/<Name>/                 # dashboard widgets, the componentKey catalog, the renderer
+      (same shape; see src/ui/analytics/README.md)
 ```
 
 - `index.tsx` at every component root; it re-exports the public surface and is
   what tsup treats as the entry point.
-- Published as `@tev-ui/ui/primitives/<Name>`, `@tev-ui/ui/brand/<Name>` and
-  `@tev-ui/ui/layout/<Name>`. `cn` stays at `@tev-ui/ui/utils`.
+- Published as `@tev-ui/ui/primitives/<Name>`, `@tev-ui/ui/brand/<Name>`,
+  `@tev-ui/ui/layout/<Name>` and `@tev-ui/ui/analytics/<Name>`. `cn` stays at `@tev-ui/ui/utils`.
 - **Never create empty `.types.ts` / `.variants.ts` files** to satisfy the
   pattern. They exist only when they hold something.
 - `.types.ts` and `.variants.ts` are the two common non-component siblings, but
