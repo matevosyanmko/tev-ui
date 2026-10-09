@@ -37,10 +37,13 @@ function SidebarItem({ active = false, asChild = false, className, ...props }: S
       data-active={active || undefined}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex h-16 w-full items-center gap-4 overflow-hidden rounded-3xl px-4 leading-tight transition-colors",
+        "flex h-16 w-full items-center gap-4 overflow-hidden rounded-3xl px-4 leading-tight",
+        // The colour fade belongs to hovering only. Animating the active change
+        // too had the old item fade out while the new one faded in, so on every
+        // navigation both read as active for a moment.
         active
           ? "bg-brand-purple text-brand-purple-foreground"
-          : "text-white/70 hover:bg-white/5 hover:text-white",
+          : "text-white/70 hover:bg-white/5 hover:text-white hover:transition-colors",
         className,
       )}
       {...props}
