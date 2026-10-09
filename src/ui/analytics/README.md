@@ -33,6 +33,7 @@ plain data, so an app can import the keys without bundling a chart.
 | `BarList` | Axis-free ranked list: label, thin bar, share and count. |
 | `Scorecard` | One row per entity, declarative columns (JSON-describable). |
 | `AnalyticsNote` | One-line info or warning note. |
+| `WidgetIcons` | The lucide icons a stored widget may name (`WIDGET_ICON_NAMES`, `WidgetIconName`), by kebab-case name. `getWidgetIcon` / `isWidgetIconName` resolve a stored value. Plain data, like `AnalyticsCatalog`; separate from brand `Icons`. |
 
 ## Adding a component type
 
@@ -43,3 +44,4 @@ plain data, so an app can import the keys without bundling a chart.
    fails the build until all three exist.
 
 Keys are persisted by apps, so a released key is never renamed or reused.
+The same goes for `WIDGET_ICON_NAMES`.
