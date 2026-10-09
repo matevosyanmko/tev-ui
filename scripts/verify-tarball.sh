@@ -31,7 +31,10 @@ for required in \
   dist/ui/brand/DataTable/index.js dist/ui/brand/DataTable/index.d.ts \
   dist/ui/brand/GradientButton/index.js \
   dist/ui/layout/AppLayout/index.js dist/ui/layout/AppLayout/index.d.ts \
-  dist/ui/layout/PageStructure/index.js; do
+  dist/ui/layout/PageStructure/index.js \
+  dist/ui/analytics/AnalyticsCatalog/index.js dist/ui/analytics/AnalyticsCatalog/index.d.ts \
+  dist/ui/analytics/AnalyticsWidget/index.js dist/ui/analytics/AnalyticsWidget/index.d.ts \
+  dist/ui/analytics/BarChart/index.js; do
   grep -qx "$required" "$WORK/shipped.txt" || { echo "FAIL: $required missing from tarball"; exit 1; }
 done
 
@@ -128,7 +131,7 @@ export default defineConfig({ plugins: [tailwindcss(), react()], logLevel: "warn
 TS
 
 (cd "$CONSUMER" && npm install --silent --no-audit --no-fund \
-  "$TARBALL" react@^18 react-dom@^18 react-day-picker@^9 react-hook-form@^7 dayjs@^1 \
+  "$TARBALL" react@^18 react-dom@^18 react-day-picker@^9 react-hook-form@^7 dayjs@^1 recharts@^2 \
   vite@^5 @vitejs/plugin-react@^4 tailwindcss@^4 @tailwindcss/vite@^4 \
   typescript@^5 @types/react@^18 @types/react-dom@^18 >/dev/null)
 
@@ -138,10 +141,12 @@ TS
 NAMES="$(grep -oE '^dist/ui/primitives/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 BRAND_NAMES="$(grep -oE '^dist/ui/brand/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
+ANALYTICS_NAMES="$(grep -oE '^dist/ui/analytics/[^/]+' "$WORK/shipped.txt" | sed 's|.*/||' | sort -u)"
 {
   for n in $NAMES; do echo "import { $n } from \"@tev-ui/ui/primitives/$n\";"; done
   for n in $BRAND_NAMES; do echo "import { $n } from \"@tev-ui/ui/brand/$n\";"; done
   for n in $LAYOUT_NAMES; do echo "import { $n } from \"@tev-ui/ui/layout/$n\";"; done
+  for n in $ANALYTICS_NAMES; do echo "import { $n } from \"@tev-ui/ui/analytics/$n\";"; done
   # Symbols the folder-per-component layout puts at risk: they are reachable
   # ONLY through a barrel re-export, so nothing else would catch their loss.
   echo 'import { alertVariants } from "@tev-ui/ui/primitives/Alert";'
@@ -162,6 +167,10 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo 'import { AppLogoMark, AppLogoWordmark } from "@tev-ui/ui/layout/AppLogo";'
   echo 'import { SidebarNav, SidebarGroup, SidebarFooter } from "@tev-ui/ui/layout/Sidebar";'
   echo 'import { SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@tev-ui/ui/primitives/Sheet";'
+  echo 'import { ANALYTICS_COMPONENT_KEYS, ANALYTICS_COMPONENTS, isAnalyticsComponentKey, getAnalyticsComponent } from "@tev-ui/ui/analytics/AnalyticsCatalog";'
+  echo 'import { AnalyticsWidgetPreview, ANALYTICS_WIDGET_SAMPLES } from "@tev-ui/ui/analytics/AnalyticsWidget";'
+  echo 'import { ChartFrame, ChartEmpty, CHART_CATEGORICAL, chartRamp } from "@tev-ui/ui/analytics/ChartCard";'
+  echo 'import { KPI_TILE_TONES } from "@tev-ui/ui/analytics/KpiTile";'
   echo 'import type { ButtonProps } from "@tev-ui/ui/primitives/Button";'
   echo 'import type { BadgeProps } from "@tev-ui/ui/primitives/Badge";'
   echo 'import type { SearchFieldProps } from "@tev-ui/ui/primitives/SearchField";'
@@ -179,10 +188,18 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo 'import type { SheetContentProps } from "@tev-ui/ui/primitives/Sheet";'
   echo 'import type { SidebarSheetProps } from "@tev-ui/ui/layout/SidebarSheet";'
   echo 'import type { FilterSheetProps } from "@tev-ui/ui/layout/FilterSheet";'
+  echo 'import type { AnalyticsComponentKey, AnalyticsComponentMeta } from "@tev-ui/ui/analytics/AnalyticsCatalog";'
+  echo 'import type { AnalyticsWidgetProps, AnalyticsWidgetDataMap } from "@tev-ui/ui/analytics/AnalyticsWidget";'
+  echo 'import type { ChartSeries, ChartRow } from "@tev-ui/ui/analytics/ChartCard";'
+  echo 'import type { BarChartProps } from "@tev-ui/ui/analytics/BarChart";'
   echo 'export const ALL = ['
   for n in $NAMES; do echo "  $n,"; done
   for n in $BRAND_NAMES; do echo "  $n,"; done
   for n in $LAYOUT_NAMES; do echo "  $n,"; done
+  for n in $ANALYTICS_NAMES; do echo "  $n,"; done
+  echo '  ANALYTICS_COMPONENT_KEYS, ANALYTICS_COMPONENTS, isAnalyticsComponentKey, getAnalyticsComponent,'
+  echo '  AnalyticsWidgetPreview, ANALYTICS_WIDGET_SAMPLES, ChartFrame, ChartEmpty, CHART_CATEGORICAL, chartRamp,'
+  echo '  KPI_TILE_TONES,'
   echo '  alertVariants, buttonVariants, badgeVariants, toggleVariants,'
   echo '  FormFieldContext, FormItemContext, useFormField, CalendarDayButton, ScrollBar,'
   echo '  gradientButtonVariants, DockShape, buildActionDockPath, ACTION_DOCK_HEIGHT,'
@@ -203,9 +220,11 @@ LAYOUT_NAMES="$(grep -oE '^dist/ui/layout/[^/]+' "$WORK/shipped.txt" | sed 's|.*
   echo '  GradientButtonProps, ProductTourProps,'
   echo '  AppLayoutProps, AppLogoProps, AppFilterRowProps, PageStructureProps,'
   echo '  SheetContentProps, SidebarSheetProps, FilterSheetProps,'
+  echo '  AnalyticsComponentKey, AnalyticsComponentMeta, AnalyticsWidgetProps, AnalyticsWidgetDataMap,'
+  echo '  ChartSeries, ChartRow, BarChartProps,'
   echo '];'
 } > "$CONSUMER/src/all.ts"
-echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand + $(echo "$LAYOUT_NAMES" | wc -w | tr -d ' ') layout components"
+echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand + $(echo "$LAYOUT_NAMES" | wc -w | tr -d ' ') layout + $(echo "$ANALYTICS_NAMES" | wc -w | tr -d ' ') analytics components"
 
 echo "==> typechecking the consumer against the shipped declarations"
 # vite build does NOT typecheck, so without this the `types` half of the exports
@@ -256,9 +275,11 @@ tr -d '\\' < "$CSS_OUT" > "$UNESCAPED"
 FAIL=0
 # The last three appear ONLY inside dist/ui/brand, so they also prove the brand
 # group is reached — dist/ui/primitives alone would satisfy every other class.
+# The final two appear ONLY inside dist/ui/analytics, proving that group too.
 for cls in 'bg-foreground' 'fill-foreground' 'bg-muted-foreground' \
            'text-destructive-foreground' 'focus:border-input' 'border-border' \
-           'bg-brand-green' 'bg-brand-lavender' 'bg-brand-surface-2'; do
+           'bg-brand-green' 'bg-brand-lavender' 'bg-brand-surface-2' \
+           'rounded-r-[4px]' 'bg-amber-50'; do
   if grep -qF -- "$cls" "$UNESCAPED"; then
     echo "    ok   $cls"
   else

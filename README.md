@@ -5,13 +5,13 @@
 
 A React component library for building dashboard-style products: shadcn/Radix
 primitives, higher-level product components (data tables, date pickers,
-notifications, onboarding flows), and app-shell layout pieces (header,
-sidebar, filter row) — all themed entirely through CSS custom properties, so
+notifications, onboarding flows), app-shell layout pieces (header,
+sidebar, filter row) and analytics widgets (KPI tiles, charts, heatmaps) — all themed entirely through CSS custom properties, so
 one variable swap re-skins every component at once.
 
 ## What's included
 
-51 components across three groups, each importable by its own subpath so you
+67 components across four groups, each importable by its own subpath so you
 only bundle what you use.
 
 | Group | Subpath | What it is | Examples |
@@ -19,6 +19,7 @@ only bundle what you use.
 | Primitives | `@tev-ui/ui/primitives/<Name>` | shadcn/Radix building blocks | `Button`, `Dialog`, `Sheet`, `Select`, `Table`, `Calendar`, `Form`, `Tooltip` (22 total) |
 | Brand | `@tev-ui/ui/brand/<Name>` | Product components built on the primitives | `DataTable`, `DateRangePicker`, `NotificationBell`, `ProductTour`, `OnboardingChecklist`, `FilterDropdown` (18 total) |
 | Layout | `@tev-ui/ui/layout/<Name>` | App-shell chrome | `AppLayout`, `AppHeader`, `Sidebar`, `SidebarSheet`, `AppFilterRow`, `FilterSheet`, `PageStructure` (11 total) |
+| Analytics | `@tev-ui/ui/analytics/<Name>` | Dashboard widgets, the `componentKey` catalog and the renderer that draws a stored widget | `AnalyticsWidget`, `AnalyticsCatalog`, `KpiTile`, `DonutChart`, `BarChart`, `Heatmap` (16 total) |
 
 Browse every component, themed, with `npm run storybook`.
 
@@ -44,7 +45,7 @@ checkout.
 
 ### Peer dependencies
 
-`react` and `react-dom` (18 or 19) are required. Three more are **optional** —
+`react` and `react-dom` (18 or 19) are required. Four more are **optional** —
 install them only if you import the component that needs them:
 
 | Component | Needs |
@@ -52,6 +53,10 @@ install them only if you import the component that needs them:
 | `@tev-ui/ui/primitives/Calendar` | `react-day-picker` |
 | `@tev-ui/ui/primitives/Form` | `react-hook-form` |
 | `@tev-ui/ui/brand/DateRangePicker` | `dayjs`, `react-day-picker` |
+| `@tev-ui/ui/analytics/*` charts (`DonutChart`, `BarChart`, `LineChart`, `ScatterChart`, `ChartCard`, `AnalyticsWidget`) | `recharts` (2.12+) |
+
+`@tev-ui/ui/analytics/AnalyticsCatalog` is plain data and needs none of them:
+import it to validate or list `componentKey`s without bundling a chart.
 
 Tailwind CSS v4 is required. This package cannot be used with Tailwind v3 or
 with no Tailwind at all — the components are utility-class based.
@@ -89,7 +94,7 @@ import { cn } from "@tev-ui/ui/utils";
 ```
 
 Every component is `@tev-ui/ui/<group>/<Name>`, PascalCase, where `<group>` is
-`primitives`, `brand` or `layout` (see [What's included](#whats-included)).
+`primitives`, `brand`, `layout` or `analytics` (see [What's included](#whats-included)).
 The specifier must be exactly that — Node's `exports` patterns are string
 substitution with no directory-index lookup, so
 `@tev-ui/ui/primitives/Button/index` does **not** resolve.

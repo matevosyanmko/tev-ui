@@ -5,3 +5,6 @@ storybook-static/
 .DS_Store
 *.log
 .vite/
+
+# npm pack output (local installs before a release)
+*.tgz
