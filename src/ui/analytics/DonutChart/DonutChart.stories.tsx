@@ -24,3 +24,14 @@ export const Total: Story = {
   args: { ...ANALYTICS_WIDGET_SAMPLES.donut_center_total, variant: "total" },
 };
 export const Empty: Story = { args: { data: [] } };
+
+const ONE_DECIMAL = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+
+/** The share list to one decimal. */
+export const TotalOneDecimal: Story = {
+  args: {
+    ...ANALYTICS_WIDGET_SAMPLES.donut_center_total,
+    variant: "total",
+    formatShare: (percent) => `${ONE_DECIMAL.format(percent)}%`,
+  },
+};

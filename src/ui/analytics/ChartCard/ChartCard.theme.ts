@@ -81,6 +81,11 @@ export function chartRamp(t: number): string {
 const NUMBER = new Intl.NumberFormat("en-US");
 
 /** Default value formatter: grouped integers/decimals, en-US. */
+/** A share as a whole percent: 32.7 → "33%". */
+export function formatChartShare(percent: number) {
+  return `${Math.round(percent)}%`;
+}
+
 export function formatChartNumber(value: number): string {
   return NUMBER.format(value);
 }
