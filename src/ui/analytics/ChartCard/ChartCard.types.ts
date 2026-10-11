@@ -10,3 +10,6 @@ export type ChartRow = { name: string } & Record<string, string | number | null 
 
 /** Formats a value for axes, tooltips and labels. */
 export type ChartValueFormatter = (value: number) => string;
+
+/** Formats a share, given in percent (0–100), for share labels. */
+export type ChartShareFormatter = (percent: number) => string;

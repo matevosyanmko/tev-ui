@@ -7,8 +7,9 @@ import {
   CHART_INK,
   CHART_TOOLTIP_STYLE,
   formatChartNumber,
+  formatChartShare,
 } from "../ChartCard/ChartCard.theme.js";
-import type { ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
+import type { ChartShareFormatter, ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
 import { ChartLegend } from "../ChartLegend/ChartLegend.js";
 import { ChartTooltip } from "../ChartTooltip/ChartTooltip.js";
 
@@ -29,6 +30,8 @@ interface DonutChartProps {
   /** Caption over the total in the `total` variant. */
   totalLabel?: React.ReactNode;
   formatValue?: ChartValueFormatter;
+  /** Formats the shares in the tooltip and the share list. Defaults to a whole percent. */
+  formatShare?: ChartShareFormatter;
   emptyLabel?: React.ReactNode;
 }
 
@@ -47,11 +50,12 @@ function DonutChart({
   variant = "legend",
   totalLabel = "Total",
   formatValue = formatChartNumber,
+  formatShare = formatChartShare,
   emptyLabel,
 }: DonutChartProps) {
   const slices = withColors(data.filter((slice) => slice.value > 0));
   const total = slices.reduce((sum, slice) => sum + slice.value, 0);
-  const share = (value: number) => (total ? `${Math.round((value / total) * 100)}%` : "0%");
+  const share = (value: number) => formatShare(total ? (value / total) * 100 : 0);
 
   if (variant === "total") {
     if (!slices.length) {

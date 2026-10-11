@@ -1,18 +1,25 @@
 import * as React from "react";
 
 import { ChartEmpty } from "../ChartCard/ChartCard.js";
-import { formatChartNumber } from "../ChartCard/ChartCard.theme.js";
-import type { ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
+import { formatChartNumber, formatChartShare } from "../ChartCard/ChartCard.theme.js";
+import type { ChartShareFormatter, ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
 
 interface BarListItem {
   key: string;
   label: string;
   value: number;
+  /**
+   * The item's share in percent, when its base is not the listed items' total
+   * (a top-N list, or a share of something else). Defaults to value / total.
+   */
+  share?: number;
 }
 
 interface BarListProps {
   items: BarListItem[];
   formatValue?: ChartValueFormatter;
+  /** Formats the bold share. Defaults to a whole percent. */
+  formatShare?: ChartShareFormatter;
   emptyLabel?: React.ReactNode;
 }
 
@@ -24,7 +31,12 @@ const VALUE_ROOM = "5.5rem";
  * One series, so one colour and no legend. Items keep their given order, zeros
  * included, so an absent item reads as "none" rather than "not shown".
  */
-function BarList({ items, formatValue = formatChartNumber, emptyLabel }: BarListProps) {
+function BarList({
+  items,
+  formatValue = formatChartNumber,
+  formatShare = formatChartShare,
+  emptyLabel,
+}: BarListProps) {
   if (!items.length) return <ChartEmpty>{emptyLabel}</ChartEmpty>;
   const total = items.reduce((sum, item) => sum + item.value, 0);
   const max = Math.max(0, ...items.map((item) => item.value));
@@ -45,7 +57,7 @@ function BarList({ items, formatValue = formatChartNumber, emptyLabel }: BarList
             />
             <span className="text-[12px] whitespace-nowrap text-gray-400 tabular-nums">
               <span className="font-semibold text-[#241d33]">
-                {total ? Math.round((item.value / total) * 100) : 0}%
+                {formatShare(item.share ?? (total ? (item.value / total) * 100 : 0))}
               </span>{" "}
               · {formatValue(item.value)}
             </span>
