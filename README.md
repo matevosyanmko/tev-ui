@@ -16,7 +16,7 @@ only bundle what you use.
 
 | Group | Subpath | What it is | Examples |
 | --- | --- | --- | --- |
-| Primitives | `@tev-ui/ui/primitives/<Name>` | shadcn/Radix building blocks | `Button`, `Dialog`, `Sheet`, `Select`, `Table`, `Calendar`, `Form`, `Tooltip` (22 total) |
+| Primitives | `@tev-ui/ui/primitives/<Name>` | shadcn/Radix building blocks, plus `ScrollFade` (a scroller whose edges fade while there is more) and `FadeIn` (a mount animation) | `Button`, `Dialog`, `Sheet`, `Select`, `Table`, `Calendar`, `Form`, `Tooltip`, `ScrollFade`, `FadeIn` (24 total) |
 | Brand | `@tev-ui/ui/brand/<Name>` | Product components built on the primitives | `DataTable`, `DateRangePicker`, `NotificationBell`, `ProductTour`, `OnboardingChecklist`, `FilterDropdown` (18 total) |
 | Layout | `@tev-ui/ui/layout/<Name>` | App-shell chrome | `AppLayout`, `AppHeader`, `Sidebar`, `SidebarSheet`, `AppFilterRow`, `FilterSheet`, `PageStructure` (11 total) |
 | Analytics | `@tev-ui/ui/analytics/<Name>` | Dashboard widgets, the `componentKey` catalog and the renderer that draws a stored widget | `AnalyticsWidget`, `AnalyticsCatalog`, `KpiTile`, `DonutChart`, `BarChart`, `Heatmap` (16 total) |
