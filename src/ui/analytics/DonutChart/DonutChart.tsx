@@ -32,6 +32,8 @@ interface DonutChartProps {
   formatValue?: ChartValueFormatter;
   /** Formats the shares in the tooltip and the share list. Defaults to a whole percent. */
   formatShare?: ChartShareFormatter;
+  /** Row labels in the `total` variant's tooltip. Default to "Value" and "Share". */
+  tooltipLabels?: { value?: string; share?: string };
   emptyLabel?: React.ReactNode;
 }
 
@@ -51,6 +53,7 @@ function DonutChart({
   totalLabel = "Total",
   formatValue = formatChartNumber,
   formatShare = formatChartShare,
+  tooltipLabels,
   emptyLabel,
 }: DonutChartProps) {
   const slices = withColors(data.filter((slice) => slice.value > 0));
@@ -89,8 +92,8 @@ function DonutChart({
               content={
                 <ChartTooltip<(typeof slices)[number]>
                   rows={[
-                    { label: "Value", value: (d) => formatValue(d.value) },
-                    { label: "Share", value: (d) => share(d.value) },
+                    { label: tooltipLabels?.value ?? "Value", value: (d) => formatValue(d.value) },
+                    { label: tooltipLabels?.share ?? "Share", value: (d) => share(d.value) },
                   ]}
                 />
               }

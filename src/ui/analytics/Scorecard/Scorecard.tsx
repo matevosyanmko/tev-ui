@@ -11,6 +11,7 @@ import {
 } from "../../primitives/Table/Table.js";
 import { ChartEmpty } from "../ChartCard/ChartCard.js";
 import { formatChartNumber } from "../ChartCard/ChartCard.theme.js";
+import type { ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
 
 type ScorecardFormat = "number" | "percent" | "text";
 type ScorecardRow = Record<string, string | number | null | undefined>;
@@ -35,12 +36,18 @@ interface ScorecardProps {
   /** Field that identifies a row. */
   rowKey?: string;
   emptyLabel?: React.ReactNode;
+  /** Formats the `number` and `percent` cells (a percent then gets its "%"). */
+  formatValue?: ChartValueFormatter;
 }
 
-function print(value: ScorecardRow[string], format: ScorecardFormat = "text") {
+function print(
+  value: ScorecardRow[string],
+  formatValue: ChartValueFormatter,
+  format: ScorecardFormat = "text",
+) {
   if (value === null || value === undefined || value === "") return "—";
-  if (format === "number") return formatChartNumber(Number(value));
-  if (format === "percent") return `${formatChartNumber(Number(value))}%`;
+  if (format === "number") return formatValue(Number(value));
+  if (format === "percent") return `${formatValue(Number(value))}%`;
   return String(value);
 }
 
@@ -48,7 +55,13 @@ function print(value: ScorecardRow[string], format: ScorecardFormat = "text") {
  * One row per entity with its counts and rates. Columns are declarative so a
  * scorecard can be described in JSON; `render` is there for anything else.
  */
-function Scorecard({ columns, rows, rowKey = "name", emptyLabel }: ScorecardProps) {
+function Scorecard({
+  columns,
+  rows,
+  rowKey = "name",
+  emptyLabel,
+  formatValue = formatChartNumber,
+}: ScorecardProps) {
   if (!rows.length) return <ChartEmpty>{emptyLabel}</ChartEmpty>;
   return (
     <Table>
@@ -84,10 +97,10 @@ function Scorecard({ columns, rows, rowKey = "name", emptyLabel }: ScorecardProp
                         style={{ background: String(row[column.colorKey]) }}
                       />
                     ) : null}
-                    {print(row[column.key], column.format)}
+                    {print(row[column.key], formatValue, column.format)}
                     {column.mutedKey ? (
                       <span className={cn("ml-1 text-[11px] text-gray-400")}>
-                        {print(row[column.mutedKey], column.mutedFormat)}
+                        {print(row[column.mutedKey], formatValue, column.mutedFormat)}
                       </span>
                     ) : null}
                   </span>

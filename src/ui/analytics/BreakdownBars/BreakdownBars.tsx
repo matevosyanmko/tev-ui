@@ -3,6 +3,7 @@ import * as React from "react";
 import { cn } from "../../../utils.js";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../primitives/Tooltip/Tooltip.js";
 import { CHART_TOOLTIP_STYLE, formatChartNumber } from "../ChartCard/ChartCard.theme.js";
+import type { ChartShareFormatter, ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
 import { ChartLegend } from "../ChartLegend/ChartLegend.js";
 
 interface BreakdownSegment {
@@ -31,9 +32,17 @@ interface BreakdownBarsProps {
   labelWidth?: string;
   /** Shown on a row with nothing to split, instead of an empty bar. */
   emptyLabel?: React.ReactNode;
+  /** Formats the count and the row total in a segment's tooltip. */
+  formatValue?: ChartValueFormatter;
+  /** Formats the share in a segment's tooltip. Defaults to one decimal: 32.7 → "32.7%". */
+  formatShare?: ChartShareFormatter;
+  /** The tooltip's "12 of 40", given the formatted count and row total. */
+  ofTotalLabel?: (count: string, total: string) => string;
 }
 
 const percent = (value: number, total: number) => (total ? (value / total) * 100 : 0);
+const shareToOneDecimal: ChartShareFormatter = (share) => `${share.toFixed(1)}%`;
+const countOfTotal = (count: string, total: string) => `${count} of ${total}`;
 
 /**
  * One 100% bar per row, split by share. Plain HTML rather than Recharts: each
@@ -45,6 +54,9 @@ function BreakdownBars({
   rows,
   labelWidth = "5.5rem",
   emptyLabel = "No data yet",
+  formatValue = formatChartNumber,
+  formatShare = shareToOneDecimal,
+  ofTotalLabel = countOfTotal,
 }: BreakdownBarsProps) {
   return (
     <div data-slot="breakdown-bars">
@@ -101,8 +113,8 @@ function BreakdownBars({
                           </div>
                         </TooltipTrigger>
                         <TooltipContent style={CHART_TOOLTIP_STYLE}>
-                          <span className="font-semibold">{share.toFixed(1)}%</span> {s.label} ·{" "}
-                          {row.label} ({formatChartNumber(count)} of {formatChartNumber(total)})
+                          <span className="font-semibold">{formatShare(share)}</span> {s.label} ·{" "}
+                          {row.label} ({ofTotalLabel(formatValue(count), formatValue(total))})
                         </TooltipContent>
                       </Tooltip>
                     );
