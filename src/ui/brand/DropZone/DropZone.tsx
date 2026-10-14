@@ -3,6 +3,7 @@
 import * as React from "react";
 import { FileAudio, Upload, X } from "lucide-react";
 
+import { TruncatedText } from "../../primitives/TruncatedText/TruncatedText.js";
 import { cn } from "../../../utils.js";
 import type { DropZoneProps } from "./DropZone.types.js";
 
@@ -104,9 +105,9 @@ function DropZone({
               className="flex min-w-0 items-center gap-2 rounded-[12px] border border-brand-lavender bg-brand-purple-soft px-3 py-2.5"
             >
               <FileAudio aria-hidden="true" className="size-4 shrink-0 text-brand-purple" />
-              <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-black">
+              <TruncatedText className="flex-1 text-[13px] font-medium text-black">
                 {file.name}
-              </span>
+              </TruncatedText>
               <span className="shrink-0 text-[11px] text-muted-foreground">
                 {(file.size / 1024).toFixed(1)} KB
               </span>

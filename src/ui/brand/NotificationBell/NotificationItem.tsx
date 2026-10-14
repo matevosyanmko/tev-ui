@@ -1,3 +1,4 @@
+import { TruncatedText } from "../../primitives/TruncatedText/TruncatedText.js";
 import { cn } from "../../../utils.js";
 import type { NotificationItemProps, NotificationTone } from "./NotificationBell.types.js";
 
@@ -31,9 +32,9 @@ function NotificationItem({
       />
       <span className="min-w-0 flex-1">
         <span className="flex items-center justify-between gap-2">
-          <span className="min-w-0 truncate text-[11px] font-medium text-white">
+          <TruncatedText className="text-[11px] font-medium text-white">
             {notification.title}
-          </span>
+          </TruncatedText>
           {notification.createdAt ? (
             <span className="shrink-0 text-[9px] text-white/50">
               {formatTime(notification.createdAt)}
@@ -45,7 +46,9 @@ function NotificationItem({
             {showDetailsLabel ?? "Show details"}
           </span>
         ) : notification.body ? (
-          <span className="mt-1 block truncate text-[10px] text-white/60">{notification.body}</span>
+          <TruncatedText className="mt-1 text-[10px] text-white/60">
+            {notification.body}
+          </TruncatedText>
         ) : null}
       </span>
       {!notification.read ? (

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { TruncatedText } from "../../primitives/TruncatedText/TruncatedText.js";
 import { ChartEmpty } from "../ChartCard/ChartCard.js";
 import { CHART_TOOLTIP_STYLE, chartRamp, formatChartNumber } from "../ChartCard/ChartCard.theme.js";
 import type { ChartValueFormatter } from "../ChartCard/ChartCard.types.js";
@@ -104,10 +105,10 @@ function Heatmap({
                 className={
                   dense
                     ? "flex items-center text-[10px] text-gray-400"
-                    : "flex items-center truncate pr-2 text-[11px] text-gray-500"
+                    : "flex min-w-0 items-center pr-2 text-[11px] text-gray-500"
                 }
               >
-                {row}
+                {dense ? row : <TruncatedText>{row}</TruncatedText>}
               </span>
               {columns.map((column, c) => {
                 const value = values[r]?.[c] ?? 0;
