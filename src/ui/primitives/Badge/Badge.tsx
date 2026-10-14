@@ -12,7 +12,7 @@ function BadgeLabel({ children }: { children: string }) {
   const ref = React.useRef<HTMLSpanElement>(null);
   useHugText(ref, children);
   return (
-    <span ref={ref} data-slot="badge-label" className="min-w-0 wrap-break-word">
+    <span ref={ref} data-slot="badge-label">
       {children}
     </span>
   );
@@ -56,7 +56,9 @@ function Badge({
       data-variant={variant}
       className={cn(
         badgeVariants({ variant }),
-        wraps && "max-w-full text-center whitespace-normal",
+        // Lines break between words only: never wider than its container,
+        // unless one word alone is, and then it shows whole.
+        wraps && "max-w-full min-w-min text-center whitespace-normal",
         className,
       )}
       {...props}

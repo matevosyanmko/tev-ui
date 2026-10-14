@@ -10,8 +10,9 @@ import * as React from "react";
  * its longest line, so this measures the lines and sets the label's width to
  * the longest one; the inline-flex badge around it then fits again.
  *
- * Re-measured when the text changes and when the badge's container resizes,
- * since a wider cell may fit the label on one line again.
+ * Re-measured when the text changes, when the fonts finish loading, and when
+ * the badge's container resizes, since a wider cell may fit the label on one
+ * line again.
  */
 function useHugText(ref: React.RefObject<HTMLElement | null>, text: string) {
   React.useLayoutEffect(() => {
@@ -26,13 +27,21 @@ function useHugText(ref: React.RefObject<HTMLElement | null>, text: string) {
     };
 
     fit();
-    if (typeof ResizeObserver === "undefined") return;
+    // A web font arriving after the first measure changes every line's
+    // width without resizing the cell.
+    let live = true;
+    document.fonts?.ready.then(() => {
+      if (live) fit();
+    });
     // label -> badge -> whatever the badge sits in (a table cell).
     const container = el.parentElement?.parentElement;
-    if (!container) return;
-    const observer = new ResizeObserver(fit);
-    observer.observe(container);
-    return () => observer.disconnect();
+    const observer =
+      container && typeof ResizeObserver !== "undefined" ? new ResizeObserver(fit) : null;
+    if (container) observer?.observe(container);
+    return () => {
+      live = false;
+      observer?.disconnect();
+    };
   }, [ref, text]);
 }
 

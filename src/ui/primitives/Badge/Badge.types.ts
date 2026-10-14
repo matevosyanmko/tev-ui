@@ -11,7 +11,7 @@ export interface BadgeProps
    * Let a label that doesn't fit wrap onto more lines instead of being cut
    * off. The lines are centred and the badge stays as narrow as its longest
    * line, rather than stretching to the width of the cell it wrapped in.
-   * Not applied with `asChild`.
+   * Lines break between words, never inside one. Not applied with `asChild`.
    */
   wrap?: boolean;
 }
