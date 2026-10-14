@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../primitives/DropdownMenu/DropdownMenu.js";
+import { TruncatedText } from "../../primitives/TruncatedText/TruncatedText.js";
 import { cn } from "../../../utils.js";
 import type { FilterDropdownProps, FilterOption } from "./FilterDropdown.types.js";
 
@@ -53,7 +54,7 @@ function FilterDropdown({
           className,
         )}
       >
-        <span className="flex-1 truncate">{current?.label ?? allLabel}</span>
+        <TruncatedText className="flex-1">{current?.label ?? allLabel}</TruncatedText>
         <ChevronDown
           size={11}
           aria-hidden="true"
@@ -82,14 +83,14 @@ function FilterDropdown({
                   onChange(hasAllOption && option.value === ALL_VALUE ? "" : option.value)
                 }
                 className={cn(
-                  "block w-full truncate rounded-full border px-4 py-[7px]",
+                  "block w-full rounded-full border px-4 py-[7px]",
                   "justify-start text-[11px] font-semibold",
                   selected
                     ? "border-transparent bg-brand-purple text-brand-purple-foreground"
                     : "border-white/10 bg-transparent text-white/70 hover:border-transparent hover:bg-brand-purple-hover hover:text-black focus:border-transparent focus:bg-brand-purple-hover focus:text-black",
                 )}
               >
-                {option.label}
+                <TruncatedText>{option.label}</TruncatedText>
               </DropdownMenuItem>
             );
           })}
