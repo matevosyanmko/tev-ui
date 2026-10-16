@@ -9,6 +9,10 @@ import type { AccountPillProps } from "./AccountPill.types.js";
  * text, on the brand gradient. Sits beside <NotificationBell> in the
  * <AppHeader> cluster and shares its 80px height.
  *
+ * Below `lg` it follows the header down to 48px and becomes the avatar alone,
+ * on a 48px tile the same shape as `<SidebarSheet>`'s menu tile; the name
+ * stays its accessible name.
+ *
  * Takes its two lines as plain strings rather than an app's session object, so
  * nothing about the caller's user shape reaches the library — and so the pill
  * can label a company, a team or a workspace just as well as a person.
@@ -44,10 +48,12 @@ function AccountPill({
       data-slot="account-pill"
       type={asChild ? undefined : type}
       className={cn(
+        // Mobile: a 48px tile, avatar centred. From `lg` up the full pill —
         // `text-left` because a <button> centres its content and the identity
         // block is left-aligned text; `min-w-56` is what stops the pill
         // collapsing as the name truncates.
-        "flex h-20 min-w-56 shrink-0 items-center gap-3 rounded-[20px] px-3 py-2 text-left select-none sm:px-4",
+        "flex size-12 shrink-0 items-center justify-center gap-3 rounded-[16px] text-left select-none",
+        "lg:h-20 lg:w-auto lg:min-w-56 lg:justify-start lg:rounded-[20px] lg:px-4 lg:py-2",
         "bg-[image:var(--brand-gradient-chrome)]",
         // One box-shadow, not two: the purple glow and the glassy top edge
         // are a single property, so a second declaration would silently drop
@@ -66,22 +72,21 @@ function AccountPill({
       <span
         data-slot="account-pill-avatar"
         aria-hidden="true"
-        className="flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-white text-[13px] font-bold text-white"
+        className="flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white lg:size-11 lg:text-[13px]"
       >
         {initials ?? accountInitials(fullName)}
       </span>
 
-      {/* The visible identity is hidden below `sm` (the breakpoint at which
-          <AppLogoWordmark> also drops out), which would otherwise leave a
-          button with no accessible name at all — the avatar being decorative.
-          This carries the name for assistive tech at exactly those widths, and
-          leaves at `sm` where the real one takes over, so the name is never
-          announced twice. */}
-      <span data-slot="account-pill-label" className="sr-only sm:hidden">
+      {/* The visible identity is hidden below `lg`, which would otherwise
+          leave a button with no accessible name at all — the avatar being
+          decorative. This carries the name for assistive tech at exactly those
+          widths, and leaves at `lg` where the real one takes over, so the name
+          is never announced twice. */}
+      <span data-slot="account-pill-label" className="sr-only lg:hidden">
         {fullName ?? labels?.unknownUser ?? "User"}
       </span>
 
-      <span data-slot="account-pill-identity" className="hidden min-w-0 pr-1 sm:block">
+      <span data-slot="account-pill-identity" className="hidden min-w-0 pr-1 lg:block">
         <span
           data-slot="account-pill-name"
           className="block max-w-40 truncate text-[15px] leading-tight font-bold text-white"

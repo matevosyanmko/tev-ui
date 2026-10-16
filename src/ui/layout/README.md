@@ -22,8 +22,10 @@ Same folder shape as brand: `index.tsx` is the published entry point,
 | `ActionDock` | SVG flag that notches into the bottom-right corner of `AppFilterRow` (or any relatively-positioned box) and carries its actions. The path is generated from the measured content width. |
 | `Sidebar` | The nav-rail shell — `SidebarNav`, `SidebarGroup` and `SidebarFooter` parts around the app's own `SidebarItem`s. `collapsed` makes it an icon rail on desktop, opening over the page on hover or keyboard focus; style your own footer controls for the icon rail with the `sidebar-collapsed:` variant from `theme.css`. Below `lg` it opens in a `SidebarSheet` instead. |
 | `SidebarSheet` | The mobile way into the nav: a menu tile for `AppLayout`'s `toolbar` that opens the app's `<Sidebar>` from the left, over the page, and closes when a link in it is followed. Controlled. |
+| `ToolbarButton` | A 48px control for `AppLayout`'s mobile toolbar row, in the shape of `SidebarSheet`'s tile: a page's own action, a way back. `default` dark tile or `primary` green. |
 | `SidebarItem` | One nav pill, plus its icon and label parts. |
 | `PageTitle` | The default page heading — drops into `PageStructure`'s `title` slot. |
+| `AuthShell` | The signed-out screens' frame: brand art (a column from `lg` up, a banner below it), a light panel with a centred form column, and a corner for the language picker. `Header`, `Title`, `Description` and `Footer` parts for the panel's content. |
 | `PageStructure` | The per-page frame: an optional filter-row slot, a title/leftSlot/centerSlot/rightSlot header row, then a scrollable content card. Below `lg` the header row stacks one slot per line, the right slot scrolling sideways; with `fill`, the content stops scrolling there and its children get the card's remaining height, for a table that scrolls itself. |
 
 ## The rules these components exist under
