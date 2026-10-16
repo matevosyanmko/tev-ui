@@ -13,7 +13,8 @@ to satisfy.
 
 | Component | What it is |
 | --- | --- |
-| `AccountPill` | The signed-in account in the header: initials avatar over two lines of text, on the brand gradient. |
+| `AccountPill` | The signed-in account in the header: initials avatar over two lines of text, on the brand gradient. Below `lg`, a 48px avatar tile. |
+| `DataList` | The phone-sized counterpart of `DataTable`: the same rows as `Item`s on one card, grouped under sticky headings, with the same pending / refreshing / error states. |
 | `DataTable` | The generic table shell: status-driven body, sticky header/footer, client- or server-driven paging. |
 | `DateRangePicker` | The global date filter — year, month and custom modes behind one trigger. |
 | `DropZone` | Click-or-drag file picker with an inline list of what was chosen. |
@@ -22,6 +23,7 @@ to satisfy.
 | `EyeToggle` | Password reveal toggle, with the three-glyph Figma flow. |
 | `FilterDropdown` | The green pill that opens a single-select filter menu. |
 | `FilterGroup` | One labelled icon + control cluster in a filter strip. |
+| `GoogleSignInButton` | "Sign in with Google": Google's mark ahead of the label, on Google's light button face; `asChild` for the link to the OAuth route. Also exports `GoogleMark`. |
 | `GradientButton` | The brand gradient CTA. |
 | `Icons` | Figma-exported brand glyphs, drop-in for lucide icons. |
 | `LangPicker` | The green language pill that drops upwards. |

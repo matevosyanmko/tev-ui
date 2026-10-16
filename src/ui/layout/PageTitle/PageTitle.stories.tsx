@@ -29,3 +29,12 @@ export const LongTitle: Story = {
     className: "max-w-md",
   },
 };
+
+/**
+ * A phone's header line: the title wraps onto balanced lines inside the card
+ * rather than running off its edge.
+ */
+export const LongTitleOnMobile: Story = {
+  args: { children: "Upcoming calendar meetings this week" },
+  globals: { viewport: { value: "mobile1", isRotated: false } },
+};

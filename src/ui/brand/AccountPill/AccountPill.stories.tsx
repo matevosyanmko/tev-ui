@@ -76,9 +76,11 @@ export const AsLink: Story = {
 };
 
 /**
- * Below `sm` the identity block drops out and the avatar carries the account
- * on its own, while the pill keeps its 80px height so the header row does not
- * reflow. `sm:` is a viewport query, so narrow the browser window under 640px
- * to see it — a narrower decorator cannot trigger it.
+ * Below `lg` the pill follows `<AppHeader>` down to 48px: the identity block
+ * drops out and the avatar carries the account on a tile the shape of
+ * `<SidebarSheet>`'s menu tile. `lg:` is a viewport query, so this story pins
+ * a phone viewport — a narrower decorator cannot trigger it.
  */
-export const Compact: Story = {};
+export const Compact: Story = {
+  globals: { viewport: { value: "mobile1", isRotated: false } },
+};

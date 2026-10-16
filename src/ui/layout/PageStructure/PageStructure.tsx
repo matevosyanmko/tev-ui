@@ -84,7 +84,15 @@ function PageStructure({
           )}
 
           <div className="flex-1 overflow-hidden">
-            <ScrollArea className="h-full">
+            {/* Radix lays the viewport's content out as `display: table`, so
+                the content is as wide as its widest unshrinkable row. This
+                scroller only scrolls vertically, and hides what overflows
+                sideways — so one wide row (a button row in a long
+                translation, a table with a width floor) used to widen the
+                whole page and cut every line off at the card's right edge.
+                As a block the content is the card's width: rows wrap and
+                shrink to fit, and a box that scrolls itself still can. */}
+            <ScrollArea className="h-full [&>[data-slot=scroll-area-viewport]>div]:block!">
               {fill ? (
                 // Absolute against the ScrollArea root (which is `relative`),
                 // not the viewport inside it: out of the viewport's flow, the
