@@ -26,7 +26,7 @@ export const Default: Story = {
   render: (args) => (
     <ToolbarButton {...args}>
       <RefreshCw aria-hidden="true" />
-      Refresh
+      <span>Refresh</span>
     </ToolbarButton>
   ),
 };
@@ -37,7 +37,7 @@ export const Primary: Story = {
   render: (args) => (
     <ToolbarButton {...args}>
       <Plus aria-hidden="true" />
-      New meeting
+      <span>New meeting</span>
     </ToolbarButton>
   ),
 };
@@ -48,7 +48,7 @@ export const BackLink: Story = {
     <ToolbarButton {...args} asChild className="pl-3">
       <a href="#meetings">
         <ChevronLeft aria-hidden="true" />
-        Meetings
+        <span>Meetings</span>
       </a>
     </ToolbarButton>
   ),
@@ -60,5 +60,23 @@ export const IconOnly: Story = {
     <ToolbarButton {...args} aria-label="Refresh" className="px-0">
       <RefreshCw aria-hidden="true" />
     </ToolbarButton>
+  ),
+};
+
+/**
+ * A label longer than the row has room for: the button shrinks and cuts the
+ * label short instead of covering the tile beside it.
+ */
+export const LongLabel: Story = {
+  render: (args) => (
+    <>
+      <span className="size-12 shrink-0 rounded-[16px] bg-brand-surface-1" />
+      <div className="flex min-w-0 flex-1 justify-end">
+        <ToolbarButton {...args}>
+          <RefreshCw aria-hidden="true" />
+          <span>Թարմացնել իրադարձությունները</span>
+        </ToolbarButton>
+      </div>
+    </>
   ),
 };

@@ -24,7 +24,9 @@ import { itemMediaVariants, itemVariants } from "./Item.variants.js";
  *   </ItemGroup>
  *
  * The row wraps (`flex-wrap`), so `ItemHeader` and `ItemFooter` — full-width
- * lines — sit above and below the media/content/actions line.
+ * lines — sit above and below the media/content/actions line. Both are
+ * `min-w-0`, so a control in one (a select, say) shrinks to the row instead of
+ * widening the row to its own text.
  *
  * No list roles are implied: a row is usually a link, and `role="listitem"`
  * on an <a> would take its link role away. Where the count matters to a
@@ -42,12 +44,9 @@ function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
 
 function ItemSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
   return (
-    <Separator
-      data-slot="item-separator"
-      orientation="horizontal"
-      className={cn("my-0", className)}
-      {...props}
-    />
+    // Keeps Separator's own data-slot: re-slotting a primitive this only
+    // composes would take its selectors down with it (see CLAUDE.md).
+    <Separator orientation="horizontal" className={cn("my-0", className)} {...props} />
   );
 }
 
@@ -131,7 +130,7 @@ function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="item-header"
-      className={cn("flex basis-full items-center justify-between gap-2", className)}
+      className={cn("flex min-w-0 basis-full items-center justify-between gap-2", className)}
       {...props}
     />
   );
@@ -141,7 +140,7 @@ function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="item-footer"
-      className={cn("flex basis-full items-center justify-between gap-2", className)}
+      className={cn("flex min-w-0 basis-full items-center justify-between gap-2", className)}
       {...props}
     />
   );

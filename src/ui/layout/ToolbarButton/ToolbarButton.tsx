@@ -11,6 +11,9 @@ import { toolbarButtonVariants } from "./ToolbarButton.variants.js";
  * meeting"), a way back, a refresh. Icon-only, it is a square tile — give it an
  * `aria-label`. Forwards its ref, so it also works as a Radix trigger.
  *
+ * Put the label in a <span>: the button shrinks when the row runs out of
+ * room, and a span label is what gets cut with an ellipsis.
+ *
  *   <AppLayout toolbar={<><SidebarSheet …/><ToolbarButton variant="primary">New</ToolbarButton></>} />
  */
 const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
