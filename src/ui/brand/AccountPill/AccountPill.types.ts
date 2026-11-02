@@ -28,4 +28,10 @@ export interface AccountPillProps extends React.ComponentProps<"button"> {
     /** Shown in place of a name when there is none. Defaults to "User". */
     unknownUser?: string;
   };
+  /**
+   * `card`: TevScribe's header account card (100:41115) — 224×80 on the page
+   * ink inside a 3px white stroke with the glass highlight, the avatar
+   * placeholder, the name in 16px bold and the position in 8px light.
+   */
+  variant?: "default" | "card";
 }

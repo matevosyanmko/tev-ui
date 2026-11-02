@@ -84,3 +84,35 @@ export const AsLink: Story = {
 export const Compact: Story = {
   globals: { viewport: { value: "mobile1", isRotated: false } },
 };
+
+/**
+ * TevScribe's header card (100:41115): 224×80 on the page ink, a 3px white
+ * stroke and the glass highlight, the avatar placeholder, the name in 16px
+ * bold over the position in 8px light. Tab to it for the focus ring.
+ */
+export const ScribeCard: Story = {
+  globals: { theme: "scribe" },
+  args: { variant: "card", fullName: "Arman Avdalyan", position: "Sales team cordinator" },
+  decorators: [
+    (Story) => (
+      <div className="flex h-40 w-140 items-center justify-end rounded-24 bg-surface-inverse p-4">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/** A long name and an Armenian one: both truncate inside the 224px card. (Name only is `NameOnly` with `variant="card"`.) */
+export const ScribeCardEdgeCases: Story = {
+  globals: { theme: "scribe" },
+  render: () => (
+    <div className="flex items-center gap-4">
+      <AccountPill
+        variant="card"
+        fullName="Arman Avdalyan-Ter-Grigoryan"
+        position="Sales team coordinator, enterprise accounts"
+      />
+      <AccountPill variant="card" fullName="Արման Ավդալյան" position="Վաճառքի թիմի համակարգող" />
+    </div>
+  ),
+};
