@@ -4,9 +4,7 @@ import type { VariantProps } from "class-variance-authority";
 import type { chipVariants } from "./Chip.variants.js";
 
 export interface ChipProps
-  extends
-    React.ComponentProps<"button">,
-    Omit<VariantProps<typeof chipVariants>, "interactive"> {
+  extends React.ComponentProps<"button">, Omit<VariantProps<typeof chipVariants>, "interactive"> {
   /**
    * Makes the chip a toggle: a <button> with `aria-pressed`, drawn filled ink
    * while `true`. Leave it out for a static label.

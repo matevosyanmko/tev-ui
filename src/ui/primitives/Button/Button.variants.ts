@@ -44,7 +44,7 @@ export const buttonVariants = cva(
         /** White on a dark surface: New meeting. The ring stays visible on black. */
         light: `bg-surface-primary text-content-primary inset-ring inset-ring-stroke-ink hover:bg-surface-subtle focus-visible:ring-stroke-white/60 ${SCRIBE_MOTION}`,
         /** A muted underlined text action beside a primary one: discard. */
-        quiet: `bg-transparent text-content-muted inset-ring-transparent underline underline-offset-2 hover:text-content-secondary ${SCRIBE_MOTION}`,
+        quiet: `bg-transparent text-content-muted underline underline-offset-2 inset-ring-transparent hover:text-content-secondary ${SCRIBE_MOTION}`,
         /** Plain light text on a dark surface: log out. */
         "quiet-inverse": `bg-transparent text-content-inverse inset-ring-transparent hover:bg-surface-primary/10 focus-visible:ring-stroke-white/60 ${SCRIBE_MOTION}`,
         /**

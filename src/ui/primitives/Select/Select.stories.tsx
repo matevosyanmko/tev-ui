@@ -58,9 +58,21 @@ export const Default: Story = {
 // The flag is the caller's artwork: an <img> (or any element) handed to
 // `media`. These two are story fixtures only; the package ships no flags.
 const FLAGS: Record<string, string> = {
-  bg: "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><clipPath id="c"><circle cx="9" cy="9" r="8"/></clipPath><g clip-path="url(#c)"><rect width="18" height="6" fill="#fff"/><rect y="6" width="18" height="6" fill="#00966E"/><rect y="12" width="18" height="6" fill="#D62612"/></g><circle cx="9" cy="9" r="8.5" fill="none" stroke="#000"/></svg>'),
-  am: "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><clipPath id="c"><circle cx="9" cy="9" r="8"/></clipPath><g clip-path="url(#c)"><rect width="18" height="6" fill="#D90012"/><rect y="6" width="18" height="6" fill="#0033A0"/><rect y="12" width="18" height="6" fill="#F2A800"/></g><circle cx="9" cy="9" r="8.5" fill="none" stroke="#000"/></svg>'),
-  en: "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><clipPath id="c"><circle cx="9" cy="9" r="8"/></clipPath><g clip-path="url(#c)"><rect width="18" height="18" fill="#012169"/><path d="M0 7h18v4H0zM7 0h4v18H7z" fill="#fff"/><path d="M0 8h18v2H0zM8 0h2v18H8z" fill="#C8102E"/></g><circle cx="9" cy="9" r="8.5" fill="none" stroke="#000"/></svg>'),
+  bg:
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><clipPath id="c"><circle cx="9" cy="9" r="8"/></clipPath><g clip-path="url(#c)"><rect width="18" height="6" fill="#fff"/><rect y="6" width="18" height="6" fill="#00966E"/><rect y="12" width="18" height="6" fill="#D62612"/></g><circle cx="9" cy="9" r="8.5" fill="none" stroke="#000"/></svg>',
+    ),
+  am:
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><clipPath id="c"><circle cx="9" cy="9" r="8"/></clipPath><g clip-path="url(#c)"><rect width="18" height="6" fill="#D90012"/><rect y="6" width="18" height="6" fill="#0033A0"/><rect y="12" width="18" height="6" fill="#F2A800"/></g><circle cx="9" cy="9" r="8.5" fill="none" stroke="#000"/></svg>',
+    ),
+  en:
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><clipPath id="c"><circle cx="9" cy="9" r="8"/></clipPath><g clip-path="url(#c)"><rect width="18" height="18" fill="#012169"/><path d="M0 7h18v4H0zM7 0h4v18H7z" fill="#fff"/><path d="M0 8h18v2H0zM8 0h2v18H8z" fill="#C8102E"/></g><circle cx="9" cy="9" r="8.5" fill="none" stroke="#000"/></svg>',
+    ),
 };
 const LANGUAGES = [
   { value: "bg", label: "Bulgarian" },

@@ -123,7 +123,7 @@ function SelectItem({
         // ink, which Figma leaves undrawn, and the check mark is not used. A
         // flag <img> in the option is held to the drawn 16px circle.
         panel &&
-          "cursor-pointer rounded-20 bg-surface-primary py-2 pr-3 pl-3 text-caption-10 text-content-primary inset-ring inset-ring-stroke-ink transition-[color,background-color] duration-(--duration-fast) ease-standard focus:bg-surface-subtle focus:text-content-primary motion-reduce:transition-none data-[state=checked]:bg-surface-inverse data-[state=checked]:text-content-inverse data-[state=checked]:focus:bg-surface-inverse/85 *:data-[slot=select-item-indicator]:hidden [&_img]:size-4 [&_img]:shrink-0 [&_img]:rounded-full [&_img]:object-cover",
+          "cursor-pointer rounded-20 bg-surface-primary py-2 pr-3 pl-3 text-caption-10 text-content-primary inset-ring inset-ring-stroke-ink transition-[color,background-color] duration-(--duration-fast) ease-standard focus:bg-surface-subtle focus:text-content-primary *:data-[slot=select-item-indicator]:hidden data-[state=checked]:bg-surface-inverse data-[state=checked]:text-content-inverse data-[state=checked]:focus:bg-surface-inverse/85 motion-reduce:transition-none [&_img]:size-4 [&_img]:shrink-0 [&_img]:rounded-full [&_img]:object-cover",
         className,
       )}
       {...props}

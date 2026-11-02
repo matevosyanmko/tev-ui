@@ -58,7 +58,7 @@ function AccountPill({
           // 24px sides are measured from the card's edge.
           "flex size-12 shrink-0 items-center justify-center gap-3 rounded-16 bg-surface-inverse text-left text-content-inverse shadow-glass inset-ring-3 inset-ring-stroke-white select-none",
           "lg:h-20 lg:w-56 lg:justify-start lg:rounded-20 lg:px-6 lg:py-4",
-          "outline-none transition-shadow duration-(--duration-fast) ease-standard focus-visible:ring-2 focus-visible:ring-stroke-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-inverse motion-reduce:transition-none",
+          "transition-shadow duration-(--duration-fast) ease-standard outline-none focus-visible:ring-2 focus-visible:ring-stroke-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-inverse motion-reduce:transition-none",
           className,
         )}
         {...props}

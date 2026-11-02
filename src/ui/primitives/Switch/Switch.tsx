@@ -31,7 +31,7 @@ function Switch({ className, size = "default", variant = "default", ...props }: 
         // size selectors so they replace the default track's rather than
         // losing to them on specificity.
         accent &&
-          "border-0 px-1.25 shadow-none transition-[background-color,box-shadow] duration-(--duration-fast) ease-standard motion-reduce:transition-none data-[size=default]:h-8 data-[size=default]:w-14 data-[size=sm]:h-8 data-[size=sm]:w-14 data-[state=checked]:bg-surface-accent-green data-[state=unchecked]:bg-surface-inverse dark:data-[state=unchecked]:bg-surface-inverse",
+          "border-0 px-1.25 shadow-none transition-[background-color,box-shadow] duration-(--duration-fast) ease-standard data-[size=default]:h-8 data-[size=default]:w-14 data-[size=sm]:h-8 data-[size=sm]:w-14 data-[state=checked]:bg-surface-accent-green data-[state=unchecked]:bg-surface-inverse motion-reduce:transition-none dark:data-[state=unchecked]:bg-surface-inverse",
         className,
       )}
       {...props}
