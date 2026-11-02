@@ -258,6 +258,20 @@
   --text-micro-6: 0.375rem;
   --text-micro-6--line-height: normal;
   --text-micro-6--font-weight: 400;
+  /* Not a Figma text style: the status pill on the calendar's micro meet
+     card, drawn at half the row pill's 10px. */
+  --text-micro-5: 0.3125rem;
+  --text-micro-5--line-height: normal;
+  --text-micro-5--font-weight: 400;
+
+  /* Stroke weights the frames draw off Tailwind's integer scale: the micro
+     card's chip, the login provider button, the header action pills. Ring
+     widths rather than border widths because Figma's strokes sit inside a
+     hug-sized pill without growing it, which is what `inset-ring-1.7` does
+     and `border` does not. `ring-*` reads the same scale. */
+  --ring-width-0\.5: 0.5px;
+  --ring-width-1\.5: 1.5px;
+  --ring-width-1\.7: 1.7px;
 
   /* The Figma "Layout" collection's radius/* set, by pixel value. The
      relative `rounded-sm` … `rounded-4xl` above stay as they were. */
