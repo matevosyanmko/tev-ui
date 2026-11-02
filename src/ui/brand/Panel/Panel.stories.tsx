@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../primitives/Popover/Popover";
-import { ChevronDownIcon, DownloadIcon, ExportIcon, SendIcon } from "../ScribeIcons/ScribeIcons";
+import { CaretDownIcon, DownloadIcon, ExportIcon, SendIcon } from "../ScribeIcons/ScribeIcons";
 import {
   Panel,
   PanelClose,
@@ -80,7 +80,7 @@ function ExportMenuDemo({
           <Button variant="ink" size="pill-md">
             <ExportIcon />
             {copy.export}
-            <ChevronDownIcon />
+            <CaretDownIcon />
           </Button>
         </PopoverTrigger>
         <PopoverContent variant="panel" sideOffset={8}>
@@ -185,7 +185,7 @@ export const Parts: Story = {
           <PanelRow label="Date">
             <Chip onClick={() => {}}>
               October 20, 2026
-              <ChevronDownIcon />
+              <CaretDownIcon />
             </Chip>
           </PanelRow>
           <PanelRow description="A description runs the free width and wraps onto a second and even a third line when it has to">

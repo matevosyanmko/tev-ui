@@ -100,7 +100,8 @@ function PanelSection({ className, label, children, ...props }: PanelSectionProp
 /**
  * A canvas card: text on the left, the control on the right. A trigger in
  * the control slot that is open (`data-state="open"`) turns its ScribeIcons
- * chevron up, as the filter rows draw it (100:43660).
+ * caret or chevron (`CaretDownIcon`, `ChevronDownIcon`) up, as the filter
+ * rows draw it (100:43660).
  */
 function PanelRow({ className, label, description, children, ...props }: PanelRowProps) {
   const labelId = React.useId();
@@ -138,8 +139,8 @@ function PanelRow({ className, label, description, children, ...props }: PanelRo
           data-slot="panel-row-control"
           className={cn(
             "flex shrink-0 items-center gap-2.25",
-            "**:data-[icon=ChevronDownIcon]:transition-transform **:data-[icon=ChevronDownIcon]:duration-(--duration-fast) **:data-[icon=ChevronDownIcon]:ease-standard motion-reduce:**:data-[icon=ChevronDownIcon]:transition-none",
-            "[&_[data-state=open]_[data-icon=ChevronDownIcon]]:rotate-180",
+            "[&_[data-icon$=DownIcon]]:transition-transform [&_[data-icon$=DownIcon]]:duration-(--duration-fast) [&_[data-icon$=DownIcon]]:ease-standard motion-reduce:[&_[data-icon$=DownIcon]]:transition-none",
+            "[&_[data-state=open]_[data-icon$=DownIcon]]:rotate-180",
           )}
         >
           {children}

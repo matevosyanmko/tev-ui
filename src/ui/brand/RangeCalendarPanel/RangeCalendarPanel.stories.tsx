@@ -5,7 +5,7 @@ import { expect, fn, screen, userEvent, waitFor } from "storybook/test";
 
 import { Chip } from "../../primitives/Chip/Chip";
 import { Popover, PopoverContent, PopoverTrigger } from "../../primitives/Popover/Popover";
-import { ChevronDownIcon } from "../ScribeIcons/ScribeIcons";
+import { CaretDownIcon } from "../ScribeIcons/ScribeIcons";
 import { RangeCalendarPanel } from "./RangeCalendarPanel";
 import type { DateRange, RangeCalendarPanelProps } from "./RangeCalendarPanel.types";
 
@@ -53,7 +53,7 @@ function InPicker({
         <PopoverTrigger asChild>
           <Chip>
             {trigger}
-            <ChevronDownIcon />
+            <CaretDownIcon />
           </Chip>
         </PopoverTrigger>
         <PopoverContent variant="picker" sideOffset={5}>
