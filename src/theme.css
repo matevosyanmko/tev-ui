@@ -122,6 +122,175 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * Semantic colour layer, named after the Figma "Colors" variable collection
+ * so a value read in Dev Mode maps to one utility:
+ *
+ *   Figma            CSS variable        utility
+ *   surface/<x>      --surface-<x>       bg-surface-<x>
+ *   text/<x>         --content-<x>       text-content-<x>   (neutral- prefix dropped)
+ *   border/<x>       --stroke-<x>        border-stroke-<x>  (neutral- prefix dropped)
+ *   icon/<x>         --icon-<x>          text-icon-<x>
+ *
+ * `status-*` and `platform-*` are the audit's separation of meaning from
+ * colour: a component asks for "live" or "success", never for coral or green,
+ * so a theme can make status accessible without touching the brand accent.
+ *
+ * tokens.css answers every name by aliasing the existing contract, so a
+ * Tevvoice screen that never uses these keeps rendering exactly as before;
+ * themes/scribe.css answers them with the TevScribe palette.
+ */
+@theme inline {
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-neutral-subtle: var(--surface-neutral-subtle);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-surface-accent-green: var(--surface-accent-green);
+  --color-surface-accent-green-soft: var(--surface-accent-green-soft);
+  --color-surface-accent-coral: var(--surface-accent-coral);
+
+  --color-content-primary: var(--content-primary);
+  --color-content-secondary: var(--content-secondary);
+  --color-content-muted: var(--content-muted);
+  --color-content-inverse: var(--content-inverse);
+  --color-content-dark: var(--content-dark);
+  --color-content-canvas: var(--content-canvas);
+  --color-content-accent-coral: var(--content-accent-coral);
+
+  --color-stroke-ink: var(--stroke-ink);
+  --color-stroke-dark: var(--stroke-dark);
+  --color-stroke-secondary: var(--stroke-secondary);
+  --color-stroke-muted: var(--stroke-muted);
+  --color-stroke-subtle: var(--stroke-subtle);
+  --color-stroke-white: var(--stroke-white);
+  --color-stroke-accent-green: var(--stroke-accent-green);
+  --color-stroke-accent-red: var(--stroke-accent-red);
+
+  --color-icon-ink: var(--icon-ink);
+  --color-icon-white: var(--icon-white);
+  --color-icon-accent-coral: var(--icon-accent-coral);
+
+  --color-status-live: var(--status-live);
+  --color-status-live-foreground: var(--status-live-foreground);
+  --color-status-success: var(--status-success);
+  --color-status-success-foreground: var(--status-success-foreground);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-foreground: var(--status-danger-foreground);
+  --color-status-neutral: var(--status-neutral);
+  --color-status-neutral-foreground: var(--status-neutral-foreground);
+
+  --color-platform: var(--platform);
+  --color-platform-foreground: var(--platform-foreground);
+}
+
+/*
+ * Type, radius, elevation and motion scales. Values rather than var()
+ * indirections: they are not brand choices, and every one of them is still a
+ * custom property a theme can redefine at runtime.
+ *
+ * The type ramp is the Figma "TevScribe/Type" text-style set, one utility per
+ * style: `text-heading-24` sets size, line height and weight together, and a
+ * plain `font-*` utility still overrides the weight. A Figma line height of
+ * "auto" is CSS `normal`; both read the face's own metrics.
+ */
+@theme {
+  --text-display-80: 5rem;
+  --text-display-80--line-height: calc(84.2 / 80);
+  --text-display-80--font-weight: 700;
+  --text-display-56: 3.5rem;
+  --text-display-56--line-height: 1;
+  --text-display-56--font-weight: 800;
+  --text-display-56--letter-spacing: -0.03em;
+  --text-display-48: 3rem;
+  --text-display-48--line-height: calc(76 / 48);
+  --text-display-48--font-weight: 800;
+  --text-heading-56: 3.5rem;
+  --text-heading-56--line-height: calc(63.8 / 56);
+  --text-heading-56--font-weight: 800;
+  --text-heading-40: 2.5rem;
+  --text-heading-40--line-height: calc(39.6 / 40);
+  --text-heading-40--font-weight: 700;
+  --text-heading-32: 2rem;
+  --text-heading-32--line-height: normal;
+  --text-heading-32--font-weight: 700;
+  --text-heading-28: 1.75rem;
+  --text-heading-28--line-height: calc(27.62 / 28);
+  --text-heading-28--font-weight: 700;
+  --text-heading-24: 1.5rem;
+  --text-heading-24--line-height: calc(27 / 24);
+  --text-heading-24--font-weight: 700;
+  --text-heading-20: 1.25rem;
+  --text-heading-20--line-height: normal;
+  --text-heading-20--font-weight: 400;
+  --text-heading-16: 1rem;
+  --text-heading-16--line-height: normal;
+  --text-heading-16--font-weight: 700;
+  --text-heading-14: 0.875rem;
+  --text-heading-14--line-height: normal;
+  --text-heading-14--font-weight: 700;
+  --text-heading-12: 0.75rem;
+  --text-heading-12--line-height: calc(10.2 / 12);
+  --text-heading-12--font-weight: 700;
+  --text-body-20: 1.25rem;
+  --text-body-20--line-height: normal;
+  --text-body-20--font-weight: 400;
+  --text-body-16: 1rem;
+  --text-body-16--line-height: normal;
+  --text-body-16--font-weight: 400;
+  --text-body-14: 0.875rem;
+  --text-body-14--line-height: normal;
+  --text-body-14--font-weight: 400;
+  --text-body-12: 0.75rem;
+  --text-body-12--line-height: normal;
+  --text-body-12--font-weight: 400;
+  --text-label-12: 0.75rem;
+  --text-label-12--line-height: calc(17.73 / 12);
+  --text-label-12--font-weight: 500;
+  --text-label-10: 0.625rem;
+  --text-label-10--line-height: normal;
+  --text-label-10--font-weight: 600;
+  --text-caption-10: 0.625rem;
+  --text-caption-10--line-height: normal;
+  --text-caption-10--font-weight: 400;
+  --text-micro-8: 0.5rem;
+  --text-micro-8--line-height: normal;
+  --text-micro-8--font-weight: 300;
+  --text-micro-6: 0.375rem;
+  --text-micro-6--line-height: normal;
+  --text-micro-6--font-weight: 400;
+
+  /* The Figma "Layout" collection's radius/* set, by pixel value. The
+     relative `rounded-sm` … `rounded-4xl` above stay as they were. */
+  --radius-3: 0.1875rem;
+  --radius-8: 0.5rem;
+  --radius-10: 0.625rem;
+  --radius-12: 0.75rem;
+  --radius-16: 1rem;
+  --radius-20: 1.25rem;
+  --radius-24: 1.5rem;
+  --radius-30: 1.875rem;
+  --radius-32: 2rem;
+  --radius-40: 2.5rem;
+
+  /* Floating panels (filters, export menu) and the glass highlight on the
+     header's account card. */
+  --shadow-popover: 1px 4px 27.6px 0 rgb(0 0 0 / 0.15);
+  --shadow-glass: inset 0 4px 4px 0 rgb(255 255 255 / 0.51), inset 1px -1px 1.3px 0 rgb(255 255 255 / 0.53);
+  /* The page behind a modal. */
+  --blur-overlay: 10px;
+
+  /* Motion. Durations have no Tailwind namespace, so they are used as
+     `duration-(--duration-base)`; easings are `ease-standard` and friends.
+     Anything that moves also needs a `motion-reduce:` counterpart. */
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 360ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1.15);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
 @layer base {
   /* shadcn base: default every element's border and focus ring to the theme
      rather than Tailwind's Preflight gray. */

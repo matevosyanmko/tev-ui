@@ -49,10 +49,13 @@ export default defineConfig({
   // along because tokens.css's @font-face points into it with a path relative
   // to itself — the two have to stay siblings in dist/ or the face 404s.
   //
+  // `src/themes/` holds opt-in brand themes (`@tev-ui/ui/themes/scribe.css`),
+  // plain CSS like tokens.css, copied the same way.
+  //
   // `rm -rf dist/fonts` first, because `clean: true` does NOT remove it (tsup
   // cleans what it emitted, and the fonts arrive after that) and a plain
   // `cp -R src/fonts dist/fonts` onto an existing directory copies *into* it,
   // shipping dist/fonts/fonts/ on every build after the first.
   onSuccess:
-    "cp src/theme.css src/tokens.css dist/ && rm -rf dist/fonts && cp -R src/fonts dist/fonts",
+    "cp src/theme.css src/tokens.css dist/ && rm -rf dist/fonts dist/themes && cp -R src/fonts dist/fonts && cp -R src/themes dist/themes",
 });

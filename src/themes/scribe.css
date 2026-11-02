@@ -1,0 +1,129 @@
+/*
+ * @tev/ui — the TevScribe theme.
+ *
+ * Opt-in: import it after tokens.css and put `data-theme="scribe"` on <html>
+ * (or on any subtree, which is how Storybook previews it).
+ *
+ *   @import "@tev/ui/theme.css";
+ *   @import "@tev/ui/tokens.css";
+ *   @import "@tev/ui/themes/scribe.css";
+ *
+ * Values come from the Figma file "TevScribe-Product", variable collections
+ * "TevScribe / Selected / Palette" (the primitives below) and "… / Colors"
+ * (the semantic layer). The screens are matched as drawn; the design audit's
+ * accessibility proposals (12 px floor, AA status pairs, neutral platform
+ * badges) are deliberately not applied yet. When they are, they land here as
+ * value changes to the `status-*` / `platform` aliases, not in components.
+ *
+ * `:root[data-theme]` outranks tokens.css's bare `:root`, so the import order
+ * stops mattering once the attribute is set.
+ */
+
+:root[data-theme="scribe"],
+[data-theme="scribe"] {
+  /* Primitives: Figma "Palette". Only the aliases below read these. */
+  --tev-ink: #000000;
+  --tev-white: #ffffff;
+  --tev-dark: #151515;
+  --tev-canvas: #f6f6f6;
+  --tev-subtle: #e7e7e7;
+  --tev-muted: #c4c4c4;
+  --tev-secondary: #a2a2a2;
+  --tev-green: #8aff87;
+  --tev-green-soft: #d5f9d4;
+  --tev-coral: #ed5055;
+  --tev-red: #ff1d1d;
+
+  /* Delight has no Armenian glyphs; transcripts and summaries are often
+     Armenian. The app loads the fallback face. */
+  --font-display-family: "Delight", "Noto Sans Armenian", ui-sans-serif, system-ui, sans-serif;
+
+  /* Semantic layer: Figma "Colors". */
+  --surface-primary: var(--tev-white);
+  --surface-subtle: var(--tev-canvas);
+  --surface-neutral-subtle: var(--tev-subtle);
+  --surface-inverse: var(--tev-ink);
+  --surface-accent-green: var(--tev-green);
+  --surface-accent-green-soft: var(--tev-green-soft);
+  --surface-accent-coral: var(--tev-coral);
+  --content-primary: var(--tev-ink);
+  --content-secondary: var(--tev-secondary);
+  --content-muted: var(--tev-muted);
+  --content-inverse: var(--tev-white);
+  --content-dark: var(--tev-dark);
+  --content-canvas: var(--tev-canvas);
+  --content-accent-coral: var(--tev-coral);
+  --stroke-ink: var(--tev-ink);
+  --stroke-dark: var(--tev-dark);
+  --stroke-secondary: var(--tev-secondary);
+  --stroke-muted: var(--tev-muted);
+  --stroke-subtle: var(--tev-subtle);
+  --stroke-white: var(--tev-white);
+  --stroke-accent-green: var(--tev-green);
+  --stroke-accent-red: var(--tev-red);
+  --icon-ink: var(--tev-ink);
+  --icon-white: var(--tev-white);
+  --icon-accent-coral: var(--tev-coral);
+
+  /* Meaning, as drawn: live and failed share the coral, done and the
+     platform badge share the brand green. */
+  --status-live: var(--tev-coral);
+  --status-live-foreground: var(--tev-white);
+  --status-success: var(--tev-green);
+  --status-success-foreground: var(--tev-ink);
+  --status-danger: var(--tev-coral);
+  --status-danger-foreground: var(--tev-white);
+  --status-neutral: var(--tev-subtle);
+  --status-neutral-foreground: var(--tev-ink);
+  --platform: var(--tev-green);
+  --platform-foreground: var(--tev-ink);
+
+  /* The shared contract, so every existing component speaks TevScribe too.
+     The brand-purple family is the "brand primary" role, which is black
+     here: selected days, focus, primary buttons. */
+  --black: var(--tev-ink);
+  --brand-purple: var(--tev-ink);
+  --brand-purple-foreground: var(--tev-white);
+  --brand-purple-soft: var(--tev-canvas);
+  --brand-purple-hover: var(--tev-dark);
+  --brand-green: var(--tev-green);
+  --brand-green-foreground: var(--tev-ink);
+  --brand-lavender: var(--tev-subtle);
+  --brand-lavender-soft: var(--tev-canvas);
+  --brand-coral: var(--tev-coral);
+  --brand-surface-1: var(--tev-dark);
+  --brand-surface-2: var(--tev-dark);
+  --brand-gradient: linear-gradient(var(--tev-ink), var(--tev-ink));
+  --brand-gradient-progress: linear-gradient(90deg, var(--tev-ink), var(--tev-ink));
+  --brand-gradient-chrome: linear-gradient(var(--tev-ink), var(--tev-ink));
+
+  --radius: 1rem;
+
+  --background: var(--tev-white);
+  --foreground: var(--tev-ink);
+  --card: var(--tev-white);
+  --card-foreground: var(--tev-ink);
+  --popover: var(--tev-white);
+  --popover-foreground: var(--tev-ink);
+  --primary: var(--tev-ink);
+  --primary-foreground: var(--tev-white);
+  --secondary: var(--tev-canvas);
+  --secondary-foreground: var(--tev-ink);
+  --muted: var(--tev-canvas);
+  --muted-foreground: var(--tev-secondary);
+  --accent: var(--tev-subtle);
+  --accent-foreground: var(--tev-ink);
+  --destructive: var(--tev-coral);
+  --destructive-foreground: var(--tev-white);
+  --border: var(--tev-subtle);
+  --input: var(--tev-muted);
+  --ring: var(--tev-ink);
+  --sidebar: var(--tev-ink);
+  --sidebar-foreground: var(--tev-white);
+  --sidebar-primary: var(--tev-white);
+  --sidebar-primary-foreground: var(--tev-ink);
+  --sidebar-accent: var(--tev-dark);
+  --sidebar-accent-foreground: var(--tev-white);
+  --sidebar-border: var(--tev-white);
+  --sidebar-ring: var(--tev-green);
+}

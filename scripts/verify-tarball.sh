@@ -24,7 +24,7 @@ echo "    $(basename "$TARBALL") ($(wc -c <"$TARBALL" | tr -d ' ') bytes)"
 echo "==> what the tarball actually ships"
 tar -tzf "$TARBALL" | sed 's|^package/||' | grep -E '\.(js|d\.ts|css|woff2)$' | sort > "$WORK/shipped.txt"
 for required in \
-  dist/theme.css dist/tokens.css dist/fonts/Delight-VF.woff2 \
+  dist/theme.css dist/tokens.css dist/themes/scribe.css dist/fonts/Delight-VF.woff2 \
   dist/utils.js dist/utils.d.ts \
   dist/ui/primitives/Button/index.js dist/ui/primitives/Button/index.d.ts \
   dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js \
@@ -84,6 +84,7 @@ cat > "$CONSUMER/src/main.css" <<'CSS'
 @import "tailwindcss";
 @import "@tev-ui/ui/theme.css";
 @import "@tev-ui/ui/tokens.css";
+@import "@tev-ui/ui/themes/scribe.css";
 CSS
 
 cat > "$CONSUMER/src/main.tsx" <<'TSX'
@@ -302,7 +303,8 @@ done
 
 echo "==> asserting the theme contract resolved"
 for tok in '--brand-purple' '--destructive-foreground' '--black' \
-           '--brand-green' '--brand-gradient'; do
+           '--brand-green' '--brand-gradient' '--surface-primary' \
+           'data-theme="scribe"'; do
   if grep -qF -- "$tok" "$CSS_OUT"; then
     echo "    ok   $tok"
   else
