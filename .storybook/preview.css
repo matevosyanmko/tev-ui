@@ -1,3 +1,5 @@
+/* The display-figure face themes/scribe.css names; an app loads it the same way. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&display=swap");
 /*
  * Storybook sets itself up exactly as a consuming project would: Tailwind,
  * then the theme contract, then the default tokens. These are relative paths

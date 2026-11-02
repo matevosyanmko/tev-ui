@@ -37,6 +37,10 @@
   /* Delight has no Armenian glyphs; transcripts and summaries are often
      Armenian. The app loads the fallback face. */
   --font-display-family: "Delight", "Noto Sans Armenian", ui-sans-serif, system-ui, sans-serif;
+  /* Display figures only (Figma "TevScribe/Number", Plus Jakarta Sans
+     ExtraBold). The app loads the face; until it has, figures fall back to
+     Delight. */
+  --font-figure-family: "Plus Jakarta Sans", "Delight", ui-sans-serif, system-ui, sans-serif;
 
   /* Semantic layer: Figma "Colors". */
   --surface-primary: var(--tev-white);

@@ -16,6 +16,7 @@ const twMerge = extendTailwindMerge({
       text: [
         "display-80",
         "display-56",
+        "number-56",
         "display-48",
         "heading-56",
         "heading-40",
@@ -37,6 +38,7 @@ const twMerge = extendTailwindMerge({
         "micro-6",
         "micro-5",
       ],
+      font: ["figure"],
       radius: ["3", "8", "10", "12", "16", "20", "24", "30", "32", "40"],
       shadow: ["popover", "glass"],
       blur: ["overlay"],

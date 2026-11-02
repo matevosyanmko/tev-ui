@@ -172,8 +172,9 @@ src/
 - **No font classes on components.** The brand face is the document default —
   `theme.css` sets `--default-font-family`, which Tailwind's Preflight `html`
   rule reads — so every component inherits it and none should name a font.
-  `font-mono` in `ErrorBoundary`'s stack trace is the one deliberate
-  exception. Do not reach for `--font-sans`: that is Tailwind's own system
+  `font-mono` in `ErrorBoundary`'s stack trace and `font-figure` (the
+  token for display figures, which falls back to the brand face) are the
+  deliberate exceptions. Do not reach for `--font-sans`: that is Tailwind's own system
   stack and stays that way, which is what makes `font-sans` a working escape
   hatch for a consumer. `verify:package` asserts both halves.
 - **Semantic tokens, never hardcoded values.** `theme.css` declares the

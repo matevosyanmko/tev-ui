@@ -20,7 +20,7 @@ function MetricTile({ tone = "accent", value, unit, icon, className, ...props }:
       {...props}
     >
       <p data-slot="metric-tile-figure" className="flex min-w-0 items-start gap-2.5">
-        <span data-slot="metric-tile-value" className="text-display-56 whitespace-nowrap">
+        <span data-slot="metric-tile-value" className="font-figure text-number-56 whitespace-nowrap">
           {value}
         </span>
         {unit ? (
