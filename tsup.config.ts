@@ -42,6 +42,14 @@ export default defineConfig({
     "react-hook-form",
     "dayjs",
     "recharts",
+    // brand/WeekCalendar only: optional peers, imported from nowhere else, so
+    // a consumer without them can still import every other entry. esbuild
+    // treats a package's subpaths as external along with it.
+    "@fullcalendar/core",
+    "@fullcalendar/react",
+    "@fullcalendar/timegrid",
+    "@fullcalendar/daygrid",
+    "@fullcalendar/interaction",
   ],
   // The theme contract and default tokens ship verbatim; Tailwind compiles
   // them at the consumer's end, and `@source "./"` in theme.css resolves
