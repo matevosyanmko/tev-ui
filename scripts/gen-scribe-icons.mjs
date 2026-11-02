@@ -75,6 +75,10 @@ const header = `/*
  * single-colour glyphs and per-icon id prefixes. Each renders at its Figma size
  * by default; \`size\` sets the longer side and keeps the aspect ratio.
  *
+ * Each constant is marked pure so a bundler drops the glyphs a consumer never
+ * imports: primitives (Select's chevron, SearchField's lens) pull this module
+ * in, and tsup inlines it into their entries.
+ *
  * Markup is injected rather than transcribed to JSX for the same reason as
  * brand/Icons: it is machine artwork, re-exported wholesale. Every string is
  * a module constant; nothing interpolates caller input.
@@ -110,7 +114,7 @@ function makeIcon(name: string, viewBox: string, width: number, height: number, 
 const components = icons
   .map(
     (i) =>
-      `\nexport const ${i.name} = makeIcon(\n  "${i.name}",\n  "${i.viewBox}",\n  ${i.width},\n  ${i.height},\n  ${JSON.stringify(i.body)},\n);\n`,
+      `\nexport const ${i.name} = /* @__PURE__ */ makeIcon(\n  "${i.name}",\n  "${i.viewBox}",\n  ${i.width},\n  ${i.height},\n  ${JSON.stringify(i.body)},\n);\n`,
   )
   .join("");
 
