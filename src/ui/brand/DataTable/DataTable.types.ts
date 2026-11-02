@@ -24,8 +24,11 @@ export interface DataTableColumn<Row = unknown> {
   render?: (value: unknown, row: Row) => React.ReactNode;
   width?: CssSize;
   minWidth?: CssSize;
-  /** Picks from the table's fixed set of header roles. */
-  headerVariant?: "default" | "plain" | "action";
+  /**
+   * Picks from the table's fixed set of header roles. `inverse` is
+   * TevScribe's black header cell (100:40457).
+   */
+  headerVariant?: "default" | "plain" | "action" | "inverse";
   headerClassName?: string;
   cellClassName?: string;
   sortable?: boolean;

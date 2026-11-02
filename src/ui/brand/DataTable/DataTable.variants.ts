@@ -29,4 +29,9 @@ export const DATA_TABLE_HEADER_VARIANTS: Record<
   action: {
     className: "justify-center bg-brand-lavender text-black",
   },
+  // TevScribe's usage table (100:40457): ink cells with a 16px top radius,
+  // the title in 14px bold white.
+  inverse: {
+    className: "rounded-t-16 bg-surface-inverse text-heading-14 font-bold text-content-inverse",
+  },
 };
