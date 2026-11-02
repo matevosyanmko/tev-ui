@@ -28,7 +28,9 @@ function ToggleGroup({
   className,
   variant,
   size,
-  spacing = 0,
+  // `boxed` items are separate tiles 8px apart, as drawn; every other
+  // variant joins its items by default.
+  spacing = variant === "boxed" ? 2 : 0,
   children,
   ...props
 }: ToggleGroupProps) {
@@ -62,6 +64,7 @@ function ToggleGroupItem({
   ...props
 }: React.ComponentProps<typeof ToggleGroupPrimitive.Item> & VariantProps<typeof toggleVariants>) {
   const context = React.useContext(ToggleGroupContext);
+  const resolvedVariant = context.variant || variant;
 
   return (
     <ToggleGroupPrimitive.Item
@@ -76,6 +79,9 @@ function ToggleGroupItem({
         }),
         "w-auto min-w-0 shrink-0 px-3 focus:z-10 focus-visible:z-10",
         "data-[spacing=0]:rounded-none data-[spacing=0]:shadow-none data-[spacing=0]:first:rounded-l-md data-[spacing=0]:last:rounded-r-md data-[spacing=0]:data-[variant=outline]:border-l-0 data-[spacing=0]:data-[variant=outline]:first:border-l",
+        // A boxed item is a fixed 32px tile, so the row's auto width and 12px
+        // sides above give way; the chosen view also takes a white stroke.
+        resolvedVariant === "boxed" && "w-8 px-0 data-[state=on]:inset-ring-stroke-white",
         className,
       )}
       {...props}

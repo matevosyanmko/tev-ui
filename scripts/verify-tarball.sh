@@ -320,12 +320,12 @@ for cls in 'bg-foreground' 'fill-foreground' 'bg-muted-foreground' \
 done
 
 echo "==> asserting the theme contract resolved"
-# The scribe selector is matched as minified: the CSS minifier drops the quotes
-# from `[data-theme="scribe"]`.
+# Compared without quotes: the consumer build minifies `[data-theme="scribe"]`
+# to `[data-theme=scribe]`, so the quoted spelling never matches.
 for tok in '--brand-purple' '--destructive-foreground' '--black' \
            '--brand-green' '--brand-gradient' '--surface-primary' \
-           '[data-theme=scribe]'; do
-  if grep -qF -- "$tok" "$CSS_OUT"; then
+           'data-theme=scribe'; do
+  if tr -d '"' < "$CSS_OUT" | grep -qF -- "$tok"; then
     echo "    ok   $tok"
   else
     echo "    FAIL $tok missing"

@@ -4,6 +4,7 @@ import * as React from "react";
 import { Tabs as TabsPrimitive } from "radix-ui";
 
 import { cn } from "../../../utils.js";
+import { TabsListVariantContext } from "./Tabs.context.js";
 import type { TabsListProps } from "./Tabs.types.js";
 import { tabsListVariants } from "./Tabs.variants.js";
 
@@ -30,16 +31,19 @@ function Tabs({
 
 function TabsList({ className, variant = "default", ...props }: TabsListProps) {
   return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
-      data-variant={variant}
-      className={cn(tabsListVariants({ variant }), className)}
-      {...props}
-    />
+    <TabsListVariantContext.Provider value={variant}>
+      <TabsPrimitive.List
+        data-slot="tabs-list"
+        data-variant={variant}
+        className={cn(tabsListVariants({ variant }), className)}
+        {...props}
+      />
+    </TabsListVariantContext.Provider>
   );
 }
 
 function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  const inverse = React.useContext(TabsListVariantContext) === "inverse";
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
@@ -48,6 +52,11 @@ function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPr
         "group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent dark:group-data-[variant=line]/tabs-list:data-[state=active]:border-transparent dark:group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent",
         "data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 dark:data-[state=active]:text-foreground",
         "after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-[orientation=horizontal]/tabs:after:inset-x-0 group-data-[orientation=horizontal]/tabs:after:bottom-[-5px] group-data-[orientation=horizontal]/tabs:after:h-0.5 group-data-[orientation=vertical]/tabs:after:inset-y-0 group-data-[orientation=vertical]/tabs:after:-right-1 group-data-[orientation=vertical]/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-[state=active]:after:opacity-100",
+        // A 56px icon-and-label tab; the 2px stroke is always there, white
+        // only on the active tab, so switching never shifts the content. The
+        // content sits 4px left of centre, as drawn.
+        inverse &&
+          "h-14 gap-2 rounded-16 border-2 border-transparent py-2 pr-2 pl-0 text-caption-10 font-normal text-content-inverse transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-standard hover:border-stroke-white/40 hover:text-content-inverse focus-visible:border-stroke-white focus-visible:ring-stroke-white/50 focus-visible:outline-stroke-white motion-reduce:transition-none data-[state=active]:border-stroke-white data-[state=active]:bg-surface-inverse data-[state=active]:text-content-inverse [&_svg:not([class*='size-'])]:size-auto",
         className,
       )}
       {...props}
