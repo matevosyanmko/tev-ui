@@ -82,6 +82,8 @@ export const buttonVariants = cva(
         block: `h-16 w-full gap-3 rounded-8 px-6 text-heading-16 font-bold inset-ring-1.5 ${NATURAL_SVG}`,
         /** 32px circle around a single glyph: Delete. */
         "icon-pill": `size-8 rounded-full p-0 ${NATURAL_SVG}`,
+        /** 32px rounded square for a glyph drawn with its own box: the sidebar's menu button. */
+        "icon-box": `size-8 rounded-8 p-0 ${NATURAL_SVG}`,
         /** The framed CTA: 124px tall, display type in capitals. */
         display: `h-31 gap-3 rounded-24 px-10 text-display-48 font-extrabold uppercase ${NATURAL_SVG}`,
       },

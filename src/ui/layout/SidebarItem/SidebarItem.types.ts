@@ -13,8 +13,8 @@ export interface SidebarItemProps extends React.ComponentProps<"a"> {
 export interface SidebarItemIconProps {
   /**
    * Typed as a component so the item owns the glyph size. Sidebar icons are
-   * 32px everywhere; letting callers pass a pre-sized element is how a nav
-   * ends up with three different icon weights.
+   * 32px everywhere (40px in a `boxed` sidebar); letting callers pass a
+   * pre-sized element is how a nav ends up with three different icon weights.
    */
   icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
   className?: string;

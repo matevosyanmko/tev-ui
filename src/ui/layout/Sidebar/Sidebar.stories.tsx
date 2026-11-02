@@ -1,9 +1,18 @@
+import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LogOut } from "lucide-react";
+import { expect, userEvent } from "storybook/test";
 
 import { Sidebar, SidebarNav, SidebarGroup, SidebarFooter } from "./Sidebar";
 import { SidebarItem, SidebarItemIcon, SidebarItemLabel } from "../SidebarItem/SidebarItem";
 import { LangPicker } from "../../brand/LangPicker/LangPicker";
+import { Button } from "../../primitives/Button/Button";
+import {
+  NavHomeIcon,
+  NavMenuIcon,
+  NavSettingsIcon,
+  NavUsageIcon,
+} from "../../brand/ScribeIcons/ScribeIcons";
 import {
   AlertsIcon,
   AnalyticsIcon,
@@ -106,3 +115,114 @@ export const Default: Story = {
  * moves out. Desktop only: below `lg` a sidebar opens in a `SidebarSheet`.
  */
 export const Collapsed: Story = { ...Default, args: { collapsed: true } };
+
+// ---- TevScribe ----------------------------------------------------------
+
+const SCRIBE_GROUPS = [
+  [{ id: "home", label: "Home", icon: NavHomeIcon }],
+  [
+    { id: "usage", label: "Usage", icon: NavUsageIcon },
+    { id: "settings", label: "Settings", icon: NavSettingsIcon },
+  ],
+];
+
+function ScribeRail({
+  collapsed,
+  initial = "home",
+  labels = { home: "Home", usage: "Usage", settings: "Settings", logout: "log out" },
+}: {
+  collapsed?: boolean;
+  initial?: string;
+  labels?: Record<string, string>;
+}) {
+  const [current, setCurrent] = React.useState(initial);
+  const [lang, setLang] = React.useState("en");
+  return (
+    <Sidebar variant="boxed" collapsed={collapsed}>
+      <SidebarNav>
+        {SCRIBE_GROUPS.map((group) => (
+          <SidebarGroup key={group[0].id}>
+            {group.map((item) => (
+              <SidebarItem key={item.id} asChild active={item.id === current}>
+                <a
+                  href={`#${item.id}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setCurrent(item.id);
+                  }}
+                >
+                  <SidebarItemIcon icon={item.icon} />
+                  <SidebarItemLabel>{labels[item.id]}</SidebarItemLabel>
+                </a>
+              </SidebarItem>
+            ))}
+          </SidebarGroup>
+        ))}
+      </SidebarNav>
+
+      <SidebarFooter>
+        <Button variant="quiet-inverse" size="icon-box" aria-label="Collapse menu">
+          <NavMenuIcon />
+        </Button>
+        <LangPicker
+          variant="accent-pill"
+          value={lang}
+          options={[
+            { value: "en", label: "ENG" },
+            { value: "am", label: "ARM" },
+            { value: "ru", label: "RUS" },
+          ]}
+          onChange={setLang}
+          label="Language"
+        />
+        <Button variant="quiet-inverse" size="pill-sm">
+          {labels.logout}
+        </Button>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
+
+const scribe = { globals: { theme: "scribe" } } as const;
+
+/**
+ * TevScribe's rail (100:41115): each group an outlined box, items a 40px icon
+ * and a 10px label, the current page a white tile. The footer is the menu
+ * button, the green language pill (it opens upwards) and log out. Click an
+ * item to move the current page; hover tints a row, Tab rings it in green.
+ */
+export const ScribeBoxed: Story = {
+  ...scribe,
+  render: () => <ScribeRail />,
+  play: async ({ canvas }) => {
+    const usage = canvas.getByRole("link", { name: "Usage" });
+    await userEvent.click(usage);
+    await expect(usage).toHaveAttribute("aria-current", "page");
+    await expect(canvas.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
+  },
+};
+
+/** Usage current (100:40457). */
+export const ScribeBoxedUsage: Story = { ...scribe, render: () => <ScribeRail initial="usage" /> };
+
+/** Settings current (100:40567). */
+export const ScribeBoxedSettings: Story = {
+  ...scribe,
+  render: () => <ScribeRail initial="settings" />,
+};
+
+/** Armenian labels: the longest wraps to two lines rather than truncating. */
+export const ScribeBoxedArmenian: Story = {
+  ...scribe,
+  render: () => (
+    <ScribeRail
+      labels={{ home: "Գլխավոր", usage: "Օգտագործում", settings: "Կարգավորումներ", logout: "Ելք" }}
+    />
+  ),
+};
+
+/** The boxed rail collapsed to icons on desktop; it opens over the page on hover or focus. */
+export const ScribeBoxedCollapsed: Story = {
+  ...scribe,
+  render: () => <ScribeRail collapsed />,
+};

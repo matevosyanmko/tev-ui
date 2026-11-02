@@ -1,6 +1,7 @@
-import type * as React from "react";
+import * as React from "react";
 
 import { cn } from "../../../utils.js";
+import { SidebarVariantContext } from "./Sidebar.context.js";
 import type { SidebarProps } from "./Sidebar.types.js";
 
 /**
@@ -21,36 +22,49 @@ import type { SidebarProps } from "./Sidebar.types.js";
  * page beside it. That needs a parent that gives the <aside> its height, as
  * `AppLayout`'s row does.
  */
-function Sidebar({ collapsed = false, className, children, ...props }: SidebarProps) {
+function Sidebar({
+  collapsed = false,
+  variant = "default",
+  className,
+  children,
+  ...props
+}: SidebarProps) {
+  const boxed = variant === "boxed";
   return (
-    <aside
-      data-slot="sidebar"
-      data-collapsed={collapsed || undefined}
-      className={cn(
-        "group/sidebar flex w-42 shrink-0 flex-col lg:data-collapsed:relative lg:data-collapsed:w-20",
-        className,
-      )}
-      {...props}
-    >
-      <div
-        data-slot="sidebar-panel"
+    <SidebarVariantContext.Provider value={variant}>
+      <aside
+        data-slot="sidebar"
+        data-collapsed={collapsed || undefined}
+        data-variant={boxed ? "boxed" : undefined}
         className={cn(
-          "flex min-h-0 w-full flex-1 flex-col",
-          "transition-[width] duration-200 ease-out motion-reduce:transition-none",
-          // Collapsed on desktop: lift the panel out of the flow, over the
-          // page, painted in the page ink so what it covers stays hidden. The
-          // solid shadow is the open rail's gutter: it repeats the layout's
-          // 1rem gap past the panel's edge, and sits over that same gap (so
-          // shows nothing) while the rail is closed.
-          "lg:group-data-collapsed/sidebar:absolute lg:group-data-collapsed/sidebar:inset-y-0 lg:group-data-collapsed/sidebar:left-0 lg:group-data-collapsed/sidebar:z-30 lg:group-data-collapsed/sidebar:bg-black lg:group-data-collapsed/sidebar:shadow-[1rem_0_0_var(--black)]",
-          // …and open it to the full rail width. Same two conditions as the
-          // `sidebar-collapsed` variant, so labels appear as the panel opens.
-          "lg:group-data-collapsed/sidebar:group-hover/sidebar:w-42 lg:group-data-collapsed/sidebar:group-has-focus-visible/sidebar:w-42",
+          "group/sidebar flex w-42 shrink-0 flex-col lg:data-collapsed:relative lg:data-collapsed:w-20",
+          boxed && "w-40",
+          className,
         )}
+        {...props}
       >
-        {children}
-      </div>
-    </aside>
+        <div
+          data-slot="sidebar-panel"
+          className={cn(
+            "flex min-h-0 w-full flex-1 flex-col",
+            "transition-[width] duration-200 ease-out motion-reduce:transition-none",
+            // Collapsed on desktop: lift the panel out of the flow, over the
+            // page, painted in the page ink so what it covers stays hidden. The
+            // solid shadow is the open rail's gutter: it repeats the layout's
+            // 1rem gap past the panel's edge, and sits over that same gap (so
+            // shows nothing) while the rail is closed.
+            "lg:group-data-collapsed/sidebar:absolute lg:group-data-collapsed/sidebar:inset-y-0 lg:group-data-collapsed/sidebar:left-0 lg:group-data-collapsed/sidebar:z-30 lg:group-data-collapsed/sidebar:bg-black lg:group-data-collapsed/sidebar:shadow-[1rem_0_0_var(--black)]",
+            // …and open it to the full rail width. Same two conditions as the
+            // `sidebar-collapsed` variant, so labels appear as the panel opens.
+            "lg:group-data-collapsed/sidebar:group-hover/sidebar:w-42 lg:group-data-collapsed/sidebar:group-has-focus-visible/sidebar:w-42",
+            boxed &&
+              "lg:group-data-collapsed/sidebar:group-hover/sidebar:w-40 lg:group-data-collapsed/sidebar:group-has-focus-visible/sidebar:w-40",
+          )}
+        >
+          {children}
+        </div>
+      </aside>
+    </SidebarVariantContext.Provider>
   );
 }
 
@@ -73,11 +87,15 @@ function SidebarNav({ className, ...props }: React.ComponentProps<"nav">) {
 
 /** One rounded card of joined `<SidebarItem>`s. `shrink-0` so groups never squash. */
 function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
+  const boxed = React.useContext(SidebarVariantContext) === "boxed";
   return (
     <div
       data-slot="sidebar-group"
       className={cn(
         "flex shrink-0 flex-col gap-1 rounded-[18px] bg-brand-surface-1 p-2",
+        // Boxed: the page ink inside a 1px white stroke, items joined.
+        boxed &&
+          "gap-0 overflow-clip rounded-16 bg-surface-inverse inset-ring inset-ring-stroke-white",
         className,
       )}
       {...props}
@@ -87,10 +105,15 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
 
 /** The cluster below the nav — a language switcher, logout, settings, etc. */
 function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
+  const boxed = React.useContext(SidebarVariantContext) === "boxed";
   return (
     <div
       data-slot="sidebar-footer"
-      className={cn("mt-3 flex shrink-0 flex-col items-start gap-3 px-1", className)}
+      className={cn(
+        "mt-3 flex shrink-0 flex-col items-start gap-3 px-1",
+        boxed && "gap-2 px-0",
+        className,
+      )}
       {...props}
     />
   );

@@ -49,6 +49,7 @@ const meta = {
         "compact",
         "block",
         "icon-pill",
+        "icon-box",
         "display",
       ],
     },

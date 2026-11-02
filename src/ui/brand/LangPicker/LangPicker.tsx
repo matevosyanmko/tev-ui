@@ -3,6 +3,7 @@
 import { ChevronUp } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "../../primitives/Popover/Popover.js";
+import { ChevronUpIcon } from "../ScribeIcons/ScribeIcons.js";
 import { cn } from "../../../utils.js";
 import type { LangPickerProps } from "./LangPicker.types.js";
 
@@ -28,9 +29,60 @@ function LangPicker({
   label = "Language",
   className,
   contentClassName,
+  variant = "default",
 }: LangPickerProps) {
   const current = options.find((option) => option.value === value);
   const others = options.filter((option) => option.value !== value);
+
+  if (variant === "accent-pill") {
+    return (
+      <Popover>
+        <PopoverTrigger
+          data-brand="lang-picker-trigger"
+          data-variant="accent-pill"
+          aria-label={label}
+          className={cn(
+            "group flex h-8 w-18 shrink-0 items-center justify-center rounded-16 bg-surface-accent-green px-4 text-caption-10 text-content-primary outline-none",
+            "transition-[background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-accent-green/80 focus-visible:ring-[3px] focus-visible:ring-sidebar-ring/50 motion-reduce:transition-none",
+            className,
+          )}
+        >
+          <span className="w-6 text-center">{current?.label ?? options[0]?.label}</span>
+          <ChevronUpIcon
+            aria-hidden="true"
+            className="transition-transform duration-(--duration-fast) ease-standard group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+          />
+        </PopoverTrigger>
+
+        <PopoverContent
+          side="top"
+          align="start"
+          sideOffset={6}
+          data-brand="lang-picker-content"
+          className={cn(
+            "flex w-(--radix-popover-trigger-width) flex-col gap-1",
+            "rounded-12 border-none bg-surface-accent-green p-1.5 shadow-popover",
+            contentClassName,
+          )}
+        >
+          {others.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              data-brand="lang-picker-item"
+              onClick={() => onChange(option.value)}
+              className={cn(
+                "w-full rounded-8 bg-surface-primary py-1.75 text-center text-caption-10 text-content-primary outline-none",
+                "transition-colors duration-(--duration-fast) ease-standard hover:bg-surface-subtle focus-visible:ring-2 focus-visible:ring-ring/50 motion-reduce:transition-none",
+              )}
+            >
+              {option.label}
+            </button>
+          ))}
+        </PopoverContent>
+      </Popover>
+    );
+  }
 
   return (
     <Popover>
