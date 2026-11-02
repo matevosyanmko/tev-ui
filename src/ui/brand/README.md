@@ -32,6 +32,7 @@ to satisfy.
 | `ProductTour` | Scrim, spotlight ring and step card for a guided walkthrough. |
 | `SectionBanner` | The lavender section divider used across dashboards. |
 | `SelectionBox` | The square row-selection checkbox. |
+| `WeekCalendar` | The TevScribe week / day time grid on FullCalendar v6 (optional peers, imported only here): controlled `date` / `view` / `zoom`, the app's own cards through `renderEvent`. Also exports `WeekCalendarZoom`, the zoom pill. |
 | `WelcomeDialog` | The full-screen onboarding welcome card. |
 
 ## Two rules these components exist under
