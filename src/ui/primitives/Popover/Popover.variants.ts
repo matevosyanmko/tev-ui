@@ -9,9 +9,11 @@ import { cva } from "class-variance-authority";
 
 // Grows out of its trigger: fade, a 5% zoom and a 2-step slide from the
 // trigger's side, on duration-base/ease-emphasized; out faster on the exit
-// curve. Reduced motion drops it, and Radix Presence then unmounts at once.
+// curve. Reduced motion drops it, and Radix Presence then unmounts at once;
+// the reset carries the data-state variant too, or the attribute selector
+// outranks it.
 const SCRIBE_MOTION =
-  "origin-(--radix-popover-content-transform-origin) duration-(--duration-base) data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:ease-emphasized data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:duration-(--duration-fast) data-[state=closed]:ease-exit motion-reduce:animate-none";
+  "origin-(--radix-popover-content-transform-origin) duration-(--duration-base) data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:ease-emphasized data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:duration-(--duration-fast) data-[state=closed]:ease-exit motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none";
 
 export const popoverContentVariants = cva("", {
   variants: {

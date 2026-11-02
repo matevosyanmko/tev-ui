@@ -10,9 +10,10 @@ import { cva } from "class-variance-authority";
 // Open: fade, a 5% zoom and an 8px rise on the emphasized curve (which
 // overshoots a hair, so the card settles). Close: the same in reverse,
 // faster, on the exit curve. Reduced motion drops the animation; Radix
-// Presence then unmounts at once.
+// Presence then unmounts at once. The reduced-motion reset carries the same
+// data-state variant as the animation, or the attribute selector outranks it.
 const PANEL_MOTION =
-  "duration-(--duration-base) data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-bottom-2 data-[state=open]:ease-emphasized data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:slide-out-to-bottom-2 data-[state=closed]:duration-(--duration-fast) data-[state=closed]:ease-exit motion-reduce:animate-none";
+  "duration-(--duration-base) data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-bottom-2 data-[state=open]:ease-emphasized data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:slide-out-to-bottom-2 data-[state=closed]:duration-(--duration-fast) data-[state=closed]:ease-exit motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none";
 
 export const dialogContentVariants = cva("", {
   variants: {
@@ -56,7 +57,7 @@ export const dialogOverlayVariants = cva("", {
        * The blur comes in with the fade, since it belongs to this layer.
        */
       panel:
-        "fixed inset-0 z-50 bg-surface-inverse/71 backdrop-blur-overlay duration-(--duration-base) ease-standard data-[state=closed]:animate-out data-[state=closed]:duration-(--duration-fast) data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 motion-reduce:animate-none",
+        "fixed inset-0 z-50 bg-surface-inverse/71 backdrop-blur-overlay duration-(--duration-base) ease-standard data-[state=closed]:animate-out data-[state=closed]:duration-(--duration-fast) data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none",
     },
   },
   defaultVariants: { variant: "default" },
