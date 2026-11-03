@@ -285,6 +285,9 @@
   /* The one 1.7px stroke drawn as a border, which does grow its box: the
      week calendar's zoom pill. */
   --border-width-1\.7: 1.7px;
+  /* …and the meeting list row's 1.5px hairline, as a border so that rows
+     stacked in one list share a line instead of drawing two rings. */
+  --border-width-1\.5: 1.5px;
 
   /* Two lengths the week calendar's frame (100:40076) draws between quarter
      steps: the day number's 33.5px drop and the scroll thumb's 58.5px. Named
