@@ -190,7 +190,7 @@ function WeekCalendarInner<TData>(
       <div
         ref={probeRef}
         aria-hidden
-        className="pointer-events-none invisible absolute top-0 left-0 h-(--week-calendar-hour-target) w-0 transition-[height] duration-(--duration-base) ease-standard motion-reduce:transition-none"
+        className="pointer-events-none invisible absolute top-0 left-0 h-(--week-calendar-hour-target) w-0 transition-height duration-(--duration-base) ease-standard motion-reduce:transition-none"
       />
     </div>
   );

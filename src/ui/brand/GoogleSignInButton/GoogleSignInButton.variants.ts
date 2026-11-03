@@ -20,7 +20,7 @@ export const googleSignInButtonVariants = cva(
          * after the label rather than before it.
          */
         "outline-block":
-          "h-16 w-full gap-3 rounded-8 border-0 bg-surface-primary px-6 text-heading-16 font-bold text-content-primary inset-ring-1.5 inset-ring-stroke-ink transition-[background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-subtle motion-reduce:transition-none dark:bg-surface-primary dark:hover:bg-surface-subtle",
+          "h-16 w-full gap-3 rounded-8 border-0 bg-surface-primary px-6 text-heading-16 font-bold text-content-primary inset-ring-1.5 inset-ring-stroke-ink transition-fill duration-(--duration-fast) ease-standard hover:bg-surface-subtle motion-reduce:transition-none dark:bg-surface-primary dark:hover:bg-surface-subtle",
       },
     },
     defaultVariants: {

@@ -5,7 +5,7 @@ import { cva } from "class-variance-authority";
 // once and interpolated whole, so each class still appears literally here for
 // Tailwind's scanner.
 const SCRIBE_MOTION =
-  "transition-[color,background-color,box-shadow,translate] duration-(--duration-fast) ease-standard motion-reduce:transition-none active:translate-y-px";
+  "transition-press duration-(--duration-fast) ease-standard motion-reduce:transition-none active:translate-y-px";
 
 // The TevScribe sizes draw ScribeIcons at their Figma size, so the base rule
 // that forces an unsized <svg> to 16px is reset to the glyph's own width and

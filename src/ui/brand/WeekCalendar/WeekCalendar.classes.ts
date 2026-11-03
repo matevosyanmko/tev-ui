@@ -26,8 +26,8 @@ export const ROOT_CLASSES = [
   "[--fc-event-bg-color:transparent] [--fc-event-border-color:transparent]",
   "[--fc-event-text-color:inherit] [--fc-small-font-size:1em]",
   // The hour column's width up to the first line, and the header's height
-  // down to the grid's top line.
-  "[--week-calendar-axis:4rem] [--week-calendar-header:108px] lg:[--week-calendar-axis:106px]",
+  // down to the grid's top line, on the spacing scale (64 / 106 px, 108 px).
+  "[--week-calendar-axis:--spacing(16)] [--week-calendar-header:--spacing(27)] lg:[--week-calendar-axis:--spacing(26.5)]",
   // Lines run between cells only: no outer frame, no section borders.
   "[&_.fc-scrollgrid]:border-0! [&_.fc-scrollgrid-section>*]:border-0!",
   // Header: no vertical lines; its bottom edge is the grid's top line, which

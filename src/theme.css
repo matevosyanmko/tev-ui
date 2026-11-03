@@ -282,6 +282,16 @@
   --ring-width-0\.5: 0.5px;
   --ring-width-1\.5: 1.5px;
   --ring-width-1\.7: 1.7px;
+  /* The one 1.7px stroke drawn as a border, which does grow its box: the
+     week calendar's zoom pill. */
+  --border-width-1\.7: 1.7px;
+
+  /* Two lengths the week calendar's frame (100:40076) draws between quarter
+     steps: the day number's 33.5px drop and the scroll thumb's 58.5px. Named
+     as the spacing multipliers they are, so `pt-8.375` reads as the scale and
+     cn merges it like any other padding. */
+  --spacing-8\.375: calc(var(--spacing) * 8.375);
+  --spacing-14\.625: calc(var(--spacing) * 14.625);
 
   /* The Figma "Layout" collection's radius/* set, by pixel value. The
      relative `rounded-sm` … `rounded-4xl` above stay as they were. */
@@ -313,6 +323,16 @@
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-emphasized: cubic-bezier(0.3, 0, 0, 1.15);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  /* What a state change animates, as `transition-<name>`: exact property
+     lists, so a control's motion never picks up a layout property, and
+     beside Tailwind's own `transition-colors` / `-shadow` / `-opacity`. */
+  --transition-property-tint: color, background-color;
+  --transition-property-fill: background-color, box-shadow;
+  --transition-property-fade: background-color, opacity;
+  --transition-property-control: color, background-color, box-shadow;
+  --transition-property-press: color, background-color, box-shadow, translate;
+  --transition-property-tab: color, border-color, box-shadow;
+  --transition-property-height: height;
 }
 
 @layer base {

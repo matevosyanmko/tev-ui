@@ -56,7 +56,7 @@ function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPr
         // only on the active tab, so switching never shifts the content. The
         // content sits 4px left of centre, as drawn.
         inverse &&
-          "h-14 gap-2 rounded-16 border-2 border-transparent py-2 pr-2 pl-0 text-caption-10 font-normal text-content-inverse transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-standard hover:border-stroke-white/40 hover:text-content-inverse focus-visible:border-stroke-white focus-visible:ring-stroke-white/50 focus-visible:outline-stroke-white data-[state=active]:border-stroke-white data-[state=active]:bg-surface-inverse data-[state=active]:text-content-inverse motion-reduce:transition-none [&_svg:not([class*='size-'])]:size-auto",
+          "h-14 gap-2 rounded-16 border-2 border-transparent py-2 pr-2 pl-0 text-caption-10 font-normal text-content-inverse transition-tab duration-(--duration-fast) ease-standard hover:border-stroke-white/40 hover:text-content-inverse focus-visible:border-stroke-white focus-visible:ring-stroke-white/50 focus-visible:outline-stroke-white data-[state=active]:border-stroke-white data-[state=active]:bg-surface-inverse data-[state=active]:text-content-inverse motion-reduce:transition-none [&_svg:not([class*='size-'])]:size-auto",
         className,
       )}
       {...props}

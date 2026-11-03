@@ -22,7 +22,7 @@ export const toggleVariants = cva(
          * the glyph keeps its Figma size.
          */
         boxed:
-          "rounded-8 bg-surface-primary text-icon-ink inset-ring inset-ring-stroke-ink transition-[color,background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-subtle hover:text-icon-ink aria-pressed:not-data-[state=on]:bg-surface-inverse aria-pressed:not-data-[state=on]:text-icon-white aria-pressed:not-data-[state=on]:hover:bg-surface-inverse/85 data-[state=on]:bg-surface-inverse data-[state=on]:text-icon-white data-[state=on]:hover:bg-surface-inverse/85 motion-reduce:transition-none [&_svg:not([class*='size-'])]:size-auto",
+          "rounded-8 bg-surface-primary text-icon-ink inset-ring inset-ring-stroke-ink transition-control duration-(--duration-fast) ease-standard hover:bg-surface-subtle hover:text-icon-ink aria-pressed:not-data-[state=on]:bg-surface-inverse aria-pressed:not-data-[state=on]:text-icon-white aria-pressed:not-data-[state=on]:hover:bg-surface-inverse/85 data-[state=on]:bg-surface-inverse data-[state=on]:text-icon-white data-[state=on]:hover:bg-surface-inverse/85 motion-reduce:transition-none [&_svg:not([class*='size-'])]:size-auto",
       },
       size: {
         default: "h-9 min-w-9 px-2",

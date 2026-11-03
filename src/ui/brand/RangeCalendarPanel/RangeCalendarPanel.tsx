@@ -18,7 +18,7 @@ import { completeRange, monthInRange, nextRange, sameRange } from "./RangeCalend
 // Figma calendar is an Inter kit scaled by 0.886; it is set here in Delight
 // on the type ramp (12px month, 10px weekdays and days) and the 4px grid.
 const NAV_BUTTON =
-  "relative inline-flex size-4.5 cursor-pointer items-center justify-center rounded-full text-icon-ink outline-none transition-[background-color,opacity] duration-(--duration-fast) ease-standard after:absolute after:-inset-1.5 hover:bg-surface-subtle focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-30 aria-disabled:opacity-30 motion-reduce:transition-none";
+  "relative inline-flex size-4.5 cursor-pointer items-center justify-center rounded-full text-icon-ink outline-none transition-fade duration-(--duration-fast) ease-standard after:absolute after:-inset-1.5 hover:bg-surface-subtle focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-30 aria-disabled:opacity-30 motion-reduce:transition-none";
 
 const CLASS_NAMES: CalendarProps["classNames"] = {
   root: "w-full",

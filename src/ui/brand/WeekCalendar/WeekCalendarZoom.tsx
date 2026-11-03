@@ -21,7 +21,7 @@ function WeekCalendarZoom({ value, onValueChange, step = 1, labels, className }:
     <div
       data-slot="week-calendar-zoom"
       className={cn(
-        "inline-flex h-8 items-center gap-2.5 rounded-full border-[1.7px] border-stroke-ink bg-surface-subtle px-5",
+        "inline-flex h-8 items-center gap-2.5 rounded-full border-1.7 border-stroke-ink bg-surface-subtle px-5",
         "text-content-primary",
         className,
       )}
@@ -40,7 +40,7 @@ function WeekCalendarZoom({ value, onValueChange, step = 1, labels, className }:
         onValueChange={([next]) => {
           if (next !== undefined) onValueChange(next);
         }}
-        className="relative flex h-3.5 w-[45px] touch-none items-center select-none"
+        className="relative flex h-3.5 w-11.25 touch-none items-center select-none"
       >
         <SliderPrimitive.Track
           data-slot="week-calendar-zoom-track"
@@ -51,7 +51,7 @@ function WeekCalendarZoom({ value, onValueChange, step = 1, labels, className }:
           aria-label={labels?.slider ?? "Zoom"}
           className={cn(
             "block size-3.5 rounded-full border-2 border-stroke-ink bg-surface-primary outline-none",
-            "transition-[box-shadow] duration-(--duration-fast) ease-standard motion-reduce:transition-none",
+            "transition-shadow duration-(--duration-fast) ease-standard motion-reduce:transition-none",
             "focus-visible:ring-3 focus-visible:ring-ring/50",
           )}
         />

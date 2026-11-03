@@ -44,6 +44,9 @@ const twMerge = extendTailwindMerge({
       blur: ["overlay"],
       ease: ["standard", "emphasized", "exit"],
     },
+    classGroups: {
+      transition: [{ transition: ["tint", "fill", "fade", "control", "press", "tab", "height"] }],
+    },
   },
 });
 

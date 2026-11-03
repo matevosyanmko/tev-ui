@@ -38,7 +38,7 @@ export const chipVariants = cva(
         false: "",
         // Selected is the filled ink look: Figma draws no selected chip, so it
         // takes the one every other TevScribe selection uses.
-        true: "cursor-pointer transition-[color,background-color,box-shadow] duration-(--duration-fast) ease-standard outline-none hover:bg-surface-subtle focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-pressed:bg-surface-inverse aria-pressed:text-content-inverse aria-pressed:inset-ring-stroke-ink aria-pressed:hover:bg-surface-inverse/85 motion-reduce:transition-none",
+        true: "cursor-pointer transition-control duration-(--duration-fast) ease-standard outline-none hover:bg-surface-subtle focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-pressed:bg-surface-inverse aria-pressed:text-content-inverse aria-pressed:inset-ring-stroke-ink aria-pressed:hover:bg-surface-inverse/85 motion-reduce:transition-none",
       },
     },
     compoundVariants: [

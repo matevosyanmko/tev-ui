@@ -16,7 +16,7 @@ export function WeekCalendarDayHeader({ day, weekday }: WeekCalendarDayLabel) {
     <span
       data-slot="week-calendar-day"
       className={cn(
-        "flex h-(--week-calendar-header) flex-col items-center pt-[33.5px] text-content-primary",
+        "flex h-(--week-calendar-header) flex-col items-center pt-8.375 text-content-primary",
         ENTER_CLASSES,
       )}
     >
@@ -33,12 +33,15 @@ export function WeekCalendarDayHeader({ day, weekday }: WeekCalendarDayLabel) {
 /**
  * An hour label, as wide as the hour column: FullCalendar sizes that column
  * from its labels' width (plus the cell's 1 px border), so this is what fixes it.
+ * The label is the column's width less that border: the hairline comes off as
+ * right padding (the text centres in what is left) and a matching negative
+ * margin, so the cushion FullCalendar measures is a pixel narrower.
  */
 export function WeekCalendarHourLabel({ children }: { children: React.ReactNode }) {
   return (
     <span
       data-slot="week-calendar-hour"
-      className="block w-[calc(var(--week-calendar-axis)-1px)] text-center text-heading-12 leading-normal text-content-primary"
+      className="-mr-px block w-(--week-calendar-axis) pr-px text-center text-heading-12 leading-normal text-content-primary"
     >
       {children}
     </span>
@@ -61,7 +64,7 @@ export function WeekCalendarTimeZone({ children }: { children: React.ReactNode }
     <div className="pointer-events-none absolute top-0 left-0 z-10 flex h-(--week-calendar-header) w-(--week-calendar-axis) items-end pb-px">
       <div
         data-slot="week-calendar-time-zone"
-        className="flex h-[39px] w-full items-center justify-center rounded-full bg-surface-neutral-subtle text-heading-12 leading-normal text-content-primary"
+        className="flex h-9.75 w-full items-center justify-center rounded-full bg-surface-neutral-subtle text-heading-12 leading-normal text-content-primary"
       >
         {children}
       </div>
@@ -118,12 +121,13 @@ export function WeekCalendarScrollbar({
       ref={trackRef}
       aria-hidden
       data-slot="week-calendar-scrollbar"
-      className="pointer-events-none absolute top-[calc(var(--week-calendar-header)+13px)] right-0 bottom-3.5 z-10 w-1 rounded-full bg-stroke-muted"
+      // 13px under the header: an absolute box's top margin adds to its offset.
+      className="pointer-events-none absolute top-(--week-calendar-header) right-0 bottom-3.5 z-10 mt-3.25 w-1 rounded-full bg-stroke-muted"
     >
       <div
         ref={thumbRef}
         data-slot="week-calendar-scrollbar-thumb"
-        className="h-[58.5px] w-1 rounded-full bg-stroke-ink"
+        className="h-14.625 w-1 rounded-full bg-stroke-ink"
       />
     </div>
   );

@@ -25,7 +25,7 @@ function SelectPillTrigger({
       data-size={size}
       className={cn(
         "group/select-pill inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-20 bg-surface-primary px-3 text-caption-10 whitespace-nowrap text-content-primary inset-ring inset-ring-stroke-ink outline-none data-[size=default]:h-8 data-[size=lg]:h-10 data-[size=lg]:px-5 data-[size=sm]:h-8",
-        "transition-[background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-subtle focus-visible:ring-[3px] focus-visible:ring-ring/50 motion-reduce:transition-none",
+        "transition-fill duration-(--duration-fast) ease-standard hover:bg-surface-subtle focus-visible:ring-3 focus-visible:ring-ring/50 motion-reduce:transition-none",
         "disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:inset-ring-stroke-accent-red data-[placeholder]:text-content-secondary",
         "*:data-[slot=select-value]:flex *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 *:data-[slot=select-value]:truncate",
         className,

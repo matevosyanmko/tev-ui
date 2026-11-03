@@ -60,7 +60,7 @@ function RangeCalendarDay({ className, day, modifiers, children, ...props }: Day
       data-today={modifiers.today || undefined}
       className={cn(
         "relative flex h-7 w-full cursor-pointer items-center justify-center rounded-8 text-caption-10 outline-none",
-        "transition-[color,background-color] duration-(--duration-fast) ease-standard motion-reduce:transition-none",
+        "transition-tint duration-(--duration-fast) ease-standard motion-reduce:transition-none",
         "focus-visible:z-10 focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-40",
         TONE[tone],
         // A range's ends sit flush against the band: rounded outside only.

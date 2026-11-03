@@ -43,7 +43,7 @@ function LangPicker({
           aria-label={label}
           className={cn(
             "group flex h-8 w-18 shrink-0 items-center justify-center rounded-16 bg-surface-accent-green px-4 text-caption-10 text-content-primary outline-none",
-            "transition-[background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-accent-green/80 focus-visible:ring-[3px] focus-visible:ring-sidebar-ring/50 motion-reduce:transition-none",
+            "transition-fill duration-(--duration-fast) ease-standard hover:bg-surface-accent-green/80 focus-visible:ring-3 focus-visible:ring-sidebar-ring/50 motion-reduce:transition-none",
             className,
           )}
         >

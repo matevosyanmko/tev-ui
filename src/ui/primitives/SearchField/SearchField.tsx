@@ -22,7 +22,7 @@ const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(functio
           data-variant="pill"
           className={cn(
             "h-8 w-full rounded-30 border-stroke-ink bg-surface-primary py-0 pr-3 pl-11.25 text-caption-10 text-content-primary shadow-none placeholder:text-content-primary md:text-caption-10",
-            "transition-[color,background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-subtle motion-reduce:transition-none",
+            "transition-control duration-(--duration-fast) ease-standard hover:bg-surface-subtle motion-reduce:transition-none",
             inputClassName,
           )}
           {...props}
