@@ -1,9 +1,19 @@
 import * as React from "react";
+import { type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../../utils.js";
+import { fieldBoxClassName, inputVariants } from "./Input.variants.js";
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(function Input(
-  { className, type, ...props },
+export interface InputProps
+  extends React.ComponentProps<"input">, VariantProps<typeof inputVariants> {}
+
+/**
+ * A text input. `variant="field"` is TevScribe's 64px field (New meeting's
+ * link field, 100:41869); put a control that is not a text input in the
+ * matching `FieldBox`.
+ */
+const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
+  { className, type, variant = "default", ...props },
   ref,
 ) {
   return (
@@ -11,12 +21,8 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
       ref={ref}
       type={type}
       data-slot="input"
-      className={cn(
-        "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
-        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
-        "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-        className,
-      )}
+      data-variant={variant === "field" ? "field" : undefined}
+      className={cn(inputVariants({ variant }), className)}
       {...props}
     />
   );
@@ -24,4 +30,14 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
 
 Input.displayName = "Input";
 
-export { Input };
+/**
+ * The field's box without the input: the New meeting language rows, a
+ * translate glyph and a language pill inside the same white 64px box as the
+ * link field. A flex row, 8px apart, 16px in; lay it out further with
+ * `className` (the summary language row puts its hint on the right).
+ */
+function FieldBox({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="field-box" className={cn(fieldBoxClassName, className)} {...props} />;
+}
+
+export { FieldBox, Input };
