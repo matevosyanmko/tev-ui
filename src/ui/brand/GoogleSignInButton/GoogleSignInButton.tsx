@@ -2,6 +2,7 @@ import type * as React from "react";
 import { Slot } from "radix-ui";
 
 import { cn } from "../../../utils.js";
+import { GoogleIcon } from "../ScribeIcons/ScribeIcons.js";
 import type { GoogleSignInButtonProps } from "./GoogleSignInButton.types.js";
 import { googleSignInButtonVariants } from "./GoogleSignInButton.variants.js";
 
@@ -64,6 +65,23 @@ function GoogleSignInButton({
   ...props
 }: GoogleSignInButtonProps) {
   const Comp = asChild ? Slot.Root : "button";
+  const label = asChild ? children : (children ?? "Sign in with Google");
+
+  // The TevScribe block draws Figma's own "G" (ScribeIcons) after the label.
+  if (size === "outline-block") {
+    return (
+      <Comp
+        data-slot="google-sign-in-button"
+        data-size={size}
+        type={asChild ? undefined : type}
+        className={cn(googleSignInButtonVariants({ size, className }))}
+        {...props}
+      >
+        <Slot.Slottable>{label}</Slot.Slottable>
+        <GoogleIcon />
+      </Comp>
+    );
+  }
 
   return (
     <Comp
@@ -74,7 +92,7 @@ function GoogleSignInButton({
       {...props}
     >
       <GoogleMark />
-      <Slot.Slottable>{asChild ? children : (children ?? "Sign in with Google")}</Slot.Slottable>
+      <Slot.Slottable>{label}</Slot.Slottable>
     </Comp>
   );
 }

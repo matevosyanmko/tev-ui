@@ -7,6 +7,9 @@ import { Dialog as DialogPrimitive } from "radix-ui";
 import { cn } from "../../../utils.js";
 import type { DialogContentProps, DialogFooterProps } from "./Dialog.types.js";
 import { Button } from "../Button/Button.js";
+import { CloseIcon } from "../../brand/ScribeIcons/ScribeIcons.js";
+import { DialogContentVariantContext } from "./Dialog.context.js";
+import { dialogContentVariants, dialogOverlayVariants } from "./Dialog.variants.js";
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -29,16 +32,13 @@ function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.C
 // overlay unmounted without fading out.
 const DialogOverlay = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentProps<typeof DialogPrimitive.Overlay>
->(function DialogOverlay({ className, ...props }, ref) {
+  React.ComponentProps<typeof DialogPrimitive.Overlay> & { variant?: "default" | "panel" }
+>(function DialogOverlay({ className, variant = "default", ...props }, ref) {
   return (
     <DialogPrimitive.Overlay
       ref={ref}
       data-slot="dialog-overlay"
-      className={cn(
-        "fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0",
-        className,
-      )}
+      className={cn(dialogOverlayVariants({ variant }), className)}
       {...props}
     />
   );
@@ -48,32 +48,53 @@ const DialogOverlay = React.forwardRef<
  * Centred over the page, and never taller than the screen: a dialog whose
  * content outgrows a phone in landscape (or a long form on any phone) scrolls
  * inside itself instead of losing its top and bottom off-screen.
+ *
+ * `variant="panel"` is TevScribe's modal card. Its close glyph is the last
+ * element in the DOM, so focus reaches the form first, but `order-first`
+ * draws it above the content at the drawn 16px from the title.
  */
 function DialogContent({
   className,
   children,
   showCloseButton = true,
+  variant = "default",
+  surface = "subtle",
+  closeLabel,
   ...props
 }: DialogContentProps) {
+  const panel = variant === "panel";
   return (
     <DialogPortal data-slot="dialog-portal">
-      <DialogOverlay />
+      <DialogOverlay variant={variant} />
       <DialogPrimitive.Content
         data-slot="dialog-content"
-        className={cn(
-          "fixed top-[50%] left-[50%] z-50 grid max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto overscroll-contain rounded-[24px] border bg-background p-6 duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg",
-          className,
-        )}
+        data-variant={panel ? "panel" : undefined}
+        data-surface={panel ? surface : undefined}
+        className={cn(dialogContentVariants({ variant, surface }), className)}
         {...props}
       >
-        {children}
-        {showCloseButton && (
+        <DialogContentVariantContext.Provider value={variant}>
+          {children}
+        </DialogContentVariantContext.Provider>
+        {showCloseButton && panel ? (
+          <DialogPrimitive.Close data-slot="dialog-close" asChild>
+            <Button
+              variant="ghost"
+              size="icon-pill"
+              className="order-first -mb-4 self-end text-icon-ink hover:bg-surface-neutral-subtle hover:text-icon-ink"
+            >
+              <CloseIcon />
+              <span className="sr-only">{closeLabel ?? "Close"}</span>
+            </Button>
+          </DialogPrimitive.Close>
+        ) : null}
+        {showCloseButton && !panel && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
             className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
             <XIcon />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{closeLabel ?? "Close"}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
@@ -82,10 +103,14 @@ function DialogContent({
 }
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
+  const panel = React.useContext(DialogContentVariantContext) === "panel";
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
+      className={cn(
+        panel ? "flex flex-col gap-3" : "flex flex-col gap-2 text-center sm:text-left",
+        className,
+      )}
       {...props}
     />
   );
@@ -114,10 +139,15 @@ function DialogFooter({
 }
 
 function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
+  const panel = React.useContext(DialogContentVariantContext) === "panel";
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn(
+        // New meeting's 16px bold title; Welcome passes `text-display-80`.
+        panel ? "text-heading-16 text-content-primary" : "text-lg leading-none font-semibold",
+        className,
+      )}
       {...props}
     />
   );
@@ -127,10 +157,14 @@ function DialogDescription({
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+  const panel = React.useContext(DialogContentVariantContext) === "panel";
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(
+        panel ? "text-body-20 text-content-primary" : "text-sm text-muted-foreground",
+        className,
+      )}
       {...props}
     />
   );

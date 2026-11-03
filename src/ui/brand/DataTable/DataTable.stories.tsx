@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { DataTable } from "./DataTable";
 import { Badge } from "../../primitives/Badge/Badge";
+import { Chip } from "../../primitives/Chip/Chip";
 import type { DataTableColumn, SortState } from "./DataTable.types";
 
 interface Interaction {
@@ -237,4 +238,79 @@ export const ScrollingBox: Story = {
     containerClassName: "min-h-0 overflow-auto",
     wrapperClassName: "flex min-h-0 flex-col",
   },
+};
+
+interface UsageRow {
+  id: string;
+  meeting: string;
+  minutes: string;
+  amount: string;
+  date: string;
+}
+
+const USAGE_ROWS: UsageRow[] = [
+  { id: "1", meeting: "UI/UX descussion", minutes: "12:35m", amount: "500$", date: "<1d" },
+  {
+    id: "2",
+    meeting: "Very important topic of the day to be discussed ASAP",
+    minutes: "12:35m",
+    amount: "500$",
+    date: "<1d",
+  },
+  { id: "3", meeting: "Ai talks", minutes: "12:35m", amount: "500$", date: "<1d" },
+  { id: "4", meeting: "Հանդիպում հաճախորդի հետ", minutes: "1:05:10", amount: "1 200$", date: "3d" },
+];
+
+const USAGE_CELL = "h-16 px-4 text-body-14";
+const USAGE_COLUMNS: DataTableColumn<UsageRow>[] = [
+  {
+    key: "meeting",
+    dataIndex: "meeting",
+    title: "Meeting",
+    width: "50%",
+    headerVariant: "inverse",
+    cellClassName: `${USAGE_CELL} text-heading-16`,
+  },
+  {
+    key: "minutes",
+    dataIndex: "minutes",
+    title: "Minutes",
+    headerVariant: "inverse",
+    cellClassName: USAGE_CELL,
+    render: (value) => <Chip size="sm">{String(value)}</Chip>,
+  },
+  {
+    key: "amount",
+    dataIndex: "amount",
+    title: "Amount",
+    headerVariant: "inverse",
+    cellClassName: USAGE_CELL,
+  },
+  {
+    key: "date",
+    dataIndex: "date",
+    title: "Date",
+    headerVariant: "inverse",
+    cellClassName: USAGE_CELL,
+  },
+];
+
+/**
+ * TevScribe's plan history (100:40457): ink header cells, each with its own
+ * 16px top radius, over white 64px rows with hairline dividers; the minutes
+ * cell holds an outline Chip. Rows tint on hover.
+ */
+export const ScribeInverseHeader: StoryObj<typeof DataTable<UsageRow>> = {
+  globals: { theme: "scribe" },
+  render: () => (
+    <div className="rounded-16 bg-surface-subtle p-4">
+      <DataTable<UsageRow>
+        columns={USAGE_COLUMNS}
+        dataSource={USAGE_ROWS}
+        rowKey="id"
+        fixedLayout
+        containerClassName="border-0"
+      />
+    </div>
+  ),
 };

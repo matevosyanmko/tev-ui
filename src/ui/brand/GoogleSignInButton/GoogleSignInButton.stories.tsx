@@ -5,7 +5,7 @@ const meta = {
   title: "Brand/GoogleSignInButton",
   component: GoogleSignInButton,
   argTypes: {
-    size: { control: "inline-radio", options: ["default", "sm"] },
+    size: { control: "inline-radio", options: ["default", "sm", "outline-block"] },
     disabled: { control: "boolean" },
   },
   args: { size: "default" },
@@ -43,4 +43,36 @@ export const Disabled: Story = { args: { disabled: true } };
 /** The mark on its own, e.g. beside "Connected as …". */
 export const Mark: Story = {
   render: () => <GoogleMark className="size-8" />,
+};
+
+/**
+ * TevScribe's login (100:43473): a 64px block with a 1.5px ink stroke and
+ * Figma's "G" after the label. Hover tints it; Tab rings it.
+ */
+export const ScribeOutlineBlock: Story = {
+  globals: { theme: "scribe" },
+  args: { size: "outline-block", children: "continue with google" },
+  decorators: [
+    (Story) => (
+      <div className="w-137">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/** As a link to the OAuth route, disabled, and in Armenian. */
+export const ScribeOutlineBlockStates: Story = {
+  globals: { theme: "scribe" },
+  render: () => (
+    <div className="flex w-137 flex-col gap-4">
+      <GoogleSignInButton size="outline-block" asChild>
+        <a href="#oauth">continue with google</a>
+      </GoogleSignInButton>
+      <GoogleSignInButton size="outline-block" disabled>
+        continue with google
+      </GoogleSignInButton>
+      <GoogleSignInButton size="outline-block">շարունակել Google-ով</GoogleSignInButton>
+    </div>
+  ),
 };

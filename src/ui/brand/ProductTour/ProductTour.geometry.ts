@@ -22,7 +22,13 @@ export const STEP_CARD_W = 300;
 export const STEP_CARD_H = 210;
 
 const MARGIN = 16;
-const EDGE = 8;
+
+/**
+ * The least gap the card keeps to the viewport's edges, on every side. The
+ * card's own max width and height are the viewport less this, twice.
+ */
+export const STEP_CARD_EDGE = 8;
+const EDGE = STEP_CARD_EDGE;
 
 /**
  * Places the step card adjacent to the highlighted element — right, then left,

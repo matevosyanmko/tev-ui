@@ -14,6 +14,13 @@ export const googleSignInButtonVariants = cva(
       size: {
         default: "h-12 gap-3 rounded-xl px-5 text-[15px] [&>[data-slot=google-mark]]:size-5",
         sm: "h-9 gap-2 rounded-md px-3 text-sm [&>[data-slot=google-mark]]:size-4",
+        /**
+         * TevScribe's login (100:43473): the 64px full-width block, a 1.5px
+         * ink stroke drawn inside, 16px bold label and the 29px Figma "G"
+         * after the label rather than before it.
+         */
+        "outline-block":
+          "h-16 w-full gap-3 rounded-8 border-0 bg-surface-primary px-6 text-heading-16 font-bold text-content-primary inset-ring-1.5 inset-ring-stroke-ink transition-fill duration-(--duration-fast) ease-standard hover:bg-surface-subtle motion-reduce:transition-none dark:bg-surface-primary dark:hover:bg-surface-subtle",
       },
     },
     defaultVariants: {

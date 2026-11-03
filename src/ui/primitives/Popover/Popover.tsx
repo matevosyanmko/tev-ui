@@ -2,6 +2,8 @@ import * as React from "react";
 import { Popover as PopoverPrimitive } from "radix-ui";
 
 import { cn } from "../../../utils.js";
+import type { PopoverContentProps } from "./Popover.types.js";
+import { popoverContentVariants } from "./Popover.variants.js";
 
 function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
@@ -15,22 +17,29 @@ function PopoverContent({
   className,
   align = "center",
   sideOffset = 4,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+}: PopoverContentProps) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         data-slot="popover-content"
+        data-variant={variant === "default" ? undefined : variant}
         align={align}
         sideOffset={sideOffset}
-        className={cn(
-          "z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground outline-hidden data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
-          className,
-        )}
+        className={cn(popoverContentVariants({ variant }), className)}
         {...props}
       />
     </PopoverPrimitive.Portal>
   );
+}
+
+/**
+ * Closes the popover it sits in. Use it `asChild` around a panel's own close
+ * glyph, so an uncontrolled popover needs no `open` state of its own.
+ */
+function PopoverClose({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Close>) {
+  return <PopoverPrimitive.Close data-slot="popover-close" {...props} />;
 }
 
 function PopoverAnchor({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
@@ -65,6 +74,7 @@ export {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  PopoverClose,
   PopoverAnchor,
   PopoverHeader,
   PopoverTitle,

@@ -3,7 +3,9 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { Select as SelectPrimitive } from "radix-ui";
 
 import { cn } from "../../../utils.js";
-import type { SelectTriggerProps } from "./Select.types.js";
+import { SelectContentVariantContext } from "./Select.context.js";
+import { SelectPillTrigger } from "./SelectPillTrigger.js";
+import type { SelectContentProps, SelectTriggerProps } from "./Select.types.js";
 
 function Select({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
@@ -17,7 +19,22 @@ function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.V
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
-function SelectTrigger({ className, size = "default", children, ...props }: SelectTriggerProps) {
+function SelectTrigger({
+  className,
+  size = "default",
+  variant = "default",
+  media,
+  children,
+  ...props
+}: SelectTriggerProps) {
+  if (variant === "pill") {
+    return (
+      <SelectPillTrigger className={className} size={size} media={media} {...props}>
+        {children}
+      </SelectPillTrigger>
+    );
+  }
+
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -41,8 +58,10 @@ function SelectContent({
   children,
   position = "item-aligned",
   align = "center",
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: SelectContentProps) {
+  const panel = variant === "panel";
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -51,6 +70,9 @@ function SelectContent({
           "relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover text-popover-foreground data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+          // The language picker panel (100:43832): white, black stroke, 16px in.
+          panel &&
+            "rounded-16 border-0 bg-surface-primary p-4 text-content-primary inset-ring inset-ring-stroke-ink",
           className,
         )}
         position={position}
@@ -63,9 +85,12 @@ function SelectContent({
             "p-1",
             position === "popper" &&
               "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1",
+            panel && "flex flex-col gap-1 p-0",
           )}
         >
-          {children}
+          <SelectContentVariantContext.Provider value={variant}>
+            {children}
+          </SelectContentVariantContext.Provider>
         </SelectPrimitive.Viewport>
         <SelectScrollDownButton />
       </SelectPrimitive.Content>
@@ -88,11 +113,17 @@ function SelectItem({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  const panel = React.useContext(SelectContentVariantContext) === "panel";
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
         "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        // An outlined pill per option (100:43832); the chosen one is filled
+        // ink, which Figma leaves undrawn, and the check mark is not used. A
+        // flag <img> in the option is held to the drawn 16px circle.
+        panel &&
+          "cursor-pointer rounded-20 bg-surface-primary py-2 pr-3 pl-3 text-caption-10 text-content-primary inset-ring inset-ring-stroke-ink transition-tint duration-(--duration-fast) ease-standard focus:bg-surface-subtle focus:text-content-primary *:data-[slot=select-item-indicator]:hidden data-[state=checked]:bg-surface-inverse data-[state=checked]:text-content-inverse data-[state=checked]:focus:bg-surface-inverse/85 motion-reduce:transition-none [&_img]:size-4 [&_img]:shrink-0 [&_img]:rounded-full [&_img]:object-cover",
         className,
       )}
       {...props}

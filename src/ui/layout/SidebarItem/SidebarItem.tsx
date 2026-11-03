@@ -1,8 +1,9 @@
-import type * as React from "react";
+import * as React from "react";
 
 import { Slot } from "radix-ui";
 
 import { cn } from "../../../utils.js";
+import { SidebarVariantContext } from "../Sidebar/Sidebar.context.js";
 import type { SidebarItemIconProps, SidebarItemProps } from "./SidebarItem.types.js";
 
 /**
@@ -31,6 +32,32 @@ import type { SidebarItemIconProps, SidebarItemProps } from "./SidebarItem.types
  */
 function SidebarItem({ active = false, asChild = false, className, ...props }: SidebarItemProps) {
   const Comp = asChild ? Slot.Root : "a";
+  const boxed = React.useContext(SidebarVariantContext) === "boxed";
+
+  if (boxed) {
+    // A 64px row in the outlined group: 12px in, a 40px icon, 8px, the
+    // label. The current item is a white tile with a 3px ink stroke inside
+    // it (100:41115 Home, 100:40457 Usage, 100:40567 Settings): a border
+    // with the padding cut by 3px so nothing moves, and the white clipped to
+    // inside it so no white fringe shows around the rounded corners. Hover
+    // tints the row; as in the default look, only hovering animates.
+    return (
+      <Comp
+        data-slot="sidebar-item"
+        data-active={active || undefined}
+        aria-current={active ? "page" : undefined}
+        className={cn(
+          "flex h-16 w-full shrink-0 items-center gap-2 overflow-hidden rounded-16 p-3 leading-normal outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+          active
+            ? "border-3 border-stroke-ink bg-surface-primary bg-clip-padding p-2.25 text-content-primary"
+            : "text-content-inverse hover:bg-surface-primary/10 hover:transition-colors hover:duration-(--duration-fast) hover:ease-standard motion-reduce:hover:transition-none",
+          className,
+        )}
+        {...props}
+      />
+    );
+  }
+
   return (
     <Comp
       data-slot="sidebar-item"
@@ -52,7 +79,10 @@ function SidebarItem({ active = false, asChild = false, className, ...props }: S
 }
 
 function SidebarItemIcon({ icon: Icon, className }: SidebarItemIconProps) {
-  return <Icon size={32} strokeWidth={1.5} className={cn("shrink-0", className)} />;
+  // The boxed rail's glyphs are 40px tiles with their own padding (the
+  // ScribeIcons Nav* set); the default rail's are 32px.
+  const boxed = React.useContext(SidebarVariantContext) === "boxed";
+  return <Icon size={boxed ? 40 : 32} strokeWidth={1.5} className={cn("shrink-0", className)} />;
 }
 
 /**

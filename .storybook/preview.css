@@ -1,7 +1,12 @@
+/* The display-figure face themes/scribe.css names; an app loads it the same way. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&display=swap");
 /*
  * Storybook sets itself up exactly as a consuming project would: Tailwind,
  * then the theme contract, then the default tokens. These are relative paths
  * into src/ so edits hot-reload; there is no longer a Vite alias.
+ *
+ * themes/scribe.css is inert until the toolbar's Theme switch sets
+ * `data-theme="scribe"` on <html> (see preview.ts).
  *
  * There is deliberately no `@source` here. theme.css carries its own, and if
  * that ever stops resolving these stories render unstyled, which is the point.
@@ -9,6 +14,7 @@
 @import "tailwindcss";
 @import "../src/theme.css";
 @import "../src/tokens.css";
+@import "../src/themes/scribe.css";
 
 body {
   /* No font class: the brand face arrives through theme.css's

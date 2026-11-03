@@ -7,4 +7,10 @@ export interface SidebarProps extends React.ComponentProps<"aside"> {
    * below `lg`, where the sidebar opens in a `<SidebarSheet>` at full width.
    */
   collapsed?: boolean;
+  /**
+   * `boxed`: TevScribe's rail (100:41115) — 160px wide, each group an
+   * outlined box, items a 40px icon over a 10px label, the current one a
+   * white tile.
+   */
+  variant?: "default" | "boxed";
 }

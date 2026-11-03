@@ -105,6 +105,45 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  /* The semantic layer (theme.css), answered from the contract above so it
+     follows `.dark` and any consumer override for free. Nothing here renders
+     until a component asks for it; themes/scribe.css replaces the lot. */
+  --surface-primary: var(--background);
+  --surface-subtle: var(--muted);
+  --surface-neutral-subtle: var(--secondary);
+  --surface-inverse: var(--black);
+  --surface-accent-green: var(--brand-green);
+  --surface-accent-green-soft: color-mix(in oklab, var(--brand-green) 35%, var(--background));
+  --surface-accent-coral: var(--brand-coral);
+  --content-primary: var(--foreground);
+  --content-secondary: var(--muted-foreground);
+  --content-muted: var(--muted-foreground);
+  --content-inverse: var(--primary-foreground);
+  --content-dark: var(--black);
+  --content-canvas: var(--background);
+  --content-accent-coral: var(--brand-coral);
+  --stroke-ink: var(--foreground);
+  --stroke-dark: var(--black);
+  --stroke-secondary: var(--muted-foreground);
+  --stroke-muted: var(--input);
+  --stroke-subtle: var(--border);
+  --stroke-white: var(--background);
+  --stroke-accent-green: var(--brand-green);
+  --stroke-accent-red: var(--destructive);
+  --icon-ink: var(--foreground);
+  --icon-white: var(--primary-foreground);
+  --icon-accent-coral: var(--brand-coral);
+  --status-live: var(--destructive);
+  --status-live-foreground: var(--destructive-foreground);
+  --status-success: var(--brand-green);
+  --status-success-foreground: var(--brand-green-foreground);
+  --status-danger: var(--destructive);
+  --status-danger-foreground: var(--destructive-foreground);
+  --status-neutral: var(--secondary);
+  --status-neutral-foreground: var(--secondary-foreground);
+  --platform: var(--brand-green);
+  --platform-foreground: var(--brand-green-foreground);
 }
 
 .dark {

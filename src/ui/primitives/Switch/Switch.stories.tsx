@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent } from "storybook/test";
+
 import { Label } from "../Label/Label";
 import { Switch } from "./Switch";
 
@@ -7,6 +9,7 @@ const meta = {
   component: Switch,
   argTypes: {
     size: { control: "inline-radio", options: ["default", "sm"] },
+    variant: { control: "inline-radio", options: ["default", "accent"] },
     disabled: { control: "boolean" },
   },
   args: { size: "default", "aria-label": "Calendar auto-join" },
@@ -34,4 +37,41 @@ export const WithLabel: Story = {
       <Switch {...args} id="auto-join" aria-label={undefined} />
     </div>
   ),
+};
+
+/**
+ * TevScribe's settings switch (100:40567): green when on, ink when off, the
+ * thumb 5px in. The press target is still the 44px-tall invisible strip.
+ */
+export const ScribeAccent: Story = {
+  globals: { theme: "scribe" },
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
+        <Label htmlFor="auto-join" className="text-body-14 font-normal">
+          Enabled
+        </Label>
+        <Switch id="auto-join" variant="accent" defaultChecked />
+      </div>
+      <div className="flex items-center gap-2">
+        <Label htmlFor="auto-send" className="text-body-14 font-normal">
+          Disabled
+        </Label>
+        <Switch id="auto-send" variant="accent" />
+      </div>
+      <div className="flex items-center gap-2">
+        <Label htmlFor="locked" className="text-body-14 font-normal">
+          Միացված
+        </Label>
+        <Switch id="locked" variant="accent" defaultChecked disabled />
+      </div>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const off = canvas.getByRole("switch", { name: "Disabled" });
+    await userEvent.click(off);
+    await expect(off).toHaveAttribute("data-state", "checked");
+    await userEvent.click(off);
+    await expect(off).toHaveAttribute("data-state", "unchecked");
+  },
 };

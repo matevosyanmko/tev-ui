@@ -24,7 +24,7 @@ echo "    $(basename "$TARBALL") ($(wc -c <"$TARBALL" | tr -d ' ') bytes)"
 echo "==> what the tarball actually ships"
 tar -tzf "$TARBALL" | sed 's|^package/||' | grep -E '\.(js|d\.ts|css|woff2)$' | sort > "$WORK/shipped.txt"
 for required in \
-  dist/theme.css dist/tokens.css dist/fonts/Delight-VF.woff2 \
+  dist/theme.css dist/tokens.css dist/themes/scribe.css dist/fonts/Delight-VF.woff2 \
   dist/utils.js dist/utils.d.ts \
   dist/ui/primitives/Button/index.js dist/ui/primitives/Button/index.d.ts \
   dist/ui/primitives/Calendar/index.js dist/ui/primitives/Form/index.js \
@@ -58,6 +58,19 @@ fi
 echo "    $ENTRIES entry points, $DTS declarations (matches $EXPECTED component folders in src)"
 echo "    $(wc -l <"$WORK/shipped.txt" | tr -d ' ') files, all required entries present"
 
+echo "==> asserting FullCalendar stays inside brand/WeekCalendar"
+# Its five packages are optional peers: every other entry must import without
+# them. A stray import from a shared file would make them mandatory for all.
+mkdir -p "$WORK/unpacked" && tar -xzf "$TARBALL" -C "$WORK/unpacked"
+FC_STRAYS="$(cd "$WORK/unpacked/package" && grep -rl --include='*.js' --include='*.d.ts' '@fullcalendar/' dist \
+  | grep -v '^dist/ui/brand/WeekCalendar/' || true)"
+if [ -n "$FC_STRAYS" ]; then
+  echo "FAIL: @fullcalendar/* referenced outside dist/ui/brand/WeekCalendar/:"
+  printf '%s\n' "$FC_STRAYS" | sed 's|^|      |'
+  exit 1
+fi
+echo "    ok   nothing outside dist/ui/brand/WeekCalendar/ references @fullcalendar/*"
+
 echo "==> asserting no story files ship"
 if tar -tzf "$TARBALL" | grep -qiE 'stor(y|ies)'; then
   echo "FAIL: story files present in the tarball:"
@@ -84,6 +97,7 @@ cat > "$CONSUMER/src/main.css" <<'CSS'
 @import "tailwindcss";
 @import "@tev-ui/ui/theme.css";
 @import "@tev-ui/ui/tokens.css";
+@import "@tev-ui/ui/themes/scribe.css";
 CSS
 
 cat > "$CONSUMER/src/main.tsx" <<'TSX'
@@ -132,6 +146,8 @@ TS
 
 (cd "$CONSUMER" && npm install --silent --no-audit --no-fund \
   "$TARBALL" react@^18 react-dom@^18 react-day-picker@^9 react-hook-form@^7 dayjs@^1 recharts@^2 \
+  @fullcalendar/core@~6.1.22 @fullcalendar/react@~6.1.22 @fullcalendar/timegrid@~6.1.22 \
+  @fullcalendar/daygrid@~6.1.22 @fullcalendar/interaction@~6.1.22 \
   vite@^5 @vitejs/plugin-react@^4 tailwindcss@^4 @tailwindcss/vite@^4 \
   typescript@^5 @types/react@^18 @types/react-dom@^18 >/dev/null)
 
@@ -163,6 +179,7 @@ ANALYTICS_NAMES="$(grep -oE '^dist/ui/analytics/[^/]+' "$WORK/shipped.txt" | sed
   echo 'import { NotificationHeader, NotificationItem, NotificationList, relativeTime } from "@tev-ui/ui/brand/NotificationBell";'
   echo 'import { TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard } from "@tev-ui/ui/brand/ProductTour";'
   echo 'import { HomeIcon, NotificationBellIcon } from "@tev-ui/ui/brand/Icons";'
+  echo 'import { WeekCalendarZoom } from "@tev-ui/ui/brand/WeekCalendar";'
   echo 'import { SidebarItemIcon, SidebarItemLabel } from "@tev-ui/ui/layout/SidebarItem";'
   echo 'import { AppLogoMark, AppLogoWordmark } from "@tev-ui/ui/layout/AppLogo";'
   echo 'import { SidebarNav, SidebarGroup, SidebarFooter } from "@tev-ui/ui/layout/Sidebar";'
@@ -204,6 +221,7 @@ ANALYTICS_NAMES="$(grep -oE '^dist/ui/analytics/[^/]+' "$WORK/shipped.txt" | sed
   echo 'import type { AnalyticsWidgetProps, AnalyticsWidgetDataMap } from "@tev-ui/ui/analytics/AnalyticsWidget";'
   echo 'import type { ChartSeries, ChartRow } from "@tev-ui/ui/analytics/ChartCard";'
   echo 'import type { BarChartProps } from "@tev-ui/ui/analytics/BarChart";'
+  echo 'import type { WeekCalendarProps, WeekCalendarEvent, WeekCalendarHandle, WeekCalendarZoomProps } from "@tev-ui/ui/brand/WeekCalendar";'
   echo 'export const ALL = ['
   for n in $NAMES; do echo "  $n,"; done
   for n in $BRAND_NAMES; do echo "  $n,"; done
@@ -220,7 +238,7 @@ ANALYTICS_NAMES="$(grep -oE '^dist/ui/analytics/[^/]+' "$WORK/shipped.txt" | sed
   echo '  CustomRangePanel, DateCell, presetRange, DEFAULT_MONTHS,'
   echo '  NotificationHeader, NotificationItem, NotificationList, relativeTime,'
   echo '  TourScrim, TourSpotlight, TourStepCard, TourStepDots, TourStepNav, placeStepCard,'
-  echo '  HomeIcon, NotificationBellIcon,'
+  echo '  HomeIcon, NotificationBellIcon, WeekCalendarZoom,'
   echo '  SidebarItemIcon, SidebarItemLabel,'
   echo '  AppLogoMark, AppLogoWordmark,'
   echo '  SidebarNav, SidebarGroup, SidebarFooter,'
@@ -234,6 +252,7 @@ ANALYTICS_NAMES="$(grep -oE '^dist/ui/analytics/[^/]+' "$WORK/shipped.txt" | sed
   echo '  SheetContentProps, SidebarSheetProps, FilterSheetProps,'
   echo '  AnalyticsComponentKey, AnalyticsComponentMeta, AnalyticsWidgetProps, AnalyticsWidgetDataMap,'
   echo '  ChartSeries, ChartRow, BarChartProps,'
+  echo '  WeekCalendarProps, WeekCalendarEvent, WeekCalendarHandle, WeekCalendarZoomProps,'
   echo '];'
 } > "$CONSUMER/src/all.ts"
 echo "    generated all.ts covering $(echo "$NAMES" | wc -w | tr -d ' ') primitives + $(echo "$BRAND_NAMES" | wc -w | tr -d ' ') brand + $(echo "$LAYOUT_NAMES" | wc -w | tr -d ' ') layout + $(echo "$ANALYTICS_NAMES" | wc -w | tr -d ' ') analytics components"
@@ -301,9 +320,12 @@ for cls in 'bg-foreground' 'fill-foreground' 'bg-muted-foreground' \
 done
 
 echo "==> asserting the theme contract resolved"
+# Compared without quotes: the consumer build minifies `[data-theme="scribe"]`
+# to `[data-theme=scribe]`, so the quoted spelling never matches.
 for tok in '--brand-purple' '--destructive-foreground' '--black' \
-           '--brand-green' '--brand-gradient'; do
-  if grep -qF -- "$tok" "$CSS_OUT"; then
+           '--brand-green' '--brand-gradient' '--surface-primary' \
+           'data-theme=scribe'; do
+  if tr -d '"' < "$CSS_OUT" | grep -qF -- "$tok"; then
     echo "    ok   $tok"
   else
     echo "    FAIL $tok missing"

@@ -1,5 +1,6 @@
 import { SPOTLIGHT_PAD } from "./ProductTour.geometry.js";
 import type { TourSpotlightProps } from "./ProductTour.types.js";
+import { tourSpotlightClasses } from "./ProductTour.variants.js";
 
 /**
  * The ring drawn around the highlighted element — purely the outline; the
@@ -7,14 +8,14 @@ import type { TourSpotlightProps } from "./ProductTour.types.js";
  * resolves, so a step pointing at an element that never mounted degrades to a
  * plain centered card rather than a ring around the top-left corner.
  */
-function TourSpotlight({ rect }: TourSpotlightProps) {
+function TourSpotlight({ rect, variant = "default" }: TourSpotlightProps) {
   if (!rect) return null;
 
   return (
     <div
       aria-hidden="true"
       data-slot="tour-spotlight"
-      className="pointer-events-none fixed z-[120] rounded-[12px] border-2 border-brand-purple transition-all duration-200"
+      className={tourSpotlightClasses[variant]}
       style={{
         top: rect.top - SPOTLIGHT_PAD,
         left: rect.left - SPOTLIGHT_PAD,

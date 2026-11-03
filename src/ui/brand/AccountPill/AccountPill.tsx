@@ -1,6 +1,7 @@
 import { Slot } from "radix-ui";
 
 import { cn } from "../../../utils.js";
+import { AvatarPlaceholderIcon } from "../ScribeIcons/ScribeIcons.js";
 import { accountInitials } from "./AccountPill.utils.js";
 import type { AccountPillProps } from "./AccountPill.types.js";
 
@@ -37,11 +38,60 @@ function AccountPill({
   asChild = false,
   type = "button",
   labels,
+  variant = "default",
   className,
   children,
   ...props
 }: AccountPillProps) {
   const Comp = asChild ? Slot.Root : "button";
+
+  if (variant === "card") {
+    const name = fullName ?? labels?.unknownUser ?? "User";
+    return (
+      <Comp
+        data-slot="account-pill"
+        data-variant="card"
+        type={asChild ? undefined : type}
+        className={cn(
+          // Mobile: the same 48px tile as the default pill. From `lg` up the
+          // 224×80 card; the 3px stroke is drawn inside, as in Figma, so the
+          // 24px sides are measured from the card's edge.
+          "flex size-12 shrink-0 items-center justify-center gap-3 rounded-16 bg-surface-inverse text-left text-content-inverse shadow-glass inset-ring-3 inset-ring-stroke-white select-none",
+          "lg:h-20 lg:w-56 lg:justify-start lg:rounded-20 lg:px-6 lg:py-4",
+          "transition-shadow duration-(--duration-fast) ease-standard outline-none focus-visible:ring-2 focus-visible:ring-stroke-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-inverse motion-reduce:transition-none",
+          className,
+        )}
+        {...props}
+      >
+        {asChild ? <Slot.Slottable>{children}</Slot.Slottable> : null}
+
+        {/* The drawn placeholder disc, 44px of artwork centred on a 40px slot
+            (its outer ring overhangs by 2px, as in Figma). */}
+        <span
+          data-slot="account-pill-avatar"
+          aria-hidden="true"
+          className="flex size-10 shrink-0 items-center justify-center text-icon-white"
+        >
+          <AvatarPlaceholderIcon size={44} />
+        </span>
+
+        <span data-slot="account-pill-label" className="sr-only lg:hidden">
+          {name}
+        </span>
+
+        <span data-slot="account-pill-identity" className="hidden min-w-0 flex-col gap-1 lg:flex">
+          <span data-slot="account-pill-name" className="truncate text-heading-16">
+            {name}
+          </span>
+          {position ? (
+            <span data-slot="account-pill-position" className="truncate text-micro-8">
+              {position}
+            </span>
+          ) : null}
+        </span>
+      </Comp>
+    );
+  }
 
   return (
     <Comp

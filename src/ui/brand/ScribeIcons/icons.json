@@ -1,0 +1,172 @@
+[
+  {
+    "name": "NavHomeIcon",
+    "file": "home.svg",
+    "mono": true
+  },
+  {
+    "name": "NavUsageIcon",
+    "file": "usage.svg",
+    "mono": true
+  },
+  {
+    "name": "NavSettingsIcon",
+    "file": "settings.svg",
+    "mono": true
+  },
+  {
+    "name": "NavMenuIcon",
+    "file": "menu.svg",
+    "mono": true
+  },
+  {
+    "name": "ListViewIcon",
+    "file": "list.svg",
+    "mono": true
+  },
+  {
+    "name": "CalendarViewIcon",
+    "file": "calendar.svg",
+    "mono": true
+  },
+  {
+    "name": "FilterIcon",
+    "file": "filter.svg",
+    "mono": true
+  },
+  {
+    "name": "SearchIcon",
+    "file": "search.svg",
+    "mono": true
+  },
+  {
+    "name": "PlusIcon",
+    "file": "plus-12.svg",
+    "mono": true
+  },
+  {
+    "name": "ChevronUpIcon",
+    "file": "plus-16.svg",
+    "mono": true
+  },
+  {
+    "name": "ChevronDownIcon",
+    "file": "chevron-down-8.svg",
+    "mono": true
+  },
+  {
+    "name": "ChevronLeftIcon",
+    "file": "chevron-left-8.svg",
+    "mono": true
+  },
+  {
+    "name": "CaretDownIcon",
+    "file": "caret-7x4.svg",
+    "mono": true
+  },
+  {
+    "name": "ArrowLeftIcon",
+    "file": "picker-chevron-left.svg",
+    "mono": true
+  },
+  {
+    "name": "ArrowRightIcon",
+    "file": "picker-chevron-right.svg",
+    "mono": true
+  },
+  {
+    "name": "TranslateIcon",
+    "file": "translate.svg",
+    "mono": true
+  },
+  {
+    "name": "GoogleMeetIcon",
+    "file": "platform-meet-glyph.svg",
+    "mono": true
+  },
+  {
+    "name": "ZoomIcon",
+    "file": "platform-zoom-glyph.svg",
+    "mono": true
+  },
+  {
+    "name": "LeaveIcon",
+    "file": "leave.svg",
+    "mono": true
+  },
+  {
+    "name": "ExportIcon",
+    "file": "export.svg",
+    "mono": true
+  },
+  {
+    "name": "RegenerateIcon",
+    "file": "regenerate.svg",
+    "mono": true
+  },
+  {
+    "name": "TrashIcon",
+    "file": "delete-glyph-12.svg",
+    "mono": true
+  },
+  {
+    "name": "TranscriptIcon",
+    "file": "transcript.svg",
+    "mono": true
+  },
+  {
+    "name": "RecordingIcon",
+    "file": "recording.svg",
+    "mono": true
+  },
+  {
+    "name": "SummaryIcon",
+    "file": "summary.svg",
+    "mono": true
+  },
+  {
+    "name": "DownloadIcon",
+    "file": "download.svg",
+    "mono": true
+  },
+  {
+    "name": "SendIcon",
+    "file": "download-b.svg",
+    "mono": true
+  },
+  {
+    "name": "CloseIcon",
+    "file": "close-32.svg",
+    "mono": true
+  },
+  {
+    "name": "CloseCircleIcon",
+    "file": "close-circle-21.svg",
+    "mono": false
+  },
+  {
+    "name": "ClockIcon",
+    "file": "clock-54.svg",
+    "mono": true
+  },
+  {
+    "name": "ScribbleIcon",
+    "file": "stat-icon-40473.svg",
+    "mono": true
+  },
+  {
+    "name": "PlayIcon",
+    "file": "play.svg",
+    "mono": true
+  },
+  {
+    "name": "AvatarPlaceholderIcon",
+    "file": "avatar-placeholder.svg",
+    "mono": true
+  },
+  {
+    "name": "GoogleIcon",
+    "file": "google-g.svg",
+    "mono": false
+  }
+]

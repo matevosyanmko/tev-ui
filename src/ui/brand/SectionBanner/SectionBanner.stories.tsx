@@ -31,3 +31,28 @@ export const Stacked: Story = {
     </div>
   ),
 };
+
+/** TevScribe's soft green note under a meeting title (100:40786). */
+export const ScribeSuccessSoft: Story = {
+  globals: { theme: "scribe" },
+  args: {
+    variant: "success-soft",
+    children: "the recording transcript ended at 10:25, when you left the meeting",
+  },
+};
+
+/** Armenian copy, and a long note that wraps inside a narrow column. */
+export const ScribeSuccessSoftEdgeCases: Story = {
+  globals: { theme: "scribe" },
+  render: () => (
+    <div className="flex w-80 flex-col gap-3">
+      <SectionBanner variant="success-soft">
+        ձայնագրության սղագրությունն ավարտվեց 10:25-ին, երբ դուք լքեցիք հանդիպումը
+      </SectionBanner>
+      <SectionBanner variant="success-soft">
+        the recording transcript ended at 10:25, when you left the meeting, and the summary will
+        follow in a few minutes
+      </SectionBanner>
+    </div>
+  ),
+};

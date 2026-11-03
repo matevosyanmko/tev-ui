@@ -71,6 +71,14 @@ changes. `verify:package` typechecks a consumer under both `bundler` and
 
 Two more mechanical constraints:
 
+- **A React context read by a different entry point than the one that
+  provides it must be a page-wide singleton.** With `splitting: false` every
+  entry inlines its own copy of a shared module, so a plain `createContext`
+  in a module two entries import gives each entry a separate context: the
+  consumer silently reads the default. Storybook resolves source, where the
+  module is shared, so only a packed build shows it. Key the context on
+  `globalThis` with `Symbol.for(...)`, as `Sidebar.context.ts` does
+  (`layout/Sidebar` provides it, `layout/SidebarItem` reads it).
 - **`dist/fonts/` is copied by `onSuccess`, and nothing type-checks it.**
   `tokens.css`'s `@font-face` points at `./fonts/Delight-VF.woff2` — a path
   relative to `tokens.css` itself, so the two must land as siblings in `dist/`.
@@ -124,7 +132,8 @@ src/
   scrim and the ring must agree on), `Icons.registry.ts` (the by-name record),
   and the standalone hooks `useTableScrollReset` / `useDataTablePagination` /
   `useContentWidth` / `useScrollEdges` (ScrollFade's edge tracking, usable on any
-  scroller).
+  scroller) / `useTourKeys` / `useTourFocus` (ProductTour's keyboard and its
+  step card's focus trap).
 - A sub-export gets its own **file** when it owns its own styling or state
   contract, or has a body well over ~40 lines. Only `CalendarDayButton`
   qualifies (it owns the `BRAND_DAY_STATES` block). Everything else — the 14
@@ -172,8 +181,9 @@ src/
 - **No font classes on components.** The brand face is the document default —
   `theme.css` sets `--default-font-family`, which Tailwind's Preflight `html`
   rule reads — so every component inherits it and none should name a font.
-  `font-mono` in `ErrorBoundary`'s stack trace is the one deliberate
-  exception. Do not reach for `--font-sans`: that is Tailwind's own system
+  `font-mono` in `ErrorBoundary`'s stack trace and `font-figure` (the
+  token for display figures, which falls back to the brand face) are the
+  deliberate exceptions. Do not reach for `--font-sans`: that is Tailwind's own system
   stack and stays that way, which is what makes `font-sans` a working escape
   hatch for a consumer. `verify:package` asserts both halves.
 - **Semantic tokens, never hardcoded values.** `theme.css` declares the
@@ -353,7 +363,7 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/` (80 today — 30 primitives, 20 brand, 13 layout, 17 analytics);
+per component folder in `src/` (91 today — 31 primitives, 30 brand, 13 layout, 17 analytics);
 no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's
