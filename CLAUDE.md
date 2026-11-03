@@ -132,7 +132,8 @@ src/
   scrim and the ring must agree on), `Icons.registry.ts` (the by-name record),
   and the standalone hooks `useTableScrollReset` / `useDataTablePagination` /
   `useContentWidth` / `useScrollEdges` (ScrollFade's edge tracking, usable on any
-  scroller).
+  scroller) / `useTourKeys` / `useTourFocus` (ProductTour's keyboard and its
+  step card's focus trap).
 - A sub-export gets its own **file** when it owns its own styling or state
   contract, or has a body well over ~40 lines. Only `CalendarDayButton`
   qualifies (it owns the `BRAND_DAY_STATES` block). Everything else — the 14

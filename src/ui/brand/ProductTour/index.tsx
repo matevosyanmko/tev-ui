@@ -6,3 +6,4 @@ export * from "./TourSpotlight.js";
 export * from "./TourStepCard.js";
 export * from "./TourStepDots.js";
 export * from "./TourStepNav.js";
+export * from "./useTourKeys.js";

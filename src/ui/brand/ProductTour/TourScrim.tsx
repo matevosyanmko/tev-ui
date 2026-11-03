@@ -2,6 +2,7 @@ import type * as React from "react";
 
 import { SPOTLIGHT_PAD } from "./ProductTour.geometry.js";
 import type { TourScrimProps } from "./ProductTour.types.js";
+import { tourScrimClasses } from "./ProductTour.variants.js";
 
 /**
  * Dim and blur behind the tour.
@@ -13,7 +14,6 @@ import type { TourScrimProps } from "./ProductTour.types.js";
  *
  * Without a `rect` — a step whose anchor never mounted — the whole screen dims.
  */
-const PANEL_CLASS = "fixed z-[119] bg-black/65 backdrop-blur-[17.7px]";
 
 const clamp = (value: number) => Math.max(0, value);
 
@@ -32,9 +32,10 @@ function holePanels(rect: DOMRect): React.CSSProperties[] {
   ];
 }
 
-function TourScrim({ rect }: TourScrimProps) {
+function TourScrim({ rect, variant = "default" }: TourScrimProps) {
+  const panelClass = tourScrimClasses[variant];
   if (!rect) {
-    return <div aria-hidden="true" data-slot="tour-scrim" className={`${PANEL_CLASS} inset-0`} />;
+    return <div aria-hidden="true" data-slot="tour-scrim" className={`${panelClass} inset-0`} />;
   }
 
   return holePanels(rect).map((panel, index) => (
@@ -42,7 +43,7 @@ function TourScrim({ rect }: TourScrimProps) {
       key={index}
       aria-hidden="true"
       data-slot="tour-scrim"
-      className={PANEL_CLASS}
+      className={panelClass}
       style={panel}
     />
   ));

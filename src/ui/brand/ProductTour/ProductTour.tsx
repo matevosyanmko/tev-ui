@@ -5,6 +5,7 @@ import { TourSpotlight } from "./TourSpotlight.js";
 import { TourStepCard } from "./TourStepCard.js";
 import { TourStepNav } from "./TourStepNav.js";
 import type { ProductTourProps } from "./ProductTour.types.js";
+import { useTourKeys } from "./useTourKeys.js";
 
 /**
  * The whole tour overlay for one step: scrim, ring and step card, already
@@ -17,6 +18,11 @@ import type { ProductTourProps } from "./ProductTour.types.js";
  *
  *   const rect = useTourAnchor(steps[step].anchor)
  *   <ProductTour step={step} total={steps.length} rect={rect} … />
+ *
+ * The keyboard is wired too: Escape calls `onSkip`, Right / Page Down
+ * `onNext` (so on the last step it finishes), Left / Page Up `onBack`. The
+ * card takes focus, keeps Tab inside it, and hands focus back on close.
+ * `variant="scribe"` is TevScribe's look; the default is Tevvoice's.
  */
 function ProductTour({
   step,
@@ -28,13 +34,17 @@ function ProductTour({
   onBack,
   onSkip,
   labels,
+  variant = "default",
 }: ProductTourProps) {
   const isLast = step >= total - 1;
+  const back = step > 0 ? onBack : undefined;
+
+  useTourKeys({ step, onNext, onBack: back, onSkip });
 
   return (
     <>
-      <TourScrim rect={rect} />
-      <TourSpotlight rect={rect} />
+      <TourScrim rect={rect} variant={variant} />
+      <TourSpotlight rect={rect} variant={variant} />
       <TourStepCard
         step={step}
         total={total}
@@ -42,13 +52,16 @@ function ProductTour({
         title={title}
         description={description}
         stepLabel={labels?.stepLabel}
+        stepOf={labels?.stepOf}
+        variant={variant}
       >
         <TourStepNav
           onSkip={onSkip}
-          onBack={step > 0 ? onBack : undefined}
+          onBack={back}
           onNext={onNext}
           labels={labels}
           nextLabel={isLast ? (labels?.finish ?? "Finish") : undefined}
+          variant={variant}
         />
       </TourStepCard>
     </>
