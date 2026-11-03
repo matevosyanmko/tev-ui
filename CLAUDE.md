@@ -71,6 +71,14 @@ changes. `verify:package` typechecks a consumer under both `bundler` and
 
 Two more mechanical constraints:
 
+- **A React context read by a different entry point than the one that
+  provides it must be a page-wide singleton.** With `splitting: false` every
+  entry inlines its own copy of a shared module, so a plain `createContext`
+  in a module two entries import gives each entry a separate context: the
+  consumer silently reads the default. Storybook resolves source, where the
+  module is shared, so only a packed build shows it. Key the context on
+  `globalThis` with `Symbol.for(...)`, as `Sidebar.context.ts` does
+  (`layout/Sidebar` provides it, `layout/SidebarItem` reads it).
 - **`dist/fonts/` is copied by `onSuccess`, and nothing type-checks it.**
   `tokens.css`'s `@font-face` points at `./fonts/Delight-VF.woff2` — a path
   relative to `tokens.css` itself, so the two must land as siblings in `dist/`.
