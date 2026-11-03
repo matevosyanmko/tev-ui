@@ -281,6 +281,7 @@ deliberate: `DropdownMenu`, `Card`, `Skeleton`, `Label`, `Separator`,
 structurally recognisable, so a re-add produces a conflicting flat file:
 `Select`, `Dialog`, `Sheet`, `Table`, `Popover`, `ScrollArea`, `Tooltip`,
 `Form`, `Toggle`, `AlertDialog` (height cap), `Switch` (44px press target),
+`Collapsible` (height animation on the motion tokens),
 `Item` (no implied list roles). Not shadcn at all: `SearchField`. `utils.ts`
 is shadcn's canonical `cn` helper, hand-annotated.
 
@@ -363,7 +364,7 @@ npm run typecheck && npm run build && npm run verify:package
 
 `verify:package` packs the tarball, installs it into a throwaway consumer
 outside the workspace, and asserts: one entry point *and* one declaration file
-per component folder in `src/` (91 today — 31 primitives, 30 brand, 13 layout, 17 analytics);
+per component folder in `src/` (92 today — 32 primitives, 30 brand, 13 layout, 17 analytics);
 no story files ship; every component in **all three** groups, plus a set of
 at-risk barrel-only symbols and prop types, name-imports cleanly; declarations
 resolve under both `bundler` and `nodenext`; Tailwind followed the package's
