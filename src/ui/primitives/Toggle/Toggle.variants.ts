@@ -2,8 +2,15 @@ import { cva } from "class-variance-authority";
 
 // Kept out of toggle.jsx so that file only exports components — a prerequisite
 // for React Fast Refresh to hot-swap <Toggle> instead of remounting the tree.
+//
+// Pressed is `data-state="on"`, and also `aria-pressed="true"` on an element
+// whose `data-state` says something else: a Toggle inside
+// `<PopoverTrigger asChild>` (or any Radix trigger) gets the trigger's
+// "open" / "closed" written over its own "on" / "off", but keeps the
+// aria-pressed Radix Toggle sets. `not-data-[state=on]` keeps those copies off
+// a standalone Toggle, which therefore matches exactly the rules it always did.
 export const toggleVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,box-shadow] outline-none hover:bg-muted hover:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,box-shadow] outline-none hover:bg-muted hover:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-pressed:not-data-[state=on]:bg-accent aria-pressed:not-data-[state=on]:text-accent-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -15,7 +22,7 @@ export const toggleVariants = cva(
          * the glyph keeps its Figma size.
          */
         boxed:
-          "rounded-8 bg-surface-primary text-icon-ink inset-ring inset-ring-stroke-ink transition-[color,background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-subtle hover:text-icon-ink data-[state=on]:bg-surface-inverse data-[state=on]:text-icon-white data-[state=on]:hover:bg-surface-inverse/85 motion-reduce:transition-none [&_svg:not([class*='size-'])]:size-auto",
+          "rounded-8 bg-surface-primary text-icon-ink inset-ring inset-ring-stroke-ink transition-[color,background-color,box-shadow] duration-(--duration-fast) ease-standard hover:bg-surface-subtle hover:text-icon-ink aria-pressed:not-data-[state=on]:bg-surface-inverse aria-pressed:not-data-[state=on]:text-icon-white aria-pressed:not-data-[state=on]:hover:bg-surface-inverse/85 data-[state=on]:bg-surface-inverse data-[state=on]:text-icon-white data-[state=on]:hover:bg-surface-inverse/85 motion-reduce:transition-none [&_svg:not([class*='size-'])]:size-auto",
       },
       size: {
         default: "h-9 min-w-9 px-2",
