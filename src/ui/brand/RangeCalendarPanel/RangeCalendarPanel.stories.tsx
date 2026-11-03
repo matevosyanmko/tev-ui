@@ -83,6 +83,26 @@ export const AsDrawn: Story = {
   render: (args) => <InPicker {...args} />,
 };
 
+/**
+ * `dimPastDays`: past and future told apart around today (the 15th). The
+ * days before it stay the muted grey, the days after it outside the range
+ * read ink; the range, the band and the coral weekends keep precedence.
+ * (100:43738 itself draws the 16th–21st muted too, which is the default.)
+ */
+export const PastAndFuture: Story = {
+  args: { dimPastDays: true },
+  render: (args) => <InPicker {...args} />,
+  play: async () => {
+    const day = async (name: RegExp) => screen.findByRole("button", { name });
+    await expect(await day(/December 14th/)).toHaveAttribute("data-tone", "plain");
+    await expect(await day(/December 15th/)).toHaveAttribute("data-tone", "today");
+    await expect(await day(/December 16th/)).toHaveAttribute("data-tone", "future");
+    await expect(await day(/December 17th/)).toHaveAttribute("data-tone", "weekend");
+    await expect(await day(/December 23rd/)).toHaveAttribute("data-tone", "middle");
+    await expect(await day(/December 22nd/)).toHaveAttribute("data-tone", "endpoint");
+  },
+};
+
 /** Closed: only the date pill. Opening grows the picker out of it. */
 export const Closed: Story = {
   render: (args) => <InPicker {...args} defaultOpen={false} />,

@@ -32,6 +32,13 @@ export interface RangeCalendarPanelProps extends Omit<React.ComponentProps<"div"
   locale?: CalendarProps["locale"];
   /** Which day counts as today (bold). Defaults to now. */
   today?: Date;
+  /**
+   * Tell past from future relative to `today`: the days before it stay the
+   * muted grey, the days after it are ink (today stays bold ink). The range,
+   * the band and the coral weekends keep precedence over both. Off by
+   * default, where every plain day is the muted grey.
+   */
+  dimPastDays?: boolean;
   labels?: {
     discard?: string;
     save?: string;

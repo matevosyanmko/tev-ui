@@ -14,6 +14,8 @@ import { cn } from "../../../utils.js";
  *   middle    the days between: the canvas band, square, ink numeral;
  *   today     bold ink;
  *   weekend   coral;
+ *   future    ink: a day after today, when the panel tells past from
+ *             future (`dimPastDays`);
  *   plain     the frame's muted grey, ink on hover.
  */
 const TONE = {
@@ -21,6 +23,7 @@ const TONE = {
   middle: "rounded-none bg-surface-subtle text-content-primary hover:bg-surface-neutral-subtle",
   today: "text-content-primary hover:bg-surface-subtle",
   weekend: "text-content-accent-coral hover:bg-surface-subtle",
+  future: "text-content-primary hover:bg-surface-subtle",
   plain: "text-content-muted hover:bg-surface-subtle hover:text-content-primary",
 } as const;
 
@@ -42,7 +45,9 @@ function RangeCalendarDay({ className, day, modifiers, children, ...props }: Day
         ? "today"
         : modifiers.weekend
           ? "weekend"
-          : "plain";
+          : modifiers.future
+            ? "future"
+            : "plain";
 
   return (
     <button

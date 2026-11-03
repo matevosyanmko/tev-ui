@@ -82,7 +82,9 @@ function Chevron({ orientation }: { orientation?: "up" | "down" | "left" | "righ
  * The date range picker that opens from the filter panel's date pill
  * (100:43738): month header with the two arrows, Sun–Sat with the weekend in
  * coral, a canvas band between ink ends, today bold, a green dot on days in
- * `markedDates`, preset chips, and discard / Save.
+ * `markedDates`, preset chips, and discard / Save. Every other day is the
+ * frame's muted grey; with `dimPastDays` only the days before `today` are,
+ * and the days after it read ink.
  *
  * It edits a draft: nothing reaches the caller until Save. Put it in
  * `<PopoverContent variant="picker">`; it mounts fresh on every open.
@@ -96,6 +98,7 @@ function RangeCalendarPanel({
   weekStartsOn = 0,
   locale,
   today,
+  dimPastDays = false,
   labels,
   className,
   ...props
@@ -126,7 +129,12 @@ function RangeCalendarPanel({
         locale={locale}
         today={today}
         showOutsideDays={false}
-        modifiers={{ weekend: { dayOfWeek: WEEKEND }, marked: markedDates ?? [] }}
+        modifiers={{
+          weekend: { dayOfWeek: WEEKEND },
+          marked: markedDates ?? [],
+          // Past and future told apart: only the days after today read ink.
+          ...(dimPastDays ? { future: { after: today ?? new Date() } } : {}),
+        }}
         className="w-full bg-transparent p-0"
         classNames={CLASS_NAMES}
         components={{ DayButton: RangeCalendarDay, Weekdays, Chevron }}
